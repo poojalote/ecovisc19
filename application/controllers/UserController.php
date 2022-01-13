@@ -92,7 +92,7 @@ class UserController extends HexaController
 		$order = array('id' => 'desc');
 		$column_order = array('name', 'name');
 		$column_search = array("name", "name");
-		$select = array("u.*", "(select c.name from branch_master c where c.id=u.branch_id and c.status=1) as branch_name", "(select c.name from company_master c where c.id=u.company_id and c.status=1) as company_name");
+		$select = array("u.*", "(select c.name from branch_master c where c.id=u.branch_id and c.status=1) as branch_name", "(select c.name from company_master c where c.id=u.company_id and c.status=1) as company_name", "(select p.profile_name from profile_management_table p where p.id=u.user_type) as profile_name");
 
 		$memData = $this->UserModel->getRows($_POST, $where, $select, $tableName, $column_search, $column_order, $order);
 		$results_last_query = $this->db->last_query();
@@ -105,12 +105,13 @@ class UserController extends HexaController
 				$tableRows[] = array(
 					$row->name,
 					$row->user_name,
-					$row->company_name,
+					$row->profile_name,
 					$row->branch_name,
 					$row->id,
 					$row->create_on,
 					$row->create_by,
 					$row->company_id,
+					$row->company_name,
 
 				);
 			}
@@ -259,12 +260,10 @@ class UserController extends HexaController
 //					}
 //				}
 				$get_column_name = $this->db->query("select column_name from profile_management_table where id='$user_type'");
-				print_r($get_column_name->row());exit();
 				$roles=array();
 				$permission=array();
 				if ($this->db->affected_rows() > 0) {
 					$res = $get_column_name->row();
-
 					$user = $res->column_name;
 
 					$roles = $this->db->query("select ".$res->column_name.",permission_name,type from group_permission_table where ".$res->column_name." = 1")->result();

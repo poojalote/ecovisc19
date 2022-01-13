@@ -336,6 +336,8 @@ $role = $session_data->roles;
 										<option selected disabled>Select Status</option>
 										<option value="yes">Yes</option>
 										<option value="no">No</option>
+										<option value="Inconclusive">Inconclusive</option>
+										<option value="Awaiting">Awaiting</option>
 									</select>
 								</div>
 							</div>

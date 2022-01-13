@@ -15,6 +15,7 @@ class Report extends HexaController
 	{
 		parent::__construct();
 		$this->load->model("MedicineOrderModel");
+		$this->load->model("ReportMakerModel");
 	}
 	
 	public function Reports_query(){
@@ -90,6 +91,7 @@ class Report extends HexaController
 		$sub_report_name="";
 		$display_type="";
 		$query_id=0;
+		$branches=array();
 		$option ='<option value="1">Data Table</option>
 			<option value="0">Normal Table</option>';
 			$p_arr=array();
@@ -106,7 +108,9 @@ class Report extends HexaController
 					$sub_report_name=$result->sub_report_name;
 					$display_type=$result->display_type;
 					$query_id=$result->id;
-					
+					if(!empty($result->branch_level_permission)){
+						$branches=explode(',',$result->branch_level_permission);
+					}
 					for($i=1;$i<=5;$i++){
 						$p="param".$i;
 						$d="datatype".$i;
@@ -170,26 +174,52 @@ class Report extends HexaController
 		</div>';
 		$m++;
 		}
+		$branchOptions='<option disabled>Select Branch</option>';
+		$where="status = 1";
+		$branchObject=$this->ReportMakerModel->getAllBranches($where);
+		if($branchObject->totalCount>0)
+		{
+			foreach ($branchObject->data as $brow)
+			{
+				$selected='';
+				if(in_array($brow->id,$branches))
+				{
+					$selected='selected';
+				}
+				$branchOptions.='<option value="'.$brow->id.'" '.$selected.'>'.$brow->name.'</option>';
+			}
+		}
 		$data='';
 		$data .='
 		<form name="query_form" id="query_form" method="post">
 		<input type="hidden" id="query_id_edit" name="query_id_edit" value="'.$query_id.'">
 		<div class="form-group row">
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<lable>Report Name</lable>
 			<input type="text" class="form-control" id="report_name" value="'.$reoprt_name.'"name="report_name">
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<lable>Sub Report Name</lable>
 			<input type="text" class="form-control" id="sub_report_name" value="'.$sub_report_name.'" name="sub_report_name">
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-3">
 			<lable>Display Type</lable>
 			<select id="display_type" class="form-control" name="display_type">
 			'.$option.'
 			</select>
 			<script>
 			$("#display_type").val('.$display_type.');
+			</script>
+		</div>
+		<div class="col-md-3">
+			<lable>Select Branch</lable>
+			<select class="form-control" name="branches[]" id="branches" multiple>
+			'.$branchOptions.'
+			</select>
+			<script>
+			
+			$("#branches").select2({});
+			
 			</script>
 		</div>
 		</div>
@@ -215,6 +245,7 @@ class Report extends HexaController
 		$report_name=$this->input->post('report_name');
 		$sub_report_name=$this->input->post('sub_report_name');
 		$query_data=$this->input->post('query_data');
+		$branches=$this->input->post('branches');
 		$param=$this->input->post('param');
 		$datatype=$this->input->post('datatype');
 		$label=$this->input->post('label');
@@ -225,6 +256,11 @@ class Report extends HexaController
 		$data['sub_report_name']=$sub_report_name;
 		$data['query']=$query_data;
 		$data['display_type']=$display_type;
+		if(!empty($branches))
+		{
+			$branches=implode(',',$branches);
+		}
+		$data['branch_level_permission']=$branches;
 		$k=1;
 		$cnt=1;
 		for($n=0;$n<count($param);$n++){

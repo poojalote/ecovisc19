@@ -24,12 +24,12 @@ $this->load->view('_partials/header');
 							<div class="card-header-action">
 								<div class="row">
 									<div class="form-group mx-2 my-0">
-										<select class="form-control" name="userCompany" id="userCompany"
+									<!--	<select class="form-control" name="userCompany" id="userCompany"
 												onchange="getUsersTableData(2,this.value)">
-											<!-- <option>Company 1</option>
+											 <option>Company 1</option>
 											<option>Company 2</option>
-											<option>Company 3</option> -->
-										</select>
+											<option>Company 3</option>
+										</select> -->
 									</div>
 									<button class="btn btn-icon btn-primary" data-toggle="modal"
 											data-target="#fire-modal-users" id="userAdd"><i
@@ -49,7 +49,7 @@ $this->load->view('_partials/header');
 										<tr>
 											<td>Name</td>
 											<td>Username</td>
-											<td>Company</td>
+											<td>Profile</td>
 											<td>Branch</td>
 											<td>Action</td>
 										</tr>

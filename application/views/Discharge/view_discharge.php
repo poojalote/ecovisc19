@@ -56,6 +56,7 @@ $this->load->view('_partials/header');
 													<option selected disabled>Select option</option>
 													<option value="discharge">Discharge</option>
 													<option value="mortality">Mortality</option>
+													<option value="transfer">Transfer</option>
 													<option value="Discharge against medical advice">Discharge against medical advice</option>
 												</select>
 											</div>

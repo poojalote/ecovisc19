@@ -4,7 +4,10 @@ $this->load->view('_partials/header');
 ?>
 <style>
 
-	
+	.select2-container
+	{
+		width: 100%!important;
+	}
 </style>
 
 <!-- Main Content -->
