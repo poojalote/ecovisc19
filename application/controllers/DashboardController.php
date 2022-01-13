@@ -600,7 +600,7 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 							</div>
 							<div class="card-wrap">
 								<div class="card-header">
-									<h4>O2 Beds</h4>
+									<h4>O2 Patient</h4>
 								</div>
 								<div class="card-body">
 									'.$o2_patient.'
@@ -615,7 +615,7 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 							</div>
 							<div class="card-wrap">
 								<div class="card-header">
-									<h4>No2 Beds</h4>
+									<h4>No2 Patient</h4>
 								</div>
 								<div class="card-body">
 									'.$no2_patient.'
