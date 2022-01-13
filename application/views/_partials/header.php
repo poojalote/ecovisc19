@@ -150,7 +150,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <?php
-    } elseif ($this->uri->segment(2) == "new_patients") { ?>
+    } elseif ($this->uri->segment(2) == "new_patients" || $this->uri->segment(1) == "new_patients") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <?php

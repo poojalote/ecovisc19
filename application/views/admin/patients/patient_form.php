@@ -50,6 +50,9 @@ if (!isset($patient_id)) {
 		object-fit: cover;
 
 	}
+	.card-footer{
+		background-color: white!important;
+	}
 </style>
 <section id="vidscan" style="display: none;">
 	<div class="container">
@@ -364,6 +367,24 @@ if (!isset($patient_id)) {
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger btn-shadow" id="">Yes</button>
+				<button type="button" class="btn btn-secondary" id="">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="contactModal" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Emergency Contact & Travel History of <span id="emgPatientName"></span></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body" id="emergency_contact">
+
+			</div>
+			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" id="">Cancel</button>
 			</div>
 		</div>
@@ -687,3 +708,45 @@ if ($patient_id != 0) {
 
 }
 ?>
+<script>
+	function get_forms(patient_id,department_id,patient_name) {
+		$('#contactModal').modal('show');
+		$.ajax({
+			url: "<?= base_url("getTemplateForm") ?>",
+			type: "POST",
+			dataType: "json",
+			data: {department_id: department_id, patient_id: patient_id},
+			success: function (result) {
+				var data = result.data;
+				if (result['code'] === 200) {
+					$('#emgPatientName').html(patient_name);
+					$("#emergency_contact").html(data);
+					app.formValidation();
+				} else {
+
+				}
+			}, error: function (error) {
+
+				alert('Something went wrong please try again');
+			}
+		});
+	}
+	// user in dynamic form submision
+	function save_form_data(form) {
+
+		app.request("<?= base_url("form_view/sectionSave") ?>",new FormData(form)).then(result=>{
+			var firm_data = result.firm_data;
+
+			if (result['code'] == '200') {
+				app.successToast("Save Changes");
+				window.location.href = "http://localhost/c19/patient_info";
+			} else {
+				app.errorToast("Failed To Save Data")
+			}
+		}).catch(error=>{
+			console.log(error)
+			app.errorToast('Something went wrong please try again');
+		})
+
+	}
+</script>

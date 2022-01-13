@@ -496,8 +496,10 @@ $("#patientForm").validate({
 					$('#patientForm').trigger('reset');
 
 					$('#patientForm')[0].reset();
-					window.location.href = "http://localhost/c19/patient_info"; 
-					loadPatients(1);
+
+					get_forms(result.patient_id,4,result.patient_name);
+					//
+					// loadPatients(1);
 // modalName();
 				} else {
 					app.errorToast(result.data);

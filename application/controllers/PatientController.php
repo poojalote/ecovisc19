@@ -170,6 +170,7 @@ class PatientController extends HexaController
                 }
             }
 
+
 			if(($admission_mode == 1) && empty($doctor_name)){
 				$response["status"] = 201;
 				$response["data"] = "Select Doctor Name";
@@ -264,7 +265,7 @@ class PatientController extends HexaController
                 }
 
                 $user_data = $this->Patient_Model->getTableData($table_name, $condition);
-//				print_r($insert_data);exit();
+
                 $response["user"] = $user_data;
                 if ($user_data->totalCount > 0) {
                     // ipd
@@ -275,14 +276,17 @@ class PatientController extends HexaController
                             $result = $this->Patient_Model->addForm($table_name, $insert_data);
                             $response["table"] = $table_name;
                             if ($result->status == TRUE) {
+								$insert_id = $result->inserted_id;
+								$patientId=$insert_id;
                                 if ($adhardetails == 2) {
-                                    $insert_id = $result->inserted_id;
                                     $adhar_no = "A000000" . $insert_id;
                                     $this->db->where(array("id" => $insert_id));
                                     $this->db->update($table_name, array("adhar_no" => $adhar_no));
                                 }
                                 $response["status"] = 200;
                                 $response["data"] = "uploaded successfully 3";
+								$response["patient_id"] = $patientId;
+								$response["patient_name"] = $patient_name;
                             } else {
                                 $response["status"] = 201;
                                 $response["data"] = "Not Uploaded";
@@ -297,14 +301,17 @@ class PatientController extends HexaController
                         if (!is_null($user_data->data[0]->discharge_date)) {
                             $result = $this->Patient_Model->addForm($table_name, $insert_data);
                             if ($result->status == TRUE) {
+								$insert_id = $result->inserted_id;
+								$patientId=$insert_id;
                                 if ($adhardetails == 2) {
-                                    $insert_id = $result->inserted_id;
                                     $adhar_no = "A000000" . $insert_id;
                                     $this->db->where(array("id" => $insert_id));
                                     $this->db->update($table_name, array("adhar_no" => $adhar_no));
                                 }
                                 $response["status"] = 200;
                                 $response["data"] = "uploaded successfully 1";
+								$response["patient_id"] = $patientId;
+								$response["patient_name"] = $patient_name;
                             } else {
                                 $response["status"] = 201;
                                 $response["data"] = "Not Uploaded";
@@ -320,14 +327,17 @@ class PatientController extends HexaController
                     // insert
                     $result = $this->Patient_Model->addForm($table_name, $insert_data);
                     if ($result->status == TRUE) {
+						$insert_id = $result->inserted_id;
+						$patientId=$insert_id;
                         if ($adhardetails == 2) {
-                            $insert_id = $result->inserted_id;
                             $adhar_no = "A000000" . $insert_id;
                             $this->db->where(array("id" => $insert_id));
                             $this->db->update($table_name, array("adhar_no" => $adhar_no));
                         }
                         $response["status"] = 200;
                         $response["data"] = "uploaded successfully 2";
+						$response["patient_id"] = $patientId;
+						$response["patient_name"] = $patient_name;
                     } else {
                         $response["status"] = 201;
                         $response["data"] = "Not Uploaded";
