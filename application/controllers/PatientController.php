@@ -170,7 +170,7 @@ class PatientController extends HexaController
                 }
             }
 
-			if($admission_mode == 1 && empty($doctor_name)){
+			if(($admission_mode == 1) && empty($doctor_name)){
 				$response["status"] = 201;
 				$response["data"] = "Select Doctor Name";
 				echo json_encode($response);
@@ -264,7 +264,7 @@ class PatientController extends HexaController
                 }
 
                 $user_data = $this->Patient_Model->getTableData($table_name, $condition);
-
+//				print_r($insert_data);exit();
                 $response["user"] = $user_data;
                 if ($user_data->totalCount > 0) {
                     // ipd

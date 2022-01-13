@@ -496,7 +496,7 @@ $("#patientForm").validate({
 					$('#patientForm').trigger('reset');
 
 					$('#patientForm')[0].reset();
-					window.location.href = "https://c19.ecovisrkca.com/patient_info";
+					window.location.href = "http://localhost/c19/patient_info"; 
 					loadPatients(1);
 // modalName();
 				} else {
@@ -514,7 +514,7 @@ $("#patientForm").validate({
 function get_PatientDataById(patientId) {
 
 	$.LoadingOverlay("show");
-	serverRequest("https://c19.ecovisrkca.com/new_patients/getPatientData", {patientId: patientId}).then(response => {
+	serverRequest("http://localhost/c19/new_patients/getPatientData", {patientId: patientId}).then(response => {
 
 		$.LoadingOverlay("hide");
 		if (response.status === 200) {

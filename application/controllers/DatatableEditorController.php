@@ -279,7 +279,7 @@ class DatatableEditorController extends HexaController
                                 $cond=explode("=",$con);
                                 if(strpos("#",$cond[1])){
                                     $param = str_replace("#","",$cond[1]);
-                                    if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105) {
+                                    if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105 || $section_id==161) {
                                         if($cond[0]=="branch_id"){
                                             $whereCondition[$cond[0]]=$this->session->user_session->branch_id;
                                         }else{
@@ -290,7 +290,7 @@ class DatatableEditorController extends HexaController
                                     }
 
                                 }else{
-                                    if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105) {
+                                    if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105 || $section_id==161) {
                                         if($cond[0]=="branch_id"){
                                             $whereCondition[$cond[0]]=$this->session->user_session->branch_id;
                                         }else{
@@ -304,7 +304,7 @@ class DatatableEditorController extends HexaController
 
                             }
 
-                            if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105) {
+                            if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105 || $section_id==161) {
 
                                 $table ="com_1_room ";
                             }else{
@@ -472,7 +472,7 @@ class DatatableEditorController extends HexaController
                 $position = strpos($column, " as ");
                 if ($position !== false) {
 					if($column == "getAgeGender(id) as Age_Gender"){
-						if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105) {
+						if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105 || $section_id==161) {
 
 							$tableBranch =$this->session->user_session->patient_table ." q1 ";
 						}
@@ -534,7 +534,7 @@ class DatatableEditorController extends HexaController
                 $whereColumn = $this->input->post("filterColumn");
                 $whereValue = $this->input->post("filterByValue");
 //                $where[$whereColumn] = $whereValue;
-                if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id ==105)
+                if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id ==105 || $section_id==161)
                 {
                     if($whereValue == 1){
                         $where['admission_date !='] = null;
@@ -569,7 +569,7 @@ class DatatableEditorController extends HexaController
                     $where[$whereColumn] = $whereValue;
                 }
             }else{
-                if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105)
+                if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105 || $section_id==161)
                 {
                     $where['admission_date !='] = null;
                     $where['admission_date !='] = "0000-00-00 00:00:00";
@@ -655,7 +655,7 @@ class DatatableEditorController extends HexaController
                 }
             }
 
-            if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105) {
+            if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105 || $section_id==161) {
 
                 $table =$this->session->user_session->patient_table ." q ";
             }
@@ -671,7 +671,6 @@ class DatatableEditorController extends HexaController
             $data = array();
 
             foreach ($metaData as $rowData) {
-
                 $tempData = array();
                 foreach ($updateSearchColumn as $columns) {
 
@@ -702,7 +701,7 @@ class DatatableEditorController extends HexaController
 
                     if (count($actionButton) > 0) {
                         $actionButtonTemplate="<div class='d-flex'>";
-                        if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105)
+                        if($section_id==101 || $section_id==102 || $section_id==103 || $section_id==104 || $section_id==105 || $section_id==161)
                         {
                             $actionButtonTemplate .='<a class="btn btn-link" type="button" data-toggle="tooltip" data-placement="left" title="" data-original-title="View Detail" href="'.base_url().'new_patients/'.$rowData->id.'">
 								<img src="'.base_url().'assets/img/aadhaar_Logo.svg.png" style="width: 24px;height: 24px"></a>';
@@ -733,6 +732,12 @@ class DatatableEditorController extends HexaController
                                             <i class="fas fa-user-md"></i>
                                         </button>';
                             }
+                            else if($section_id==161)
+							{
+								$actionButtonTemplate .='<button class="btn btn-link" type="button" data-toggle="tooltip" data-placement="left" title="" data-original-title="View Detail" onclick="loadPatient('.$rowData->id.',`'.$rowData->patient_name.'`,`'.$rowData->adhar_no.'`,`'.$rowData->contact.'`,`'.base_url().'assets/img/avatar/avatar-1.png`,`'.$rowData->admission_date.'`,`2`,`1`,`1`)">
+											<img src="'.base_url().'assets/img/sleeping.svg" style="width: 24px;height: 24px">
+										</button>';
+							}
                             $actionButtonTemplate .='<a class="btn btn-link" href="'.base_url().'get_patient_data/'.$rowData->id.'" target="_blank"><i class="fa fa-download"></i></a>';
 
                         }

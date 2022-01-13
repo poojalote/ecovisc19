@@ -296,6 +296,14 @@ if (!isset($patient_id)) {
 									<span class="custom-switch-indicator"></span>
 									<span class="custom-switch-description">IPD</span>
 								</label>
+								<label class="custom-switch  custom-control-inline">
+									<input type="radio" name="admission_mode" id="ckDayCare"
+										   onchange="toggleAdmissionMode(this,2)"
+										   value="3"
+										   class="custom-switch-input">
+									<span class="custom-switch-indicator"></span>
+									<span class="custom-switch-description">Day Care</span>
+								</label>
 							</div>
 							<div class="form-group">
 								<label id="lableAdmit">Admission Date</label>
@@ -475,7 +483,9 @@ if (!isset($patient_id)) {
 		}
 
 		if (patientObject.admission_mode != null && patientObject.admission_mode != '') {
-			if (parseInt(patientObject.admission_mode) == 2) {
+			if(parseInt(patientObject.admission_mode) == 3){
+				$("#ckDayCare").attr("checked", "checked");
+			} else if (parseInt(patientObject.admission_mode) == 2) {
 				$("#ckadmission").attr("checked", "checked");
 			} else {
 				$("#ckteleconsult").attr("checked", "checked");

@@ -262,6 +262,14 @@ if(is_null($user_permission_array)){
                                                                 class="fa fa-stethoscope mr-1 fa_class"></i>
                                                         <span> OPD</span></a></li>
                                             <?php } ?>
+											<?php
+											if ( array_search("DC_TAB", $branchpermission_array)) {
+												?>
+												<li class=""><a href="#daycare" class="icon"
+																onclick="daycareOperation()"><i
+																class="fa fa-diagnoses mr-1 fa_class"></i> <span> Day Care</span></a>
+												</li>
+										<?php } ?>
                                             <?php
                                             if (array_search("ICU_TAB", $user_permission_array) && array_search("ICU_TAB", $branchpermission_array)) {
                                                 ?>
@@ -292,6 +300,7 @@ if(is_null($user_permission_array)){
 
                                         </section>
                                         <section id="opd"></section>
+										<section id="daycare"></section>
                                         <section id="icu">
                                             <div class="section-header card-primary" style="border-top: 0px!important;">
                                                 <h1 style="color: #891635">ICU Management</h1>
@@ -425,6 +434,7 @@ if(is_null($user_permission_array)){
         get_forms(101, 0, 'ipd').then(r => {
             dynamicFilter('#datatable_button_89', 0, ``, 3, 1, 102);
         });
+
         [].slice.call(document.querySelectorAll('.tabs')).forEach(function (el) {
             new CBPFWTabs(el);
         });
@@ -438,7 +448,12 @@ if(is_null($user_permission_array)){
 
         })
     }
-
+	function daycareOperation()
+	{
+		get_forms(161, 0, 'daycare').then(r => {
+				dynamicFilter('#datatable_button_58', 0, ``, 3, 1, 161);
+		})
+	}
     function get_dataICU() {
         get_roomdetailstable();
         get_icuPatientList();
