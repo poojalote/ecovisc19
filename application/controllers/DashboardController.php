@@ -513,10 +513,8 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 			{
 				$o2_patient = $resuldata->o2_patient;
 			}
-			if(!empty($resuldata->no2_patient) || $resuldata->no2_patient!=null)
-			{
-				$no2_patient = $resuldata->no2_patient;
-			}
+			$no2_patient = ($active_cases)-($o2_patient);
+
 		}
 		$result.='<div class="col-lg-3 col-md-3 col-sm-12">
 						<div class="card card-statistic-2">
