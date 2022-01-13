@@ -380,8 +380,8 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$transArray = array();
 
 		$query = $this->db->query("SELECT room_no,ward_no,id,(select count(id) 
-		from " . $hospital_bed_table . " b where b.Id_room=r.id and b.branch_id=" . $branch_id . " and b.category=r.category) as total_bed,
-		(select count(id) from " . $hospital_bed_table . " b where b.Id_room=r.id AND b.status=0 and b.category=r.category and b.branch_id=" . $branch_id . ") as occupied_bed,
+		from " . $hospital_bed_table . " b where b.Id_room=r.id and b.branch_id=" . $branch_id . " and b.category=r.category and b.active=0) as total_bed,
+		(select count(id) from " . $hospital_bed_table . " b where b.Id_room=r.id AND b.status=0 and b.active=0 and b.category=r.category and b.branch_id=" . $branch_id . ") as occupied_bed,
 		(select count(id) from " . $patient_table . " p where p.roomid=r.id AND p.mark_as_discharge=1 AND (p.discharge_date is null OR p.discharge_date = '0000:00:00 00:00:00') ) as discharge_mark
 		 FROM " . $hospital_room_table . " r where branch_id='$branch_id'");
 		$data = "";
@@ -482,10 +482,15 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$admitted_today=0;
 		$discharge_today=0;
 		$transfer_today=0;
+		$o2_patient=0;
+		$no2_patient=0;
 		$patient_table = $this->session->user_session->patient_table;
 		$resulObject=$this->DashboardModel->_rawQuery('select sum(case when status=1 and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL then 1 else 0 end ) as active_cases,sum(case when date(discharge_date)=CURRENT_DATE() and event =\'mortality\' then 1 else 0 end) as death_today,
   														sum(case when date(admission_date)=CURRENT_DATE() then 1 else 0 end) as admitted_today,
-  														sum(case when date(discharge_date)=CURRENT_DATE() and (is_transfered=0 or is_transfered is null) then 1 else 0 end) as discharge_today,sum(case when date(discharge_date)=CURRENT_DATE() and is_transfered =1 then 1 else 0 end) as transfer_today from '.$patient_table.' where branch_id='.$branch_id);
+  														sum(case when date(discharge_date)=CURRENT_DATE() and (is_transfered=0 or is_transfered is null) then 1 else 0 end) as discharge_today,sum(case when date(discharge_date)=CURRENT_DATE() and is_transfered =1 then 1 else 0 end) as transfer_today,
+  														sum(case when (select cd.id from com_1_dep_2 cd where cd.branch_id=cp.branch_id and cd.patient_id=cp.id and cd.sec_2_f_347!=1565 and cd.sec_2_f_347 is not null order by cd.id desc limit 1 ) and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL then 1 else 0 end) as o2_patient,
+														sum(case when (select cd.id from com_1_dep_2 cd where cd.branch_id=cp.branch_id and cd.patient_id=cp.id and (cd.sec_2_f_347=1565 or cd.sec_2_f_347 is null) order by cd.id desc limit 1) and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL then 1 else 0 end) as no2_patient from '.$patient_table.' cp where branch_id='.$branch_id);
+
 		if($resulObject->totalCount>0)
 		{
 			$resuldata=$resulObject->data[0];
@@ -503,6 +508,14 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 			}
 			if(!empty($resuldata->transfer_today) || $resuldata->transfer_today!=null) {
 				$transfer_today = $resuldata->transfer_today;
+			}
+			if(!empty($resuldata->o2_patient) || $resuldata->o2_patient!=null)
+			{
+				$o2_patient = $resuldata->o2_patient;
+			}
+			if(!empty($resuldata->no2_patient) || $resuldata->no2_patient!=null)
+			{
+				$no2_patient = $resuldata->no2_patient;
 			}
 		}
 		$result.='<div class="col-lg-3 col-md-3 col-sm-12">
@@ -579,6 +592,36 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12">
+						<div class="card card-statistic-2">
+							<div class="card-icon shadow-primary bg-primary">
+								<i class="fas fa-bed"></i>
+							</div>
+							<div class="card-wrap">
+								<div class="card-header">
+									<h4>O2 Beds</h4>
+								</div>
+								<div class="card-body">
+									'.$o2_patient.'
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12">
+						<div class="card card-statistic-2">
+							<div class="card-icon shadow-primary bg-primary">
+								<i class="fas fa-bed"></i>
+							</div>
+							<div class="card-wrap">
+								<div class="card-header">
+									<h4>No2 Beds</h4>
+								</div>
+								<div class="card-body">
+									'.$no2_patient.'
+								</div>
+							</div>
+						</div>
 					</div>';
 		return $result;
 	}
@@ -593,6 +636,7 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$o2_beds=0;
 		$no2_beds=0;
 		$resulObject=$this->DashboardModel->_rawQuery(' select sum(case when status=0 and active=0 then 1 else 0 end) as occupied_beds,sum(case when status=1 and active=0 then 1 else 0 end) as vacant_beds,sum(case when status=1 and category=2 and active=0 then 1 else 0 end) as icu_beds,sum(case when (select cm.id from com_1_room cm where cm.id=cb.Id_room and cm.room_category=1) is null then 0 else 1 end) as o2_beds,sum(case when (select cm.id from com_1_room cm where cm.id=cb.Id_room and cm.room_category=2) is null then 0 else 1 end) as no2_beds from '.$hospital_bed_table.' cb where branch_id='.$branch_id);
+
 		if($resulObject->totalCount>0)
 		{
 			$resuldata=$resulObject->data[0];
@@ -642,36 +686,7 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3 col-md-3 col-sm-12">
-						<div class="card card-statistic-2">
-							<div class="card-icon shadow-primary bg-primary">
-								<i class="fas fa-bed"></i>
-							</div>
-							<div class="card-wrap">
-								<div class="card-header">
-									<h4>O2 Beds</h4>
-								</div>
-								<div class="card-body">
-									'.$o2_beds.'
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-3 col-sm-12">
-						<div class="card card-statistic-2">
-							<div class="card-icon shadow-primary bg-primary">
-								<i class="fas fa-bed"></i>
-							</div>
-							<div class="card-wrap">
-								<div class="card-header">
-									<h4>No2 Beds</h4>
-								</div>
-								<div class="card-body">
-									'.$no2_beds.'
-								</div>
-							</div>
-						</div>
-					</div>
+					
 					<div class="col-lg-3 col-md-3 col-sm-12">
 						<div class="card card-statistic-2">
 							<div class="card-icon shadow-primary bg-primary">
