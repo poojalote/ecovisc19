@@ -1,0 +1,75 @@
+
+function startCamera(patient_id,channel_id) {
+	if(channel_id !== '-1'  && channel_id !== -1) {
+		let divSocket, canvas = document.getElementById('patient_canvas_' + patient_id);
+		if (divSocket) {
+			divSocket.disconnect();
+		}
+		console.log('connecting to channel : ', channel_id);
+		divSocket = io(videoStreaming +  channel_id, {transports: ['websocket']});
+		divSocket.on('data', function (data) {
+			let bytes = new Uint8Array(data);
+			let blob = new Blob([bytes], {type: 'application/octet-binary'});
+			let url = URL.createObjectURL(blob);
+			let img = new Image;
+			let ctx = canvas.getContext("2d");
+			img.onload = function () {
+				URL.revokeObjectURL(url);
+				ctx.drawImage(img, 0, 0, 200, 150);
+			};
+			img.src = url;
+		});
+	}
+}
+
+let canvas = document.getElementById('large_video_panel');
+let ctx = canvas.getContext("2d");
+
+
+
+let largeDivSocket;
+let loading ='data:image/jpeg;base64,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';
+function largeVideoPanel(channel_id) {
+
+	if(channel_id !== '-1' && channel_id !== -1 ) {
+
+		if (largeDivSocket) {
+			loadImage(loading,canvas,ctx);
+			largeDivSocket.disconnect();
+			console.log("disconnected ",largeDivSocket.connected);
+
+		}
+
+		console.log('connecting to channel : ', channel_id);
+		largeDivSocket = io(videoStreaming + channel_id, {transports: ['websocket']});
+		largeDivSocket.on("connect",function (data) {
+			console.log(largeDivSocket.connected);
+		})
+		largeDivSocket.on('data', function (data) {
+			loadImage(data,canvas,ctx);
+		});
+	}else{
+		loadImage(loading,canvas,ctx);
+	}
+}
+function disconnectVideo(){
+	if (largeDivSocket) {
+		largeDivSocket.disconnect();
+		console.log("disconnected ",largeDivSocket.connected);
+		loadImage(loading,canvas,ctx);
+	}
+}
+
+function loadImage(data,canvas,ctx) {
+	let bytes = new Uint8Array(data);
+	let blob = new Blob([bytes], {type: 'application/octet-binary'});
+	let url = URL.createObjectURL(blob);
+	let img = new Image;
+
+	img.onload = function () {
+		URL.revokeObjectURL(url);
+		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+	};
+	img.src = url;
+}
+

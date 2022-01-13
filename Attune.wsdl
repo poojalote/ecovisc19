@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="HL72XML">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HL7Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HL72XMLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HL72XMLResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HL7InBoundMessages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HL7Message" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HL7InBoundMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ErrorMsg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ORUInBoundMessage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HL7XML" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="HL7Msg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ORUInBoundMessageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ORUInBoundMessageResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="PageErrorCode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInBoundListForHLMessages">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="OrgID" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetInBoundListForHLMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetInBoundListForHLMessagesResult" type="tns:ArrayOfHLMessages" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfHLMessages">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="HLMessages" nillable="true" type="tns:HLMessages" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="HLMessages">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AdmitDateTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DischargeDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="AdmissionType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MsgControlId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ParentControlId" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OrgId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PatientIdentifier" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MsgType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sending_App" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sending_Facility" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rec_App" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Rec_Facility" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="TransferDatetime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Msg_Content" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientVisiTID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="ErrorList" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="LoginName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="RoleName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_ID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_fname" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Patient_DOB" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_Sex" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_Address" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_HomePhone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_Businessphone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_Country" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_State" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Placer_Order_Number" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Observation_Identifier" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="TitleName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderCreatedby" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GroupName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalVisitNumber" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CountryID" type="s:short" />
+          <s:element minOccurs="1" maxOccurs="1" name="StateID" type="s:short" />
+          <s:element minOccurs="0" maxOccurs="1" name="Nationality" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Transaction_Date_Time" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientVisitID" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalPatientNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DetailHistory" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Remarks" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferingPhysicianName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferedHospitalName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Email" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PinCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MaritalStatus" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="WardDeatils" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PriorWardDetails" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExternalVisitId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ControlType" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderStaus" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExternalVisitType" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MIGVistNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MIGRequestNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="AttendingDoctor" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StatusOfInbound" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="HL7Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XMLERROR" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PriorIdNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_firstname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_lastname" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Patient_middlename" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Futuredate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="ClinicalInformation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="DiagnosisInformation" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderingDoctorName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderingDoctorId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderingDoctorPhoneNo" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="UpdateInBoundMessageDetails">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="lstHl7InBoundMessageDetails" type="tns:ArrayOfHLMessages" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateInBoundMessageDetailsResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HL72XMLSoapIn">
+    <wsdl:part name="parameters" element="tns:HL72XML" />
+  </wsdl:message>
+  <wsdl:message name="HL72XMLSoapOut">
+    <wsdl:part name="parameters" element="tns:HL72XMLResponse" />
+  </wsdl:message>
+  <wsdl:message name="HL7InBoundMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:HL7InBoundMessages" />
+  </wsdl:message>
+  <wsdl:message name="HL7InBoundMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:HL7InBoundMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ORUInBoundMessageSoapIn">
+    <wsdl:part name="parameters" element="tns:ORUInBoundMessage" />
+  </wsdl:message>
+  <wsdl:message name="ORUInBoundMessageSoapOut">
+    <wsdl:part name="parameters" element="tns:ORUInBoundMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetInBoundListForHLMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetInBoundListForHLMessages" />
+  </wsdl:message>
+  <wsdl:message name="GetInBoundListForHLMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetInBoundListForHLMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateInBoundMessageDetailsSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateInBoundMessageDetails" />
+  </wsdl:message>
+  <wsdl:message name="UpdateInBoundMessageDetailsSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateInBoundMessageDetailsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="HL7IntegrationServiceSoap">
+    <wsdl:operation name="HL72XML">
+      <wsdl:input message="tns:HL72XMLSoapIn" />
+      <wsdl:output message="tns:HL72XMLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HL7InBoundMessages">
+      <wsdl:input message="tns:HL7InBoundMessagesSoapIn" />
+      <wsdl:output message="tns:HL7InBoundMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ORUInBoundMessage">
+      <wsdl:input message="tns:ORUInBoundMessageSoapIn" />
+      <wsdl:output message="tns:ORUInBoundMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInBoundListForHLMessages">
+      <wsdl:input message="tns:GetInBoundListForHLMessagesSoapIn" />
+      <wsdl:output message="tns:GetInBoundListForHLMessagesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateInBoundMessageDetails">
+      <wsdl:input message="tns:UpdateInBoundMessageDetailsSoapIn" />
+      <wsdl:output message="tns:UpdateInBoundMessageDetailsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="HL7IntegrationServiceSoap" type="tns:HL7IntegrationServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HL72XML">
+      <soap:operation soapAction="http://tempuri.org/HL72XML" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HL7InBoundMessages">
+      <soap:operation soapAction="http://tempuri.org/HL7InBoundMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ORUInBoundMessage">
+      <soap:operation soapAction="http://tempuri.org/ORUInBoundMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInBoundListForHLMessages">
+      <soap:operation soapAction="http://tempuri.org/GetInBoundListForHLMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateInBoundMessageDetails">
+      <soap:operation soapAction="http://tempuri.org/UpdateInBoundMessageDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="HL7IntegrationServiceSoap12" type="tns:HL7IntegrationServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HL72XML">
+      <soap12:operation soapAction="http://tempuri.org/HL72XML" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HL7InBoundMessages">
+      <soap12:operation soapAction="http://tempuri.org/HL7InBoundMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ORUInBoundMessage">
+      <soap12:operation soapAction="http://tempuri.org/ORUInBoundMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInBoundListForHLMessages">
+      <soap12:operation soapAction="http://tempuri.org/GetInBoundListForHLMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateInBoundMessageDetails">
+      <soap12:operation soapAction="http://tempuri.org/UpdateInBoundMessageDetails" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HL7IntegrationService">
+    <wsdl:port name="HL7IntegrationServiceSoap" binding="tns:HL7IntegrationServiceSoap">
+      <soap:address location="http://10.21.60.25/lims_qa/HL7IntegrationService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="HL7IntegrationServiceSoap12" binding="tns:HL7IntegrationServiceSoap12">
+      <soap12:address location="http://10.21.60.25/lims_qa/HL7IntegrationService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

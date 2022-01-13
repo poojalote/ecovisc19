@@ -1,0 +1,41 @@
+Back to RMT2 :-
+
+Super Admin Add Org form :
+- Placeholder for city is "Email City Name" do correct it
+- Add trim everywhere when we take user input as textinput
+- Boss email id column limit
+- Display proper error message while trying to login deactivated firm (show "Your firm is deactivated kindly contact administrator")
+
+
+HQ :
+Create Branch form
+- No check for week off day select when pressed add more.
+- Try to manage the condition where i selected leave applicable after confirmation date and i selected "no" for confirmation period.
+- There are two similar permissions Due date Creation permitted & Create Due Date Permission 
+
+Due Date:
+- No date validations while adding due date.
+- Due date has been added without selecting branch and selecting "Select Branch"
+- Even if don't select "Select Branch" it is showing Unexpected error...show proper error message.
+- While adding due date I can see gap between "Due Date Task" and "Add More". Layout can be better.
+- I can add due date by just using spaces in name, remark.
+- There is no date validation
+- There is no no. of days limit validation 
+
+Task:
+- We don't have templates so hide "Select template" dropdown while adding task.
+- I can add task just by selecting "Select Branch" without selecting any branch. (Same as due date)
+- Manage design of create task.
+- Even after SUCCESSFULLY deleting subtask I can still see it in the list.
+- Manage layout for add/edit checklist..look at delete button after clicking "Add more checklist" 
+- No validation on Days needs to completed (max number of characters)
+- After editing checklist..reflections should be seen instantly (data table needs to be refreshed) 
+- Subtasks having no checklist should display "no record"/"no data". Currently it is showing list of checklist of last selected subtask having checklist
+- I can see my checklist added even when it is showing me to fill checklist description error for second one, firstone gets saved.
+
+
+CA :
+- CA dashboard showing random numbers.
+- Declined due date creation, leave approval,task assignment permission still able to see these sections.
+- Got to see enquiries without creating any.
+- Show client admin name
