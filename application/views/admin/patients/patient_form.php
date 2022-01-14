@@ -377,15 +377,15 @@ if (!isset($patient_id)) {
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Emergency Contact & Travel History of <span id="emgPatientName"></span></h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">×</span>
-				</button>
+<!--				<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--					<span aria-hidden="true">×</span>-->
+<!--				</button>-->
 			</div>
 			<div class="modal-body" id="emergency_contact">
 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" id="">Cancel</button>
+				<a href="<?php echo base_url('patient_info') ?>" type="button" id="cancel" name="cancel" class="btn btn-secondary">Cancel</a>
 			</div>
 		</div>
 	</div>
@@ -749,4 +749,5 @@ if ($patient_id != 0) {
 		})
 
 	}
+
 </script>
