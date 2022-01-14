@@ -334,6 +334,16 @@ class PatientController extends HexaController
                             $this->db->where(array("id" => $insert_id));
                             $this->db->update($table_name, array("adhar_no" => $adhar_no));
                         }
+                        if($admission_mode == 2)
+                        {
+                            $checkSmsStatus = $this->Patient_Model->_select('branch_master',array('id'=>$branch_id,'isSMS'=>1),'*',true);
+                            if($checkSmsStatus->totalCount >0)
+                            {
+                                $this->load->model("SmsModel");
+                                $branchData = $checkSmsStatus->data;
+                                $this->SmsModel->sendSMS($contact,array("name"=>$patient_name,"center"=>$branchData->name." Center",'bed'=>"",'room'=>""),$template="1107162869085979911");
+                            }
+                        }
                         $response["status"] = 200;
                         $response["data"] = "uploaded successfully 2";
 						$response["patient_id"] = $patientId;
