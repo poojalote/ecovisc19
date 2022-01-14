@@ -127,8 +127,15 @@ class DatatableFormInputController extends HexaController
                 echo json_encode($response);
                 exit;
             }
-            $patientObject=$this->MasterModel->_rawQuery('select (select location from  branch_master b where b.id=l.branch_id) as branch_loc,TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age from '.$lab_patient_table.' l where l.id='.$patientId);
-			print_r($patientObject);exit();
+            $patient_location='';
+			$patient_age='';
+            $patientObject=$this->MasterModel->_rawQuery('select (select location from  branch_master b where b.id=l.branch_id) as branch_loc,TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age from '.$lab_patient_table.' l where l.id='.$patientId.'');
+			if($patientObject->totalCount>0)
+			{
+				$pdata=$patientObject->data[0];
+				$patient_location=$pdata->branch_loc;
+				$patient_age=$pdata->age;
+			}
             $getConfiguartiondata=$getConfiguartiondataResult[0];
 			$excelStructureDataArray=array();
             $operation=$getConfiguartiondata->operation;
@@ -172,25 +179,20 @@ class DatatableFormInputController extends HexaController
 							array_push($InsertBatchData, (array)$insert_object);
 							$orderIdA='AA'.str_pad($object->order_id,'6','0',STR_PAD_LEFT);
 							$excelStructureData=array('VisitDate'=>date('M d Y H:i A'),
-								'Orgname'=>'',
-								'Location'=>'',
-								'visit_number'=>'',
+								'Orgname'=>'Covidcare',
+								'Location'=>$patient_location,
 								'Patient_number'=>$patientIdA,
 								'Patient_Name'=>$patient_name,
-								'Patient_Age'=>'',
-								'OrderTest'=>'',
-								'ParameterId'=>'',
+								'Patient_Age'=>$patient_age,
+								'OrderTest'=>$object->master_name,
+								'ParameterId'=>$object->child_test_id,
 								'ParameterName'=>'',
-								'result'=>'',
-								'unit'=>'',
-								'ref_range'=>'',
-								'sample_name'=>'',
-								'method_name'=>'',
-								'approveDateTime'=>'',
-								'approveBy'=>'',
-								'orderId'=>'',
+								'result'=>$object->value,
+								'unit'=>$object->unit,
+								'ref_range'=>$object->refe_value,
+								'orderId'=>$orderIdA,
 								'branch_id'=>$branch_id,
-								'order_number'=>'',
+								'order_number'=>$object->order_id,
 								'external_patient_id'=>$patientId,
 								'patient_type'=>2);
 							array_push($excelStructureDataArray,$excelStructureData);
@@ -215,15 +217,14 @@ class DatatableFormInputController extends HexaController
 
                     if (!is_null($object))
                     {
-                    	print_r($object);exit();
                         array_push($updateBatchData, (array)$object);
 							$orderIdA='AA'.str_pad($object->order_id,'6','0',STR_PAD_LEFT);
 							$excelStructureData=array('VisitDate'=>date('M d Y H:i A'),
 								'Orgname'=>'Covidcare',
-								'Location'=>'',
+								'Location'=>$patient_location,
 								'Patient_number'=>$patientIdA,
 								'Patient_Name'=>$patient_name,
-								'Patient_Age'=>'',
+								'Patient_Age'=>$patient_age,
 								'OrderTest'=>$object->master_name,
 								'ParameterId'=>$object->child_test_id,
 								'ParameterName'=>'',
@@ -236,7 +237,6 @@ class DatatableFormInputController extends HexaController
 								'external_patient_id'=>$patientId,
 								'patient_type'=>2);
 							array_push($excelStructureDataArray,$excelStructureData);
-							print_r($excelStructureDataArray);exit();
 
                     }
 
@@ -246,7 +246,7 @@ class DatatableFormInputController extends HexaController
             }
 			if(count($excelStructureDataArray)>0)
 			{
-				$whereExcel=array('external_patient_id'=>$patient_name,'patient_type'=>2,'branch_id'=>$branch_id);
+				$whereExcel=array('external_patient_id'=>$patientId,'patient_type'=>2,'branch_id'=>$branch_id);
 				$delete=$this->db->where($whereExcel)->delete('excel_structure_data');
 				if($delete){
 					$result=$this->db->insert_batch('excel_structure_data', $excelStructureDataArray);
@@ -260,7 +260,7 @@ class DatatableFormInputController extends HexaController
 					$resultstatus = TRUE;
 				}
 				$this->db->trans_complete();
-				$resultObject->last_query = $this->db->last_query();
+				$response["last_query"] = $this->db->last_query();
 			} catch (Exception $ex) {
 				$resultstatus = FALSE;
 				$this->db->trans_rollback();

@@ -296,7 +296,7 @@ function loadPatients(type = 1, companyId = null) {
 <button class="btn btn-link " type="button"
 		data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
 
-		onclick="loadPatient(${r[5]},'${r[1]}','${r[0]}','${r[2]}','${r[8]}','${r[10]}','${r[9]}','${r[14]}','${r[6]}')"
+		onclick="loadPatient(${r[4]},'${r[1]}','${r[0]}','${r[2]}','${r[7]}','${r[9]}','${r[8]}','${r[13]}','${r[5]}')"
 >
 	<img src="${baseURL + 'assets/img/sleeping.svg'}" style="width: 24px;height: 24px">
 </button>${del_btn}</div> 
@@ -346,7 +346,7 @@ ${del_btn}
 <button class="btn btn-link" type="button"
 		data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
 
-		onclick="loadPatient(${aData[5]},'${aData[1]}','${aData[0]}','${aData[2]}','${aData[8]}','${aData[10]}','${aData[9]}','${aData[14]}','${aData[6]}')"
+		onclick="loadPatient(${aData[4]},'${aData[1]}','${aData[0]}','${aData[2]}','${aData[7]}','${aData[9]}','${aData[8]}','${aData[13]}','${aData[5]}')"
 >
 	<img src="${baseURL + 'assets/img/sleeping.svg'}" style="width: 24px;height: 24px">
 </button>
