@@ -639,7 +639,6 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$o2_beds=0;
 		$no2_beds=0;
 		$resulObject=$this->DashboardModel->_rawQuery(' select sum(case when status=0 and active=0 then 1 else 0 end) as occupied_beds,sum(case when status=1 and active=0 then 1 else 0 end) as vacant_beds,sum(case when status=1 and category=2 and active=0 then 1 else 0 end) as icu_beds,sum(case when (select cm.id from com_1_room cm where cm.id=cb.Id_room and cm.room_category=1) is null then 0 else 1 end) as o2_beds,sum(case when (select cm.id from com_1_room cm where cm.id=cb.Id_room and cm.room_category=2) is null then 0 else 1 end) as no2_beds from '.$hospital_bed_table.' cb where branch_id='.$branch_id);
-
 		if($resulObject->totalCount>0)
 		{
 			$resuldata=$resulObject->data[0];

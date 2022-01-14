@@ -111,12 +111,12 @@ function loadPatientsZoneWise(zoneid, companyId = null) {
 		{
 			data: 3
 		},
-		{
-			data: 12
-		},
-		{
-			data: 4
-		},
+		// {
+		// 	data: 12
+		// },
+		// {
+		// 	data: 4
+		// },
 		{
 			data: 5,
 			render: (d, t, r, m) => {
@@ -168,9 +168,9 @@ function loadPatientsZoneWise(zoneid, companyId = null) {
 	], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
 		$('td:eq(0)', nRow).html(`<button class="btn btn-link" onclick="get_modal_view(${aData[5]})"><i class="fa fa-plus"></i></button>${aData[0]}`);
 		$('td:eq(2)', nRow).html(`<div>${aData[2]}</div>`);
-		$('td:eq(6)', nRow).html(`<div>${aData[10] !== null && aData[10] !== '0000-00-00 00:00:00' ? aData[10] : '-'}</div>`);
+		$('td:eq(4)', nRow).html(`<div>${aData[10] !== null && aData[10] !== '0000-00-00 00:00:00' ? aData[10] : '-'}</div>`);
 		if (parseInt(aData[10]) === 1) {
-			$('td:eq(8)', nRow).html(`<div class="btn-group"><a class="btn btn-primary" type="button"
+			$('td:eq(6)', nRow).html(`<div class="btn-group"><a class="btn btn-primary" type="button"
 							 data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
 							 href="${baseURL + 'new_patients/' + aData[5]}"
 >
@@ -187,7 +187,7 @@ function loadPatientsZoneWise(zoneid, companyId = null) {
 		} else {
 
 			if (parseInt(aData[13]) === 1) {
-				$('td:eq(8)', nRow).html(`<div class="btn-group"><a class="btn btn-link" type="button"
+				$('td:eq(6)', nRow).html(`<div class="btn-group"><a class="btn btn-link" type="button"
 							 data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
 							 href="${baseURL + 'new_patients/' + aData[5]}"
 >
@@ -247,12 +247,12 @@ function loadPatients(type = 1, companyId = null) {
 			{
 				data: 3
 			},
-			{
-				data: 12
-			},
-			{
-				data: 4
-			},
+			// {
+			// 	data: 12
+			// },
+			// {
+			// 	data: 4
+			// },
 
 			{
 				data: 5,
@@ -315,9 +315,9 @@ ${del_btn}
 		fnRowCallback: (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
 			$('td:eq(0)', nRow).html(`${aData[0]}`);
 			$('td:eq(2)', nRow).html(`<div>${aData[2]}</div>`);
-			$('td:eq(6)', nRow).html(`<div>${aData[10] !== null && aData[10] !== '0000-00-00 00:00:00' ? aData[10] : '-'}</div>`);
+			$('td:eq(4)', nRow).html(`<div>${aData[10] !== null && aData[10] !== '0000-00-00 00:00:00' ? aData[10] : '-'}</div>`);
 			if (parseInt(aData[10]) === 1) {
-				$('td:eq(8)', nRow).html(`<div class="btn-group"><a class="btn btn-primary " type="button"
+				$('td:eq(6)', nRow).html(`<div class="btn-group"><a class="btn btn-primary " type="button"
 							 data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
 							 href="${baseURL + 'lab_patient/' + aData[5]}"
 >
@@ -336,7 +336,7 @@ ${del_btn}
 					var del_btn="";
 				}
 				if (parseInt(aData[13]) === 1) {
-					$('td:eq(8)', nRow).html(`<div class="btn-group"><a class="btn btn-link" type="button"
+					$('td:eq(6)', nRow).html(`<div class="btn-group"><a class="btn btn-link" type="button"
 							 data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
 							 href="${baseURL + 'lab_patient/' + aData[5]}"
 >

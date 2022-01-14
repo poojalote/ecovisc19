@@ -112,8 +112,9 @@ class LabPatientController extends HexaController
 
             $session_data = $this->session->user_session;
             $user_id = $session_data->id;
-            $table_name = 'lab_patient';
+//            $table_name = 'lab_patient';
 
+            $table_name=$this->session->user_session->lab_patient_table;
 
             if (is_null($this->input->post("gender")) && $this->input->post("gender") == "") {
                 $gender = '';
@@ -342,12 +343,13 @@ on p.id= t.id")->result();
             $tableName = "lab_patient";
             $select = array("*");
         } else {
-            $tableName = 'lab_patient';
-            $hospital_bed_table = $this->session->user_session->hospital_bed_table;
-            $hospital_room_table = $this->session->user_session->hospital_room_table;
+//            $tableName = 'lab_patient';
+            $tableName = $this->session->user_session->lab_patient_table;
+//            $hospital_bed_table = $this->session->user_session->hospital_bed_table;
+//            $hospital_room_table = $this->session->user_session->hospital_room_table;
             $select = array("*",
-                "(select hb.bed_name from " . $hospital_bed_table . " hb where hb.id=bed_id) as bed_name", "(select hb1.category from " . $hospital_bed_table . " hb1 where hb1.id=bed_id) as category",
-                "(select group_concat(hb.room_no,'-',hb.ward_no) from " . $hospital_room_table . " hb where hb.id=roomid) as room_name"
+//                "(select hb.bed_name from " . $hospital_bed_table . " hb where hb.id=bed_id) as bed_name", "(select hb1.category from " . $hospital_bed_table . " hb1 where hb1.id=bed_id) as category",
+//                "(select group_concat(hb.room_no,'-',hb.ward_no) from " . $hospital_room_table . " hb where hb.id=roomid) as room_name"
             );
         }
 
@@ -422,21 +424,22 @@ on p.id= t.id")->result();
                     $room_name = "";
                 }
 
-                if ($row->category == 2) {
-                    $is_icu_patient = 3;
-                } else {
-                    $is_icu_patient = 2;
-                }
+//                if ($row->category == 2) {
+//                    $is_icu_patient = 3;
+//                } else {
+//                    $is_icu_patient = 2;
+//                }
 
                 $tableRows[] = array(
                     $row->adhar_no,
                     $row->patient_name,
                     $row->contact,
                     $row->blood_group,
-                    $row->bed_name,
+//                    $row->bed_name,
                     $row->id,
 //					$row->company_id,
-                    $is_icu_patient,
+//                    $is_icu_patient,
+                '2',
                     $this->session->user_session->roles,
                     $profile_img,
                     $row->admission_mode,
