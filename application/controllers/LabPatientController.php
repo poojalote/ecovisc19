@@ -1050,7 +1050,8 @@ on p.id= t.id")->result();
                         'user_id' => $id,
                         'transaction_date' => date('Y-m-d H:i:s'),
                         'status' => 1,
-                        'order_type' => $service_type
+                        'order_type' => $service_type,
+						'master_id'=>$service_id
                     );
                     if ($this->db->insert("lab_test_data_entry", $childinsert_data)) {
                         $insert_count++;

@@ -9,6 +9,7 @@ class DatatableFormInputController extends HexaController
     function __construct()
     {
         parent::__construct();
+        $this->load->model('MasterModel');
     }
 
 
@@ -106,28 +107,40 @@ class DatatableFormInputController extends HexaController
         $package_id=$this->input->post('package_id');
         if ($header->status) {
 
+			$patientId=$this->input->post('patientId');
+			$patientIdA='N'.str_pad($patientId,'9','0',STR_PAD_LEFT);
+			$patient_admission=$this->input->post('patient_admission');
+			$patient_name=$this->input->post('patient_name');
             $tableName = $header->param->tableName;
             $data = json_decode($header->param->data);
+
             $section_id = $header->param->section_id;
             $hash_key = "#".$header->param->haskey;
             $dept_id = $header->param->dep_id;
             $branch_id = $this->session->user_session->branch_id;
+			$lab_patient_table = $this->session->user_session->lab_patient_table;
             $getConfiguartiondataResult=$this->getConfiguartiondata($section_id,$hash_key,$dept_id);
+//            print_r($getConfiguartiondataResult);exit();
             if($getConfiguartiondataResult == false){
                 $response['status']=201;
                 $response['body']="Something Went Wrong";
                 echo json_encode($response);
                 exit;
             }
+            $patientObject=$this->MasterModel->_rawQuery('select (select location from  branch_master b where b.id=l.branch_id) as branch_loc,TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age from '.$lab_patient_table.' l where l.id='.$patientId);
+			print_r($patientObject);exit();
             $getConfiguartiondata=$getConfiguartiondataResult[0];
-
+			$excelStructureDataArray=array();
             $operation=$getConfiguartiondata->operation;
             $operation_table=$getConfiguartiondata->operation_table;
             $dynamic_branch_id=$this->input->post('dynamic_branch_id');
+			$resultstatus=TRUE;
+			try {
+				$this->db->trans_start();
             if($operation == 1){
                 $InsertBatchData = array();
-                foreach ($data as $object) {
 
+                foreach ($data as $object) {
                     if (!is_null($object)) {
                         $insert_object=new stdClass();
                         $isAll = false;
@@ -155,13 +168,38 @@ class DatatableFormInputController extends HexaController
 
                             }
                         }
+						if ($isAll) {
+							array_push($InsertBatchData, (array)$insert_object);
+							$orderIdA='AA'.str_pad($object->order_id,'6','0',STR_PAD_LEFT);
+							$excelStructureData=array('VisitDate'=>date('M d Y H:i A'),
+								'Orgname'=>'',
+								'Location'=>'',
+								'visit_number'=>'',
+								'Patient_number'=>$patientIdA,
+								'Patient_Name'=>$patient_name,
+								'Patient_Age'=>'',
+								'OrderTest'=>'',
+								'ParameterId'=>'',
+								'ParameterName'=>'',
+								'result'=>'',
+								'unit'=>'',
+								'ref_range'=>'',
+								'sample_name'=>'',
+								'method_name'=>'',
+								'approveDateTime'=>'',
+								'approveBy'=>'',
+								'orderId'=>'',
+								'branch_id'=>$branch_id,
+								'order_number'=>'',
+								'external_patient_id'=>$patientId,
+								'patient_type'=>2);
+							array_push($excelStructureDataArray,$excelStructureData);
+							print_r($excelStructureDataArray);exit();
 
-                        if ($isAll) {
-                            array_push($InsertBatchData, (array)$insert_object);
-                        }
+						}
+
                     }
                 }
-                //var_dump($InsertBatchData);
                 if($section_id == 137 || $section_id == 139){
                     //delete operation
                     $this->db->delete($operation_table,array("branch_id"=>$branch_id));
@@ -169,22 +207,66 @@ class DatatableFormInputController extends HexaController
                 if($section_id == 141){
                     $this->db->delete($operation_table,array("package_id"=>$package_id));
                 }
-
                 $result=$this->db->insert_batch($operation_table, $InsertBatchData);
             }else{
                 $key = $getConfiguartiondata->update_where_columns;
                 $updateBatchData = array();
                 foreach ($data as $object) {
+
                     if (!is_null($object))
                     {
+                    	print_r($object);exit();
                         array_push($updateBatchData, (array)$object);
+							$orderIdA='AA'.str_pad($object->order_id,'6','0',STR_PAD_LEFT);
+							$excelStructureData=array('VisitDate'=>date('M d Y H:i A'),
+								'Orgname'=>'Covidcare',
+								'Location'=>'',
+								'Patient_number'=>$patientIdA,
+								'Patient_Name'=>$patient_name,
+								'Patient_Age'=>'',
+								'OrderTest'=>$object->master_name,
+								'ParameterId'=>$object->child_test_id,
+								'ParameterName'=>'',
+								'result'=>$object->value,
+								'unit'=>$object->unit,
+								'ref_range'=>$object->refe_value,
+								'orderId'=>$orderIdA,
+								'branch_id'=>$branch_id,
+								'order_number'=>$object->order_id,
+								'external_patient_id'=>$patientId,
+								'patient_type'=>2);
+							array_push($excelStructureDataArray,$excelStructureData);
+							print_r($excelStructureDataArray);exit();
+
                     }
 
                 }
                 $result=$this->db->update_batch($operation_table, $updateBatchData, $key);
 
             }
-            if ($result==true) {
+			if(count($excelStructureDataArray)>0)
+			{
+				$whereExcel=array('external_patient_id'=>$patient_name,'patient_type'=>2,'branch_id'=>$branch_id);
+				$delete=$this->db->where($whereExcel)->delete('excel_structure_data');
+				if($delete){
+					$result=$this->db->insert_batch('excel_structure_data', $excelStructureDataArray);
+				}
+			}
+				if ($this->db->trans_status() === FALSE) {
+					$this->db->trans_rollback();
+					$resultstatus = FALSE;
+				} else {
+					$this->db->trans_commit();
+					$resultstatus = TRUE;
+				}
+				$this->db->trans_complete();
+				$resultObject->last_query = $this->db->last_query();
+			} catch (Exception $ex) {
+				$resultstatus = FALSE;
+				$this->db->trans_rollback();
+			}
+
+            if ($resultstatus==true) {
                 $response["status"] = 200;
                 $response["body"] = "Save Changes";
             } else {
