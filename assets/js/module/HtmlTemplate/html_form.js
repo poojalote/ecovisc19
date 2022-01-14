@@ -1126,6 +1126,9 @@ function getHeaders(haskey, section_id, dep_id) {
                 formData.set("dep_id", dep_id);
                 formData.set("haskey", haskey);
                 formData.set("package_id", $("#querydropdown_99").val());
+				formData.set("patientId", localStorage.getItem('patient_id'));
+				formData.set("patient_admission", localStorage.getItem('patient_admission'));
+				formData.set("patient_name", localStorage.getItem('patient_name'));
                 app.request(base_url + "updateDynamicFormTransaction", formData).then(response => {
                     if (response.status === 200) {
                         app.successToast(response.body);

@@ -395,7 +395,7 @@ class ServiceOrderController extends HexaController
 
             if (!empty($dataArray1)) {
                 $billing_transaction = $this->session->user_session->billing_transaction;
-                if ($this->ServiceOrderModel->placeServiceOrder($tableName, $dataArray1, $billing_transaction, $billing_array1)) {
+                if ($this->ServiceOrderModel->placeServiceOrder($tableName, $dataArray1, $billing_transaction, $billing_array1,$patientId,$branch_id)) {
                     // if(!empty($billing_array1)){
                     //
                     // 	if($this->ServiceOrderModel->placeServiceOrder1($billing_transaction,$billing_array1))
