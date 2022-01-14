@@ -498,7 +498,7 @@ $route["getDeptReturnOrder"]="MedicineOrderController/getDeptReturnOrder";
 $route["GetHospitalReturnMedicine"]="MedicineOrderController/GetHospitalReturnMedicine";
 $route["SaveHospitalReturnOrder"]="MedicineOrderController/SaveHospitalReturnOrder";
 $route["getHospHistoryorderTable"]="MedicineOrderController/getHospHistoryorderTable";
-$route["getItemHospitalHistory"]="MedicineOrderController/getItemHospitalHistory";																				  
+$route["getItemHospitalHistory"]="MedicineOrderController/getItemHospitalHistory";
 
 
 
@@ -899,14 +899,19 @@ $route["getAccessMgmtFormData"]="AccessManagementController/getAccessMgmtFormDat
 $route["getAllBranchesList"]="AccessManagementController/getAllBranchesList";
 $route["saveAccessMgmtFormData"]="AccessManagementController/saveAccessMgmtFormData";
 
-// -------------------------- Branch Access Management ----------------------------------------------
 $route["branch_access_management"]="AccessManagementController/branch_access_management";
 $route["getBranchAccessMgmtFormData"]="AccessManagementController/getBranchAccessMgmtFormData";
 $route["saveBranchAccessMgmtFormData"]="AccessManagementController/saveBranchAccessMgmtFormData";
-
+// ------------------------------Security User Management-------------------------------------------
+$route["security"]="SecurityController/index";
+$route["getOtp"]="SecurityController/security";
 // -------------------------- User Management ----------------------------------------------
 
 $route["user_management"]="AccessManagementController/user_management";
 $route["getAllCompanyList"]="AccessManagementController/getAllCompanyList";
 $route["get_user_types"]="AccessManagementController/get_user_types";
 $route["saveUsersMgmtFormData"]="AccessManagementController/saveUsersMgmtFormData";
+// ------------------------------------------OTP------------------------------------------------//
+$route['otp'] = 'LoginController/otp';
+$route['OtpValidation'] = 'LoginController/validateOtp';
+$route['updateMobile'] = 'LoginController/updateMobile';

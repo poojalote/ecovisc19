@@ -82,10 +82,12 @@ $(document).ready(function () {
 	var url = window.location.href;
 	url = url.split("/");
 	if(url.includes("patient_info")){
+		let Did = localStorage.getItem('device_id');
+		let logged_users = localStorage.getItem('logged_users');
 		localStorage.clear();
+		localStorage.setItem('device_id',Did);
+		localStorage.setItem('logged_users',logged_users);
 	}
-
-
 });
 
 
@@ -450,10 +452,10 @@ function loadPatient(id, name, adhar_number, contract, profile, admissionDate, m
 
 
 		}
-		
+
 	}
 
-	
+
 }
 
 $("#patientForm").validate({
@@ -480,7 +482,7 @@ $("#patientForm").validate({
 
 		$.ajax({
 			type: "POST",
-			url: 'http://localhost/c19/' + 'savePatient',
+			url: 'https://c19.ecovisrkca.com/' + 'savePatient',
 			dataType: "json",
 			data: Form_data,
 			contentType: false,
@@ -516,7 +518,7 @@ $("#patientForm").validate({
 function get_PatientDataById(patientId) {
 
 	$.LoadingOverlay("show");
-	serverRequest("http://localhost/c19/new_patients/getPatientData", {patientId: patientId}).then(response => {
+	serverRequest("https://c19.ecovisrkca.com/new_patients/getPatientData", {patientId: patientId}).then(response => {
 
 		$.LoadingOverlay("hide");
 		if (response.status === 200) {
@@ -600,17 +602,17 @@ function get_PatientDataById(patientId) {
 			}
 
 			if (user_data[0]['payer'] != null && user_data[0]['payer'] != '') {
-			
+
 				$("#admission_payer").val(user_data[0]['payer']);
 
 			}
 			if (user_data[0]['patient_company'] != null && user_data[0]['patient_company'] != '') {
-				
+
 				$("#patient_company").val(user_data[0]['patient_company']);
 
 			}
 			if (user_data[0]['work_location'] != null && user_data[0]['work_location'] != '') {
-				
+
 				$("#work_location").val(user_data[0]['work_location']);
 
 			}
@@ -819,7 +821,7 @@ function get_modal_view(p_id) {
 		}
 
 	});
-	
+
 }
 
 function getCriticalParaData(p_id){
@@ -854,9 +856,9 @@ function getCriticalParaData(p_id){
 		success: function (success) {
 			success = JSON.parse(success);
 			if (success.status == 200) {
-			
+
 				var content_data = success.data;
-				
+
 				$("#panel-bodyCP").html(content_data);
 //console.log(success.body);
 			} else {
@@ -866,7 +868,7 @@ function getCriticalParaData(p_id){
 		}
 
 	});
-	
+
 }
 
 function get_TableData(section_id, patient_id, table) {
@@ -878,9 +880,9 @@ function get_TableData(section_id, patient_id, table) {
 		success: function (success) {
 			success = JSON.parse(success);
 
-			
+
 				var user_data = success.table;
-				
+
 				$("#panel-body"+section_id).html(user_data);
 				if(section_id == 2){
 					$("#history_table_"+section_id).dataTable(
@@ -891,7 +893,7 @@ function get_TableData(section_id, patient_id, table) {
 				}else{
 					$("#history_table_"+section_id).dataTable();
 				}
-				
+
 
 //console.log(success.body);
 
@@ -945,7 +947,7 @@ function delete_patient(p_id){
 	app.request(baseURL + "delete_Patient", formData).then(res => {
 		if(res.status === 200){
 		app.successToast(res.body);
-		loadPatients(4);		
+		loadPatients(4);
 		}else{
 		app.errorToast(res.body);
 		}
@@ -979,7 +981,7 @@ $('#rescheduleMedicine').on('show.bs.modal', function (e) {
 			$("#reschedule_patient").val(patient_id);
 
 		});
-		
+
 		function rescheduleMedicine(form) {
 		app.request(baseURL + "saveRescheduleMedicine", new FormData(form)).then(res => {
 			if (res.status === 200) {
@@ -988,7 +990,7 @@ $('#rescheduleMedicine').on('show.bs.modal', function (e) {
 				$("#rescheduleMedicine").modal("hide");
 				var patient_id=	$("#pat_id").val();
 				load_medicine_history(patient_id);
-				
+
 				//let patient_id = localStorage.getItem("patient_id");
 				//load_medicine_history(patient_id);
 			} else {
