@@ -171,6 +171,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						<div class="card-body text-center">
 							<form  method="post" data-form-valid="checkLogin"
 								   id="loginForm" onsubmit="return false">
+                                <input type="hidden" name="isToken" value="0" id="isToken">
 								<div class="form-group">
 									<!-- <label for="email">Email</label> -->
 									<input id="email" type="text" class="form-control text-center input_btn_radius un" placeholder="Email" name="email" tabindex="1"
@@ -205,12 +206,50 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					</div>
 
 
-					
+
 					<div class=" footer"> <div style="box-shadow: 3px 0px 3px #000000;padding: 4px;margin: 0px;">Copyright ©  <?= date('Y') ?></div></div>
 				</div>
 			</div>
 		</div>
 	</section>
+
+    <div class="modal fade " data-backdrop="static" data-keyboard="false" id="Mobileupdate" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content"
+                 style="width: 89% !important; border-radius: 15px !important; box-shadow: 0px 0px 10px 0px lightgrey;">
+                <div class="modal-header justify-content-center border-bottom-0">
+                    <h5 class="modal-title text-center" id="exampleModalLongTitle">
+                        <img src="<?php echo base_url(); ?>dist/img/credit/healthstart.jpeg" height="50"
+                             width="50" alt="logo"
+                             class="rounded-circle">
+                    </h5>
+
+                </div>
+                <form method="post" data-form-valid="insertMobile"
+                      id="MobileUpdate" onsubmit="return false">
+                    <div class="modal-body p-0">
+                        <input type="hidden" name="redirectTo" id="redirectTo">
+                        <div class="text-center">
+                            <p>Please provide your mobile number to receive OTP</p>
+                        </div>
+                        <div class="form-group d-flex flex-column align-items-center">
+                            <input type="text" name="mobile_number" id="mobile_number"
+                                   data-valid="required|number|minlength=10|maxlength=12"
+                                   data-msg="Enter Mobile Number|Only Numbers Allowed|Enter 10 digit number|Mobile number should be between 10 to 12 Characters"
+                                   required autofocus class="form-control m-auto w-75 border border-secondary">
+                        </div>
+                    </div>
+                    <div class="justify-content-center modal-footer">
+                        <button type="submit" id="updateNumber" class="btn text-light"
+                                style="border-radius: 25px; background-color: #891635;border: 1px solid #b02a37;">Continue
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?php $this->load->view('_partials/js'); ?>

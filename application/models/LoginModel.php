@@ -31,7 +31,7 @@ class loginModel extends MasterModel
 //            }
 //        } else {
             return parent::_select('users_master', array("user_name" => $username, "password" => $password, "status" => 1),
-                array("user_name", "id", "name", "password", "roles", "company_id", "branch_id", "user_type", "default_access"));
+                array("user_name", "id", "name", "password","mobile_number", "roles", "company_id", "branch_id", "user_type", "default_access"));
 //        }
 
     }
@@ -123,10 +123,10 @@ class loginModel extends MasterModel
         return $this->_rawQuery($sql);
     }
 
-    public function fetchAllUserDepartments($user_id,$branch_id)
+    public function fetchAllUserDepartments($user_id)
     {
         return $this->_select("role_master r", array("r.user_id" => $user_id, "r.activity_status" => 1),
-            array("GROUP_CONCAT(r.id,'|||',r.department_id,'|||',(select group_concat(dm.name,'|||',dm.sequance,'|||',dm.is_admin) from departments_master dm where dm.id=r.department_id and dm.status=1 and dm.is_admin!=2 AND find_in_set(".$branch_id.", branch_level_access))) as departments"));
+            array("GROUP_CONCAT(r.id,'|||',r.department_id,'|||',(select group_concat(dm.name,'|||',dm.sequance,'|||',dm.is_admin,'|||',dm.branch_level_access) from departments_master dm where dm.id=r.department_id and dm.status=1 and dm.is_admin!=2) SEPARATOR '@') as departments"));
     }
 
     /**
@@ -150,7 +150,8 @@ class loginModel extends MasterModel
     public function getBranchCompanyData($branch_id)
     {
         $sql = "SELECT *,(SELECT bm.name FROM branch_master bm where bm.id=" . $branch_id . ") as branch_name
-		,(SELECT bm.tb_patient FROM branch_master bm where bm.id=" . $branch_id . ") as patient_table FROM company_master where id in (SELECT company_id FROM branch_master where id=" . $branch_id . ")";
+		,(SELECT bm.tb_patient FROM branch_master bm where bm.id=" . $branch_id . ") as patient_table,(SELECT bm.tb_lab_patient FROM branch_master bm where bm.id=" . $branch_id . ") as lab_patient_table  
+		FROM company_master where id in (SELECT company_id FROM branch_master where id=" . $branch_id . ")";
         return $this->db->query($sql);
 
     }
@@ -174,6 +175,8 @@ class loginModel extends MasterModel
             return false;
         }
     }
+
+
 
 
 }

@@ -47,11 +47,11 @@ $session_data = $this->session->user_session;
 									<option value="4">In Process</option>
                                     <option value="8">Report Submitted</option>
 									<option value="3">All</option>
-									
+
 								</select>
 							</div>
 						</div>
-						
+
 					</div>
 				</div>
 			</div>
@@ -65,8 +65,8 @@ $session_data = $this->session->user_session;
 							<th >Name</th>
 							<th>Contact</th>
 							<th>Blood Group</th>
-							<th>Zone</th>
-							<th>Bed</th>
+<!--							<th>Zone</th>-->
+<!--							<th>Bed</th>-->
 							<th>Admission Date</th>
 							<th>MFD</th>
 							<th >Action</th>
