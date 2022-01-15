@@ -336,7 +336,7 @@ class LoginController extends HexaController
             }
             $this->load->model("SmsModel");
             $this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
-            $message = "Please enter the One Time Password <br> to verify your Device";
+            $message = "Please enter the One Time Password sent on ".$mobile." <br> to verify your Device";
         }
         $response['data'] = $message;
         $response['user_id'] = $user_id;
