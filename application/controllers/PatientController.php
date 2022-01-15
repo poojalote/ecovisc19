@@ -206,6 +206,7 @@ class PatientController extends HexaController
                     'locality' => $locality,
 
                 );
+//                print_r($update_data);exit();
                 if ($patient_image != "") {
                     $update_data["patient_image"] = $patient_image;
                 }

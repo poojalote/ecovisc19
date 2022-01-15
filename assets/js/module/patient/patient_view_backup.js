@@ -360,11 +360,11 @@ ${del_btn}
 <a class="btn btn-link" href="${baseURL + 'get_patient_data/' + aData[5]}" target="_blank" ><i class="fa fa-download"></i></a></div>
 `);
 			} else {
-					if(type ==4){
-								var del_btn="<button class='btn btn-link' onclick='delete_patient("+aData[5]+")'><i class='fa fa-trash'></i></button>";
-							}else{
-								var del_btn="";
-							}
+				if(type ==4){
+					var del_btn="<button class='btn btn-link' onclick='delete_patient("+aData[5]+")'><i class='fa fa-trash'></i></button>";
+				}else{
+					var del_btn="";
+				}
 				if (parseInt(aData[13]) === 1) {
 					$('td:eq(8)', nRow).html(`<div class="btn-group"><a class="btn btn-link" type="button"
 							 data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
@@ -482,7 +482,7 @@ $("#patientForm").validate({
 
 		$.ajax({
 			type: "POST",
-			url: 'http://localhost/c19/' + 'savePatient',
+			url: 'https://c19.ecovisrkca.com/' + 'savePatient',
 			dataType: "json",
 			data: Form_data,
 			contentType: false,
@@ -498,13 +498,14 @@ $("#patientForm").validate({
 					$('#patientForm').trigger('reset');
 
 					$('#patientForm')[0].reset();
-					if($("#patientId").val()==0 || $("#patientId").val()=="")
+					if($("#patientId").val()!=0 || $("#patientId").val()!="")
 					{
 						get_forms(result.patient_id,4,result.patient_name);
 					}
 					else {
-						window.location.href='http://localhost/c19/' +"patient_info";
+						window.location.href='https://c19.ecovisrkca.com/' +"patient_info";
 					}
+
 					//
 					// loadPatients(1);
 // modalName();
@@ -523,7 +524,7 @@ $("#patientForm").validate({
 function get_PatientDataById(patientId) {
 
 	$.LoadingOverlay("show");
-	serverRequest("http://localhost/c19/new_patients/getPatientData", {patientId: patientId}).then(response => {
+	serverRequest("https://c19.ecovisrkca.com/new_patients/getPatientData", {patientId: patientId}).then(response => {
 
 		$.LoadingOverlay("hide");
 		if (response.status === 200) {
@@ -595,19 +596,12 @@ function get_PatientDataById(patientId) {
 				$("#admission_date").val(date);
 
 			}
-			if (user_data[0]['doctor_name'] != null && user_data[0]['doctor_name'] != '') {
-				let doctor = user_data[0]['doctor_name'];
-				$("#doctor_name option[value='" + doctor + "']").prop("selected", true);
-
-			}
 			if (user_data[0]['admission_mode'] != null && user_data[0]['admission_mode'] != '') {
 				if (parseInt(user_data[0]['admission_mode']) == 2) {
 					$("#ckadmission").attr("checked", "checked");
 				} else {
 					$("#ckteleconsult").attr("checked", "checked");
-					$('#teleconsultStartDdate').removeClass('d-none');
-					$('#doctorName').removeClass('d-none');
-					$('#lableAdmit').html('Consultation Date');
+					;
 				}
 
 
@@ -859,7 +853,7 @@ function getCriticalParaData(p_id){
 	});
 }
 
- function get_data_critical(p_id){
+function get_data_critical(p_id){
 	//getlabreportFrequentlyUsed
 	$.ajax({
 		type: 'POST',
@@ -893,18 +887,18 @@ function get_TableData(section_id, patient_id, table) {
 			success = JSON.parse(success);
 
 
-				var user_data = success.table;
+			var user_data = success.table;
 
-				$("#panel-body"+section_id).html(user_data);
-				if(section_id == 2){
-					$("#history_table_"+section_id).dataTable(
+			$("#panel-body"+section_id).html(user_data);
+			if(section_id == 2){
+				$("#history_table_"+section_id).dataTable(
 					{
-			"order": [[ 9, "desc" ]]
-				}
-					);
-				}else{
-					$("#history_table_"+section_id).dataTable();
-				}
+						"order": [[ 9, "desc" ]]
+					}
+				);
+			}else{
+				$("#history_table_"+section_id).dataTable();
+			}
 
 
 //console.log(success.body);
@@ -958,55 +952,55 @@ function delete_patient(p_id){
 	formData.set("patientId", p_id);
 	app.request(baseURL + "delete_Patient", formData).then(res => {
 		if(res.status === 200){
-		app.successToast(res.body);
-		loadPatients(4);
+			app.successToast(res.body);
+			loadPatients(4);
 		}else{
-		app.errorToast(res.body);
+			app.errorToast(res.body);
 		}
 
 	})
 }
 
 $('#rescheduleMedicine').on('show.bs.modal', function (e) {
-			let medicine_id = $(e.relatedTarget).data('medicine_id');
-			let reschedule_date = $(e.relatedTarget).data('reschedule_date');
-			let alreadyGivenDoesCount = parseInt($(e.relatedTarget).data('alreadygivendoescount'));
-			var input = document.getElementById("per_day_schedule");
+	let medicine_id = $(e.relatedTarget).data('medicine_id');
+	let reschedule_date = $(e.relatedTarget).data('reschedule_date');
+	let alreadyGivenDoesCount = parseInt($(e.relatedTarget).data('alreadygivendoescount'));
+	var input = document.getElementById("per_day_schedule");
 
-			let options=``;
-			for(let i =1;i<=5;i++){
-				let disable = `disabled`;
-				if(alreadyGivenDoesCount>=i){
-					options+=`<option ${disable} value="${i}">${i}</option>`
-				}else{
-					options+=`<option value="${i}">${i}</option>`
-				}
-			}
-			$("#per_day_schedule").empty();
-			$("#per_day_schedule").append(options);
-			//per_day_schedule
-			//$("#per_day_schedule").attr({"min" : alreadyGivenDoesCount});
-		var patient_id=	$("#pat_id").val();
-			app.formValidation();
-			$("#reschedule_medicine_id").val(medicine_id);
-			$("#reschedule_date").val(reschedule_date);
-			$("#reschedule_patient").val(patient_id);
-
-		});
-
-		function rescheduleMedicine(form) {
-		app.request(baseURL + "saveRescheduleMedicine", new FormData(form)).then(res => {
-			if (res.status === 200) {
-				app.successToast(res.body);
-				$("#editRescheduleForm").trigger('reset');
-				$("#rescheduleMedicine").modal("hide");
-				var patient_id=	$("#pat_id").val();
-				load_medicine_history(patient_id);
-
-				//let patient_id = localStorage.getItem("patient_id");
-				//load_medicine_history(patient_id);
-			} else {
-				app.errorToast(res.body);
-			}
-		}).catch(error => console.log(error));
+	let options=``;
+	for(let i =1;i<=5;i++){
+		let disable = `disabled`;
+		if(alreadyGivenDoesCount>=i){
+			options+=`<option ${disable} value="${i}">${i}</option>`
+		}else{
+			options+=`<option value="${i}">${i}</option>`
+		}
 	}
+	$("#per_day_schedule").empty();
+	$("#per_day_schedule").append(options);
+	//per_day_schedule
+	//$("#per_day_schedule").attr({"min" : alreadyGivenDoesCount});
+	var patient_id=	$("#pat_id").val();
+	app.formValidation();
+	$("#reschedule_medicine_id").val(medicine_id);
+	$("#reschedule_date").val(reschedule_date);
+	$("#reschedule_patient").val(patient_id);
+
+});
+
+function rescheduleMedicine(form) {
+	app.request(baseURL + "saveRescheduleMedicine", new FormData(form)).then(res => {
+		if (res.status === 200) {
+			app.successToast(res.body);
+			$("#editRescheduleForm").trigger('reset');
+			$("#rescheduleMedicine").modal("hide");
+			var patient_id=	$("#pat_id").val();
+			load_medicine_history(patient_id);
+
+			//let patient_id = localStorage.getItem("patient_id");
+			//load_medicine_history(patient_id);
+		} else {
+			app.errorToast(res.body);
+		}
+	}).catch(error => console.log(error));
+}

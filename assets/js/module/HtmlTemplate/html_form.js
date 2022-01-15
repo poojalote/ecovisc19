@@ -51,6 +51,10 @@ console.log(queryparameter_hidden);
                     }
 
                 }
+                if(section_id==143)
+				{
+					$("#excelhiddenelement").val(data.html_section_text);
+				}
                 if (section_id == 87) {
                     $(".card_head_back87").remove();
                 }

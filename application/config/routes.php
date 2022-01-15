@@ -107,6 +107,7 @@ $route["getPatientTableData"]="PatientController/getPatientTableData";
 $route["getPatientTableDataZone"]="PatientController/getPatientTableDataZone";
 $route["getZoneData"]="PatientController/getZoneData";
 $route["patient/getZoneData"]="PatientController/getZoneData";
+$route["new_patients/getZoneData"]="PatientController/getZoneData";
 $route["get_patient_data/(:num)"]="PatientController/get_patient_data/$1";
 $route["admin/patientSearch"]="PatientController/search";
 $route["patientSearch"]="PatientController/search";
@@ -843,6 +844,8 @@ $route["deleteLabPatient"]="LabPatientController/deleteLabPatient";
 $route["get_labpatient_data/(:num)"]="LabPatientController/get_labpatient_data/$1";
 $route["labpatient_report/(:any)/(:any)/(:any)"]="LabPatientController/labpatient_report/$1/$2/$3";
 $route["master_package/(:any)/(:any)/(:any)"]="LabPatientController/master_package/$1/$2/$3";
+$route["getLabDataEntryExcelData"]="LabPatientController/getLabDataEntryExcelData";
+
 
 $route["getServiceTest"]="LabPatientController/getServiceTest";
 $route["getPackageTest"]="LabPatientController/getPackageTest";
@@ -891,6 +894,8 @@ $route["admin/ChangeLabBranchStatus"]="LabBranchController/ChangeLabBranchStatus
 $route["admin/getSectionConfigData"]="HtmlFormTemplateController/getSectionConfigData";
 $route["admin/getSectionTableData"]="HtmlFormTemplateController/getSectionTableData";
 $route["getDoctorList"]="PatientController/getDoctorList";
+$route["patient/getDoctorList"]="PatientController/getDoctorList";
+$route["new_patients/getDoctorList"]="PatientController/getDoctorList";
 $route["getPatientBIllingPrintDataNew"]="BillingManagementController/getPatientBIllingPrintDataNew";
 
 // ------------------------------Access Management-------------------------------------------

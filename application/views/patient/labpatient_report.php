@@ -53,6 +53,7 @@ $this->load->view('_partials/header');
                         <input type="hidden" id="queryparameter_hidden" name="queryparameter_hidden"
                                value="<?= $queryParam ?>">
                         <input type="hidden" id="hiddenDivName" name="hiddenDivName" value="">
+						<input type="hidden" id="excelhiddenelement" name="excelhiddenelement" value="">
                         <!-- <div class="card-header">
                             <h4>Department Details</h4>
                             <div class="card-header-action">
@@ -135,7 +136,7 @@ $this->load->view('_partials/header');
                                                  <span>Payment</span></a></li>
                                      </ul>
                                  </nav> -->
-                                <div class="content-wrap" id="lab_master_panel">
+                                <div class="content-wrap content-wrap1" id="lab_master_panel">
                                     <section id="departmentPanel0" class="content-current">
                                         <div id="tabdepartmentPanel0">
                                             <form id="labserviceorder">
@@ -200,28 +201,29 @@ $this->load->view('_partials/header');
 											<nav>
 												<ul id="lab_entry_top_nav">
 													<li class="tab-current">
-														<a href="#labDataEntryNormalPanel" class="icon" id="tabDataEntryNormal">
+														<a href="#labEntryNormalPanel" class="icon" id="labEntryTabNormal">
 															<i class="fas fa-file-medical-alt  mr-1 fa_class"></i>
-															<span>Department</span>
+															<span>Lab Data Entry</span>
 														</a>
 													</li>
 													<li class="">
-														<a href="#labDataEntryHandsonPanel" class="icon" id="tabDataEntryhandson">
+														<a href="#labEntryHandsonPanel" class="icon" id="labEntryTabHandson">
 															<i class="fas fa-notes-medical  mr-1 fa_class"></i>
-															<span>Master Test</span>
+															<span>Lab Excel Data Entry</span>
 														</a>
 													</li>
 												</ul>
 											</nav>
-											<div class="content-wrap" id="lab_data_entry">
-												<section id="labDataEntryNormalPanel" class="content-current">
+											<div class="content-wrap content-wrap2" id="lab_master_panel">
+												<section id="labEntryNormalPanel" class="content-current">
 													<div id="tabmasterTestPanel0"></div>
 												</section>
-												<section id="labDataEntryHandsonPanel">
-													<div id=""></div>
+												<section id="labEntryHandsonPanel">
+													<div id="tabentryhandsondata"></div>
 												</section>
 											</div>
 										</div>
+
                                     </section>
                                     <section id="childTestPanel0">
                                         <div id="tabchildTestPanel0">
@@ -327,14 +329,13 @@ $this->load->view('_partials/header');
             document.getElementById("hiddenDivName").value= 'tabdepartmentPanel0';
             // get_forms(128, 0, queryParam, departmentId, null, 'tabdepartmentPanel0');
             showPanel(1);
-
+			$("#excelhiddenelement").val('');
         })
 
         $("#tabMasterTest0").on('click',function (event) {
             document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
             get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
             showPanel(143);
-
         })
 
         $("#tabChildTest0").on('click',function (event) {
@@ -342,14 +343,27 @@ $this->load->view('_partials/header');
             // get_forms(132, 0, queryParam, departmentId, null, 'tabchildTestPanel0');
             showPanel(2);
             getPatientLabReportList();
-
+			$("#excelhiddenelement").val('');
         })
 
         $("#tabUnitMaster0").on('click',function (event) {
             document.getElementById("hiddenDivName").value= 'tabunitMasterPanel0';
             get_forms(144, 0, queryParam, departmentId, null, 'tabunitMasterPanel0');
             showPanel(144);
+            $("#excelhiddenelement").val('');
         })
+
+		$("#labEntryTabNormal").on('click',function (event) {
+			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+			// get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
+			showPanel1('Normal',143);
+		})
+		$("#labEntryTabHandson").on('click',function (event) {
+			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+
+			showPanel1('handson',143);
+
+		})
     });
     function showPanel(id) {
         $(".a_menu").css({
@@ -364,7 +378,7 @@ $this->load->view('_partials/header');
         $(".li_menu_" + id).addClass('menu-header_section active').removeClass('menu-header_section1');
 
         let panel =parseInt(id);
-        $(".content-wrap section").removeClass("content-current");
+        $(".content-wrap1 section").removeClass("content-current");
         $("#lab_master_top_nav li").removeClass("tab-current")
         if(panel ===1){
             $("#lab_master_top_nav li:nth-child(1)").addClass("tab-current")
@@ -373,6 +387,7 @@ $this->load->view('_partials/header');
         if(panel ===143){
             $("#lab_master_top_nav li:nth-child(2)").addClass("tab-current")
             $("#masterTestPanel0").addClass("content-current");
+			$("#labEntryNormalPanel").addClass("content-current")
         }
         if(panel ===2){
             $("#lab_master_top_nav li:nth-child(3)").addClass("tab-current")
@@ -382,8 +397,23 @@ $this->load->view('_partials/header');
             $("#lab_master_top_nav li:nth-child(4)").addClass("tab-current")
             $("#unitMasterPanel0").addClass("content-current");
         }
-    }
 
+    }
+	function showPanel1(id,sectionId) {
+		$(".content-wrap2 section").removeClass("content-current");
+		$("#lab_entry_top_nav li").removeClass("tab-current")
+		if(id=='Normal')
+		{
+			$("#lab_entry_top_nav li:nth-child(1)").addClass("tab-current")
+			$("#labEntryNormalPanel").addClass("content-current");
+		}
+		if(id=='handson')
+		{
+			$("#lab_entry_top_nav li:nth-child(2)").addClass("tab-current")
+			$("#labEntryHandsonPanel").addClass("content-current");
+			loadEditableTable(sectionId);
+		}
+	}
     function loadPackageData(section_id, divId) {
         if (section_id == 136) {
             getServices();
@@ -765,4 +795,84 @@ $this->load->view('_partials/header');
 		});
 	}
 
+</script>
+<script>
+	function loadEditableTable(sectionId) {
+		let formData = new FormData();
+		formData.set("section_id", sectionId);
+		formData.set("dep_id", $("#department_id").val());
+		formData.set("haskey", $("#excelhiddenelement").val());
+		$.ajax({
+			type: "POST",
+			url: "<?= base_url("getLabDataEntryExcelData") ?>",
+			dataType: "json",
+			data:formData,
+			contentType:false,
+			processData:false,
+			success: function (result) {
+				let userType=[];
+				if(result.status==200)
+				{
+					userType=result.data;
+				}
+				var rows = [['', '', '', '', '',],];
+				var types = [
+					{type: 'text'},
+					{type: 'text'},
+					{type: 'text'},
+					{
+						type: 'dropdown', source: ['Doctor','Nurse','Other'],
+					},
+					{
+						type: 'dropdown', source: userType,
+					},
+
+
+				];
+				var hideArra = [];
+				var columns = ['Name(A)', 'User Name(B)', 'Password(C)', 'Role(D)', 'User Type(E)'];
+				hideColumn = {
+					// specify columns hidden by default
+					columns: hideArra,
+					copyPasteEnabled: false,
+				};
+				createHandonTable(columns, rows, types, 'tabentryhandsondata', hideColumn);
+
+			}, error: function (error) {
+				app.errorToast('Something went wrong please try again');
+			}
+		});
+	}
+
+	let hotDiv;
+
+	function createHandonTable(columnsHeader, columnRows, columnTypes, divId, hideColumn = true) {
+
+		var element = document.getElementById(divId);
+		hotDiv != null ? hotDiv.destroy() : '';
+		hotDiv = new Handsontable(element, {
+			data: columnRows,
+			colHeaders: columnsHeader,
+			formulas: true,
+			manualColumnResize: true,
+			manualRowResize: true,
+
+			// ],
+			columns: columnTypes,
+			minSpareRows:1,
+			stretchH: 'all',
+			colWidths: '100%',
+			width: '100%',
+			height: 320,
+			rowHeights: 23,
+			rowHeaders: true,
+			filters: true,
+			contextMenu: true,
+			hiddenColumns: hideColumn,
+			dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
+			licenseKey: 'non-commercial-and-evaluation'
+		});
+
+		hotDiv.validateCells();
+	}
 </script>
