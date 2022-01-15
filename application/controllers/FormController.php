@@ -1132,8 +1132,9 @@ class FormController extends HexaController
 						} else if ($value1->ans_type == 5) {
 							$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
-					<div class="col-sm-9">
+					<div class="col-sm-9 d-flex">
 					<input type="datetime-local" class="form-control" id="u_form_field' . $value1->id . '" value="' . $patientValue . '" name="u_form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
+					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'u_form_field' . $value1->id . '\','.$value1->ans_type.')">X</button>
 					<script>
 //						var dt = new Date();
 //   var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
@@ -1183,10 +1184,12 @@ class FormController extends HexaController
 							}
 							$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
-					<div class="col-sm-9" >
+					<div class="col-sm-9 d-flex" >
 					<select class="custom-select" id="u_form_field' . $value1->id . '"  onchange="' . $onchange . '" name="u_form_field' . $value1->id . '" ' . $validation . '>
 							' . $option . '
-									</select><script>$("#u_form_field' . $value1->id . '").select2()</script></div>';
+									</select>
+									<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'u_form_field' . $value1->id . '\','.$value1->ans_type.')">X</button>
+									<script>$("#u_form_field' . $value1->id . '").select2()</script></div>';
 						} else if ($value1->ans_type == 4) {
 							$get_option = $this->Formmodel->get_all_options($value1->id);
 							$option = "<option value=''  disabled></option>";
