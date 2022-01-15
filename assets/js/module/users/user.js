@@ -440,6 +440,7 @@ function save_permission() {
 }
 
 function save_profile() {
+	$.LoadingOverlay("show");
 	var form_data = document.getElementById('profile_form');
 	var Form_data = new FormData(form_data);
 	$.ajax({
@@ -459,16 +460,18 @@ function save_profile() {
 				$('#profile_form').trigger("reset");
 				get_permission_div();
 				$("#profile_management").modal('hide');
-
+				$.LoadingOverlay("hide");
 
 				//		loadPrescription();
 			} else {
 				app.errorToast(result.body);
+				$.LoadingOverlay("hide");
 			}
 		},
 		error: function (error) {
 			// $.LoadingOverlay("hide");
 			app.errorToast("something went wrong please try again");
+			$.LoadingOverlay("hide");
 		}
 	});
 }

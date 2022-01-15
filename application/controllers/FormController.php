@@ -160,7 +160,9 @@ class FormController extends HexaController
 						}
 						$h_val="";
 						if (array_key_exists($heightfield, $patientObject)) {
-							$h_val = ($patientObject[$heightfield]) / 100;
+							if(is_numeric($patientObject[$heightfield])){
+								$h_val = ($patientObject[$heightfield]) / 100;
+							}
 						}
 					
 						//echo $patientValue = round(($w_val / ($h_val * $h_val)), 2);
@@ -555,6 +557,8 @@ class FormController extends HexaController
 
 				if ($input_data != "") {
 					$data_to_insert[$field_name] = $input_data;
+				}else{
+					$data_to_insert[$field_name] = "";
 				}
 			}
 			$data_to_insert["patient_id"] = $patient_id;
