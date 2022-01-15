@@ -322,7 +322,7 @@ class LoginController extends HexaController
         $checkTodaysOtp = $this->MasterModel->_rawQuery('SELECT otp FROM otp_master where expiry_on >= "' . $current_date . '" and user_id = "' . $user_id . '" and branch_id = "' . $branch_id . '" and user_type = "' . $user_type . '" order by id desc limit 1')->data;
         if ($checkTodaysOtp != null && !empty($checkTodaysOtp)) {
             $LastOtp = $checkTodaysOtp[0]->otp;
-            $message = "Otp has been Generated for the Day <br> Use that Otp to Login ";
+            $message = "Please Use Previously Generated <br> OTP to Login ";
 //            $this->MasterModel->sendSMS($mobile,array('otp'=>$LastOtp),'1107162869107284120','3');
         } else {
 
@@ -336,7 +336,7 @@ class LoginController extends HexaController
             }
             $this->load->model("SmsModel");
             $this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
-            $message = "Please enter the One Time Password sent on ".$mobile." <br> to verify your Device";
+            $message = "Please enter the One Time Password <br> sent on ".$mobile." <br> to verify your Device";
         }
         $response['data'] = $message;
         $response['user_id'] = $user_id;
