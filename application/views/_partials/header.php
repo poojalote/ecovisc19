@@ -251,6 +251,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabs.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabsStyle.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.css"/>
     <?php } else if ($this->uri->segment(3) == "medicine_master") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
         <link rel="stylesheet"

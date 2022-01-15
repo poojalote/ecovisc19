@@ -8,8 +8,13 @@ function save_form_data(form) {
 		var firm_data = result.firm_data;
 
 		if (result['code'] == '200') {
-			app.successToast("Save Changes")
-
+			app.successToast("Save Changes");
+			if(result['is_history']==1)
+			{
+				let section_id=result['section_id'];
+				$("#history_btn_"+section_id).click();
+				$('#data_form_'+section_id)[0].reset();
+			}
 		} else {
 			app.errorToast("Failed To Save Data")
 		}

@@ -520,7 +520,13 @@ class FormController extends HexaController
 		$department_id = $this->input->post('department_id');
 		$patient_id = $this->input->post('patient_id');
 		$form_section_id = $this->input->post('section_id');
+		$is_history_on=0;
 //		$company_id = $this->session->user_session->company_id;
+		$getSection = $this->Formmodel->_select('section_master',array('id'=>$form_section_id),array('is_history'));
+		if($getSection->totalCount>0)
+		{
+			$is_history_on=$getSection->data->is_history;
+		}
 		$get_data = $this->Formmodel->get_all_data($department_id,$form_section_id);
 		if ($get_data != false) {
 			$data_to_insert = array();
@@ -637,17 +643,25 @@ class FormController extends HexaController
 				if ($this->db->trans_status() === FALSE) {
 					$this->db->trans_rollback();
 					$response['code'] = 201;
+					$response['section_id']=$form_section_id;
+					$response['is_history']=$is_history_on;
 				} else {
 					$this->db->trans_commit();
 					$response['code'] = 200;
+					$response['section_id']=$form_section_id;
+					$response['is_history']=$is_history_on;
 				}
 				$this->db->trans_complete();
 			} catch (Exception $exception) {
 				$this->db->trans_rollback();
 				$response['code'] = 201;
+				$response['section_id']=$form_section_id;
+				$response['is_history']=$is_history_on;
 			}
 		} else {
 			$response['code'] = 201;
+			$response['section_id']=$form_section_id;
+			$response['is_history']=$is_history_on;
 		}
 		echo json_encode($response);
 	}

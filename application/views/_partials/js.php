@@ -365,6 +365,7 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
 
     <script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/cbpFWTabs.js"></script>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/html_form.js?version=<?= time(); ?>"></script>
     <!--<script src="<?php echo base_url(); ?>assets/js/module/department/companyModule.js"></script>-->
 <?php } ?>
