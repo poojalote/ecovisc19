@@ -196,7 +196,32 @@ $this->load->view('_partials/header');
                                         </div>
                                     </section>
                                     <section id="masterTestPanel0">
-                                        <div id="tabmasterTestPanel0"></div>
+										<div class="tabs tabs-style-underline">
+											<nav>
+												<ul id="lab_entry_top_nav">
+													<li class="tab-current">
+														<a href="#labDataEntryNormalPanel" class="icon" id="tabDataEntryNormal">
+															<i class="fas fa-file-medical-alt  mr-1 fa_class"></i>
+															<span>Department</span>
+														</a>
+													</li>
+													<li class="">
+														<a href="#labDataEntryHandsonPanel" class="icon" id="tabDataEntryhandson">
+															<i class="fas fa-notes-medical  mr-1 fa_class"></i>
+															<span>Master Test</span>
+														</a>
+													</li>
+												</ul>
+											</nav>
+											<div class="content-wrap" id="lab_data_entry">
+												<section id="labDataEntryNormalPanel" class="content-current">
+													<div id="tabmasterTestPanel0"></div>
+												</section>
+												<section id="labDataEntryHandsonPanel">
+													<div id=""></div>
+												</section>
+											</div>
+										</div>
                                     </section>
                                     <section id="childTestPanel0">
                                         <div id="tabchildTestPanel0">

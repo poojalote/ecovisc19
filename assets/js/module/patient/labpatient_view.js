@@ -255,13 +255,10 @@ function loadPatients(type = 1, companyId = null) {
 			// },
 
 			{
-				data: 5,
-				render: (d, t, r, m) => {
-					return `<div>${r[10]}</div>`;
-				}
+				data: 9
 			},
 			{
-				data: 11
+				data: 10
 			},
 			{
 				data: 6,
@@ -269,12 +266,12 @@ function loadPatients(type = 1, companyId = null) {
 					if (parseInt(r[10]) === 1) {
 						return `<div class="btn-group"><a class="btn btn-primary" type="button"
 		   data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
-		   href="${baseURL + 'lab_patient/' + r[5]}"
+		   href="${baseURL + 'lab_patient/' + r[4]}"
 >
 	<i class="fas fa-pen"></i>
 </a>
 <button class="btn btn-danger btn-action trigger--fire-modal-1" type="button"
-		onclick="deletePatient(${r[5]})">
+		onclick="deletePatient(${r[4]})">
 	<i class="fas fa-trash"></i>
 </button></div>`;
 					} else {
@@ -287,7 +284,7 @@ function loadPatients(type = 1, companyId = null) {
 							}
 							return `<div class="btn-group"><a class="btn btn-link" type="button"
 		   data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
-		   href="${baseURL + 'lab_patient/' + r[5]}"
+		   href="${baseURL + 'lab_patient/' + r[4]}"
 >
 	<!--                               			  <i class="fas fa-pen"></i>-->
 
@@ -300,7 +297,7 @@ function loadPatients(type = 1, companyId = null) {
 >
 	<img src="${baseURL + 'assets/img/sleeping.svg'}" style="width: 24px;height: 24px">
 </button>${del_btn}</div> 
-<a class="btn btn-link"  href="${baseURL + 'get_labpatient_data/' + r[5]}" target="_blank" ><i class="fa fa-download"></i></a>
+<a class="btn btn-link"  href="${baseURL + 'get_labpatient_data/' + r[4]}" target="_blank" ><i class="fa fa-download"></i></a>
 ${del_btn}
 
 </div>
@@ -315,11 +312,11 @@ ${del_btn}
 		fnRowCallback: (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
 			$('td:eq(0)', nRow).html(`${aData[0]}`);
 			$('td:eq(2)', nRow).html(`<div>${aData[2]}</div>`);
-			$('td:eq(4)', nRow).html(`<div>${aData[10] !== null && aData[10] !== '0000-00-00 00:00:00' ? aData[10] : '-'}</div>`);
+			$('td:eq(4)', nRow).html(`<div>${aData[9] !== null && aData[9] !== '0000-00-00 00:00:00' ? aData[9] : '-'}</div>`);
 			if (parseInt(aData[10]) === 1) {
 				$('td:eq(6)', nRow).html(`<div class="btn-group"><a class="btn btn-primary " type="button"
 							 data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
-							 href="${baseURL + 'lab_patient/' + aData[5]}"
+							 href="${baseURL + 'lab_patient/' + aData[4]}"
 >
 	<i class="fas fa-pen"></i>
 </a>
@@ -327,18 +324,18 @@ ${del_btn}
 		onclick="deletePatient(${aData[5]})">
 	<i class="fas fa-trash"></i>
 </button>
-<a class="btn btn-link" href="${baseURL + 'get_labpatient_data/' + aData[5]}" target="_blank" ><i class="fa fa-download"></i></a></div>
+<a class="btn btn-link" href="${baseURL + 'get_labpatient_data/' + aData[4]}" target="_blank" ><i class="fa fa-download"></i></a></div>
 `);
 			} else {
 				if(type ==4){
-					var del_btn="<button class='btn btn-link' onclick='delete_patient("+aData[5]+")'><i class='fa fa-trash'></i></button>";
+					var del_btn="<button class='btn btn-link' onclick='delete_patient("+aData[4]+")'><i class='fa fa-trash'></i></button>";
 				}else{
 					var del_btn="";
 				}
 				if (parseInt(aData[13]) === 1) {
 					$('td:eq(6)', nRow).html(`<div class="btn-group"><a class="btn btn-link" type="button"
 							 data-toggle="tooltip" data-placement="left" title data-original-title="View Detail"
-							 href="${baseURL + 'lab_patient/' + aData[5]}"
+							 href="${baseURL + 'lab_patient/' + aData[4]}"
 >
 
 	<img src="${baseURL + 'assets/img/aadhaar_Logo.svg.png'}" style="width: 24px;height: 24px">
@@ -350,7 +347,7 @@ ${del_btn}
 >
 	<img src="${baseURL + 'assets/img/sleeping.svg'}" style="width: 24px;height: 24px">
 </button>
-<a class="btn btn-link"  href="${baseURL + 'get_labpatient_data/' + aData[5]}" target="_blank" ><i class="fa fa-download"></i></a>
+<a class="btn btn-link"  href="${baseURL + 'get_labpatient_data/' + aData[4]}" target="_blank" ><i class="fa fa-download"></i></a>
 ${del_btn}
 
 </div>

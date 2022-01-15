@@ -276,8 +276,8 @@ class LabPatientController extends HexaController
         $header = $this->is_parameter(array("searchValue"));
         if ($header->status) {
             $searchValue = $header->param->searchValue;
-
-            $tableName = 'lab_patient';
+			$lab_patient = $this->session->user_session->lab_patient_table;
+            $tableName =  $lab_patient;
             $user_data = $this->db->query("select * from " . $tableName . " p join (
 select  max(id) as id from " . $tableName . " WHERE upper(adhar_no) LIKE '" . strtoupper($searchValue) . "%' ESCAPE '!'OR  upper(patient_name) LIKE '" . strtoupper($searchValue) . "%' ESCAPE '!' group by adhar_no) t 
 on p.id= t.id")->result();
@@ -306,7 +306,7 @@ on p.id= t.id")->result();
 
 //			$company_id = $session_data->company_id;
 
-            $tableName = 'lab_patient';// 'com_' . $company_id . '_patient';
+			$tableName = $this->session->user_session->lab_patient_table;
             //$where=array("id"=>$patientId);
             $where = "where dm.id='" . $patientId . "'";
             $resultObject = $this->Patient_Model->getTableData($tableName, $where);
@@ -490,7 +490,8 @@ on p.id= t.id")->result();
 
             $user_id = $session_data->id;
             $company_id = $session_data->company_id;
-            $tableName = 'lab_patient';//'com_' . $company_id . '_patient';
+			$lab_patient = $this->session->user_session->lab_patient_table;
+            $tableName = $lab_patient;//'com_' . $company_id . '_patient';
             $departmentData = array('status' => 0, 'modify_on' => date('Y-m-d'), "modify_by" => $user_id);
             $where = array('id' => $patientId);
 
@@ -512,7 +513,8 @@ on p.id= t.id")->result();
     public function get_labpatient_data($id)
     {
 //	$id=$this->input->post('id');
-        $query = $this->Patient_Model->getpatientdata($id, 'lab_patient', $this->session->user_session->branch_id);
+		$tableName = $this->session->user_session->lab_patient_table;
+        $query = $this->Patient_Model->getpatientdata($id, $tableName, $this->session->user_session->branch_id);
 
         if ($query != false) {
             $patient_name = $query->patient_name;
@@ -1276,7 +1278,8 @@ from lab_test_data_entry where patient_id=" . $patient_id . " and branch_id =" .
     public function ChangeBillingOpen()
     {
         $p_id = $this->input->post('p_id');
-        $patient_table = 'lab_patient';
+		$lab_patient = $this->session->user_session->lab_patient_table;
+        $patient_table = $lab_patient;
         $query = $this->db->query("select billing_open from " . $patient_table . " where id=" . $p_id);
 
         //1=close 0=open
@@ -1322,7 +1325,8 @@ from lab_test_data_entry where patient_id=" . $patient_id . " and branch_id =" .
     public function check_billing_status()
     {
         $p_id = $this->input->post('p_id');
-        $patient_table = 'lab_patient';
+		$lab_patient = $this->session->user_session->lab_patient_table;
+		$patient_table = $lab_patient;
         $query = $this->db->query("select billing_open from " . $patient_table . " where id=" . $p_id);
         if ($this->db->affected_rows() > 0) {
             $billing_open = $query->row()->billing_open;
