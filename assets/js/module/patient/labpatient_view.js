@@ -426,8 +426,8 @@ $("#patientForm").validate({
 				if (result.status === 200) {
 
 					app.successToast(result.data);
-					// $('#patientForm').trigger('reset');
-					// $('#patientForm')[0].reset();
+					$('#patientForm').trigger('reset');
+					$('#patientForm')[0].reset();
 					// window.location.href = baseURL+"labpatient_info";
 					// loadPatients(1);
 // modalName();
