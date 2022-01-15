@@ -230,10 +230,10 @@ class FormController extends HexaController
 						}
 						$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
-					<div class="col-sm-9">
+					<div class="col-sm-9 d-flex">
 					<input type="datetime-local" class="form-control" id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
 					'.$isDate.'
-					
+					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\','.$value1->ans_type.')">X</button>
 					</div>';
 					} else if ($value1->ans_type == 2) {
 						$field = '
@@ -270,10 +270,11 @@ class FormController extends HexaController
 						}
 						$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
-					<div class="col-sm-9" >
+					<div class="col-sm-9 d-flex" >
 					<select class="custom-select" id="form_field' . $value1->id . '"  onchange="' . $onchange . '" name="form_field' . $value1->id . '" ' . $validation . '>
 							' . $option . '
-									</select><script>$("#form_field' . $value1->id . '").select2()</script></div>';
+									</select><button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\','.$value1->ans_type.')">X</button>
+									<script>$("#form_field' . $value1->id . '").select2()</script></div>';
 					} else if ($value1->ans_type == 4) {
 						$get_option = $this->Formmodel->get_all_options($value1->id);
 						$option = "<option value='' selected disabled></option>";

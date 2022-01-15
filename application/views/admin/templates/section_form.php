@@ -348,4 +348,17 @@ $this->load->view('_partials/header');
 			app.errorToast('Something went wrong please try again');
 		})
 	}
+	function clearElementValue(elementId,ansType) {
+		if(ansType==3)
+		{
+			$("#"+elementId).val('');
+			$("#"+elementId).select2({allowClear: true});
+		}
+		if(ansType==5)
+		{
+			$("#"+elementId).val('');
+			console.log(elementId);
+
+		}
+	}
 </script>
