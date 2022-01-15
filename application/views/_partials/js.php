@@ -1,9 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-?>
-<script>
-    let session_branch_id = '<?=$this->session->user_session->branch_id;?>';
-</script>
+
+if (!is_null($this->session->user_session)) {
+    ?>
+    <script>
+        let session_branch_id = '<?=$this->session->user_session->branch_id;?>';
+    </script>
+<?php } ?>
+
 <!-- General JS Scripts -->
 <script src="<?php echo base_url(); ?>assets/modules/jquery.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/modules/popper.js"></script>
@@ -282,6 +286,12 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
     <script src="<?php echo base_url(); ?>assets/js/module/department/department_view.js?version=<?= time(); ?>"></script>
     <!--<script src="<?php echo base_url(); ?>assets/js/module/department/companyModule.js"></script>-->
 <?php } ?>
+<?php if ($this->uri->segment(1) == "security") { ?>
+    <script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
+<?php } ?>
 <?php if ($this->uri->segment(2) == "view_user") { ?>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
@@ -290,7 +300,7 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
     <!--	<script src="--><?php //echo base_url(); ?><!--assets/js/module/department/department_view.js"></script>-->
     <script src="<?php echo base_url(); ?>assets/js/module/users/user.js?version=<?= time(); ?>"></script>
 <?php } ?>
-<?php if ($this->uri->segment(1) == "patient_info"  || $this->uri->segment(1) == "datatableTabSection" || $this->uri->segment(1) == "patient_report") { ?>
+<?php if ($this->uri->segment(1) == "patient_info" || $this->uri->segment(1) == "datatableTabSection" || $this->uri->segment(1) == "patient_report") { ?>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/jquery-ui/jquery-ui.min.js"></script>
@@ -364,8 +374,10 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
     <!--    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>-->
 
     <script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
+
 	<script src="<?php echo base_url(); ?>assets/js/cbpFWTabs.js"></script>
 	<script type="text/javascript" src="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.js"></script>
+
     <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/html_form.js?version=<?= time(); ?>"></script>
     <!--<script src="<?php echo base_url(); ?>assets/js/module/department/companyModule.js"></script>-->
 <?php } ?>
@@ -491,7 +503,7 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
 <?php } ?>
 <?php if ($this->uri->segment(1) == "discharge") { ?>
     <script src="<?php echo base_url(); ?>assets/js/module/patient/section_form.js?version=<?= time(); ?>"></script>
-	<script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/html_form.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/html_form.js"></script>
 <?php } ?>
 <?php if ($this->uri->segment(1) == "patient" && $this->uri->segment(2) == "dashboard") { ?>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
@@ -529,7 +541,7 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
-	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/module/serviceOrder/serviceOrder.js?version=<?= time(); ?>"></script>
 <?php } ?>
 <?php if ($this->uri->segment(1) == "pharmeasy" || $this->uri->segment(1) == "hospitalMedicine") { ?>
@@ -653,33 +665,35 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
 
     <!-- JS Libraies -->
     <!-- <script src="<?php echo base_url(); ?>assets/modules/summernote/summernote-bs4.js"></script> -->
-	<script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/jquery.rsLiteGrid.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/jquery.rsLiteGrid.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/Htmlform_template_drag.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/section_htmlform.js"></script>
 
 <?php } ?>
 <?php
 if ($this->uri->segment(2) == "Reports_query") { ?>
-	<script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
 <?php } ?>
 <?php
 if ($this->uri->segment(1) == "access_management" || $this->uri->segment(1) == "branch_access_management") { ?>
-	<script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
 <?php } ?>
 <?php
 if ($this->uri->segment(1) == "user_management") { ?>
-	<script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
+    <script type="text/javascript"
+            src="<?php echo base_url(); ?>assets/excel_handson/handsontable.full.min.js"></script>
 <?php } ?>
 <?php
-if($this->uri->segment(1) == "labMaster"){?>
+if ($this->uri->segment(1) == "labMaster") {
+    ?>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/html_form.js"></script>
-<?php
+    <?php
 }
 ?>
 <?php if ($this->uri->segment(2) == "view_lab_branch") { ?>
@@ -691,14 +705,15 @@ if($this->uri->segment(1) == "labMaster"){?>
     <script src="<?php echo base_url(); ?>assets/js/module/lab_branch/lab_branch_view.js"></script>
 <?php } ?>
 <?php
-if($this->uri->segment(1) == "setup_lab_master" || $this->uri->segment(1) == "setup_child_lab_master"|| $this->uri->segment(1) == "master_package"){?>
+if ($this->uri->segment(1) == "setup_lab_master" || $this->uri->segment(1) == "setup_child_lab_master" || $this->uri->segment(1) == "master_package") {
+    ?>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/html_form.js"></script>
-<?php
+    <?php
 }
 ?>
 
@@ -748,14 +763,14 @@ if($this->uri->segment(1) == "setup_lab_master" || $this->uri->segment(1) == "se
 
 <?php } ?>
 <?php
-if($this->uri->segment(1) == "payerDetails"){?>
-	<script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/modules/jquery-ui/jquery-ui.min.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
-	<script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/html_form.js"></script>
-	<?php
+if ($this->uri->segment(1) == "payerDetails"){?>
+    <script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/modules/jquery-ui/jquery-ui.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/html_form.js"></script>
+    <?php
 }
 ?>
 

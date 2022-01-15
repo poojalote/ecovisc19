@@ -27,6 +27,7 @@ class SecurityController extends HexaController
         $branch_id = $this->session->user_session->branch_id;
         $data = $this->db->query('SELECT otp,expiry_on,(SELECT user_name FROM users_master where id = user_id) as username,
 (SELECT name FROM users_master where id = user_id) as name,
+(SELECT mobile_number FROM users_master where id = user_id) as mobile,
 (SELECT name FROM branch_master where id = branch_id) as branch_name
  FROM otp_master where
  date(create_on)="'.date("Y-m-d").'"')->result();
@@ -40,7 +41,8 @@ class SecurityController extends HexaController
                     $value->expiry_on,
                     $value->name,
                     $value->username,
-                    $value->branch_name
+                    $value->branch_name,
+					$value->mobile
                 );
                 array_push($row_data, $row);
             }

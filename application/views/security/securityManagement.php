@@ -39,6 +39,7 @@ $this->load->view('_partials/header');
 											<td>Name</td>
                                             <td>Email</td>
 											<td>Branch</td>
+											<td>Mobile Number</td>
 										</tr>
 										</thead>
 										<tbody>

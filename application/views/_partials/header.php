@@ -150,7 +150,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <?php
-    } elseif ($this->uri->segment(2) == "new_patients" || $this->uri->segment(1) == "new_patients") { ?>
+    } elseif ($this->uri->segment(2) == "new_patients") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <?php
@@ -191,7 +191,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet"
               href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
-    <?php } else if ($this->uri->segment(1) == "patient_info" || $this->uri->segment(1) == "datatableTabSection" || $this->uri->segment(1) == "patient_report" ) { ?>
+    <?php } else if ($this->uri->segment(1) == "patient_info" || $this->uri->segment(1) == "datatableTabSection" || $this->uri->segment(1) == "patient_report") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
         <link rel="stylesheet"
               href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
@@ -344,20 +344,22 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet"
               href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
-	<?php
-	} elseif ($this->uri->segment(2) == "Html_template") { ?>
+        <?php
+    } elseif ($this->uri->segment(2) == "Html_template") { ?>
 
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
-	<link rel="stylesheet"
-		  href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
-	<link rel="stylesheet"
-		  href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
-	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
 
-	<link rel="stylesheet" href="<?php echo base_url(); ?>vendor/trumbowyg/dist/ui/trumbowyg.min.css">
-	<link rel="stylesheet" href="<?php echo base_url(); ?>vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css">
-	<link rel="stylesheet" href="<?php echo base_url(); ?>vendor/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>vendor/trumbowyg/dist/ui/trumbowyg.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>vendor/trumbowyg/dist/plugins/colors/ui/trumbowyg.colors.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>vendor/trumbowyg/dist/plugins/table/ui/trumbowyg.table.min.css">
 
     <?php } else if ($this->uri->segment(1) == "risknode") { ?>
         <link rel="stylesheet" type="text/css"
@@ -390,7 +392,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
     <?php } ?>
-    <?php if($this->uri->segment(1) =="labMaster"){?>
+    <?php if ($this->uri->segment(1) == "labMaster") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
         <link rel="stylesheet"
               href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
@@ -399,9 +401,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabs.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabsStyle.css">
-    <?php }?>
+    <?php } ?>
 
-    <?php if($this->uri->segment(1) =="setup_lab_master" || $this->uri->segment(1) =="setup_child_lab_master"|| $this->uri->segment(1) =="master_package"){?>
+    <?php if ($this->uri->segment(1) == "setup_lab_master" || $this->uri->segment(1) == "setup_child_lab_master" || $this->uri->segment(1) == "master_package") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
         <link rel="stylesheet"
               href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
@@ -410,8 +412,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabs.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabsStyle.css">
-    <?php }?>
-    <?php if($this->uri->segment(1) ==""){?>
+    <?php } ?>
+    <?php if ($this->uri->segment(1) == "") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
         <link rel="stylesheet"
               href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
@@ -420,7 +422,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabs.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabsStyle.css">
-    <?php }?>
+    <?php } ?>
     <?php if ($this->uri->segment(1) == "opdPanel") { ?>
         <!--        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
@@ -433,14 +435,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
     <?php } ?>
-	<?php if ($this->uri->segment(1) == "payerDetails") { ?>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
-		<link rel="stylesheet"
-			  href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
-		<link rel="stylesheet"
-			  href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
-	<?php } ?>
     <?php
     if ($this->uri->segment(2) == "Html_template_drag") { ?>
 
@@ -476,31 +470,31 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
     <?php } ?>
-	<?php
-	if ($this->uri->segment(2) == "Reports_query") { ?>
+    <?php
+    if ($this->uri->segment(2) == "Reports_query") { ?>
 
 
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
 
 
-	<?php } ?>
-	<?php
-	if ($this->uri->segment(1) == "access_management" || $this->uri->segment(1) == "branch_access_management") { ?>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
-	<?php } ?>
-	<?php if ($this->uri->segment(1) == "payerDetails") { ?>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
-		<link rel="stylesheet"
-			  href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
-		<link rel="stylesheet"
-			  href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
-	<?php } ?>
-	<?php
-	if ($this->uri->segment(1) == "user_management") { ?>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
-		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.css"/>
-	<?php } ?>
+    <?php } ?>
+    <?php
+    if ($this->uri->segment(1) == "access_management" || $this->uri->segment(1) == "branch_access_management") { ?>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
+    <?php } ?>
+    <?php if ($this->uri->segment(1) == "payerDetails") { ?>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
+    <?php } ?>
+    <?php
+    if ($this->uri->segment(1) == "user_management") { ?>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.css"/>
+    <?php } ?>
     <?php
     if ($this->uri->segment(1) == "ViewReportMaker") { ?>
 
@@ -508,7 +502,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
     <?php } ?>
-
+    <?php if ($this->uri->segment(1) == "security") { ?>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
+        <?php
+    } ?>
     <!-- Template CSS -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/components.css">
@@ -545,10 +547,10 @@ if ($this->uri->segment(1) != "auth_login" && $this->uri->segment(1) != "auth_fo
     && $this->uri->segment(3) !== "medicine_master"
     && $this->uri->segment(2) !== "Html_template_drag"
     && $this->uri->segment(1) !== "report_maker"
-		&& $this->uri->segment(2) !== "Html_template"
-
+    && $this->uri->segment(2) !== "Html_template"
+    && $this->uri->segment(1) != "security"
     && $this->uri->segment(3) !== "prescription_master" && $this->uri->segment(2) !== "company_admin" && $this->uri->segment(2) !== "chnage_password" && $this->uri->segment(1) != "radiologySampleCollection" && $this->uri->segment(1) != "pathologySampleCollection" && $this->uri->segment(1) != "billingMaster" && $this->uri->segment(3) != "hospital_order_management" && $this->uri->segment(1) !== "staffRegistration" && $this->uri->segment(1) !== "staff" && $this->uri->segment(1) !== "icubedManagement" && $this->uri->segment(1) !== "IcunursingCare" && $this->uri->segment(1) !== "patientReport" && $this->uri->segment(1) !== "consumableOrder" && $this->uri->segment(1) !== "Dashboard" && $this->uri->segment(1) !== "hospital_order_management" && $this->uri->segment(1) !== "Consumable_Inventory" && $this->uri->segment(1) !== "form_view_personal" && $this->uri->segment(1) !== "risknode" && $this->uri->segment(1) !== "icuPatientView"
-    && $this->uri->segment(1) !== "labpatient_info" && $this->uri->segment(1) !== "labpatient_report" && $this->uri->segment(1) !== "lab_patient"  && $this->uri->segment(1) !== "payerDetails"
+    && $this->uri->segment(1) !== "labpatient_info" && $this->uri->segment(1) !== "labpatient_report" && $this->uri->segment(1) !== "lab_patient" && $this->uri->segment(1) !== "payerDetails"
 
 ) {
     $this->load->view('_partials/layout');
@@ -561,13 +563,17 @@ if ($this->uri->segment(1) == "ViewReportMaker") {
     $this->load->view('_partials/layout_2');
 }
 if ($this->uri->segment(1) == "admin" && $this->uri->segment(2) == "Html_template") {
-	$this->load->view('_partials/layout_2');
+    $this->load->view('_partials/layout_2');
 }
 
+if ($this->uri->segment(1) == "security") {
+    $this->load->view('_partials/layout_2');
+}
 if ($this->uri->segment(1) == "labReport") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/patientLeft_sidebar');
-}if ($this->uri->segment(1) == "operation_details") {
+}
+if ($this->uri->segment(1) == "operation_details") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/patientLeft_sidebar');
 }
@@ -615,7 +621,7 @@ if ($this->uri->segment(1) == "patient_info" || $this->uri->segment(1) == "datat
     $this->load->view('_partials/left_sidebar');
 }
 
-if ($this->uri->segment(1) == "viewLabDashboard" || $this->uri->segment(1) =="labMaster") {
+if ($this->uri->segment(1) == "viewLabDashboard" || $this->uri->segment(1) == "labMaster") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/lab_left_sidebar');
 }
@@ -771,27 +777,29 @@ if ($this->uri->segment(1) == "lab_patient") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/lab_left_sidebar');
 }
-if($this->uri->segment(1) == "labpatient_info" ){
+if ($this->uri->segment(1) == "labpatient_info") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/lab_left_sidebar');
 }
-if($this->uri->segment(1) == "labpatient_report" ){
+if ($this->uri->segment(1) == "labpatient_report") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/lab_left_sidebar');
 }
-if($this->uri->segment(1) == "setup_lab_master" ){
+if ($this->uri->segment(1) == "setup_lab_master") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/lab_left_sidebar');
-}if($this->uri->segment(1) == "setup_child_lab_master" ){
+}
+if ($this->uri->segment(1) == "setup_child_lab_master") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/lab_left_sidebar');
-}if($this->uri->segment(1) == "master_package" ){
+}
+if ($this->uri->segment(1) == "master_package") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/lab_left_sidebar');
 }
 if ($this->uri->segment(1) == "payerDetails") {
-	$this->load->view('_partials/layout_2');
-	$this->load->view('_partials/patientLeft_sidebar');
+    $this->load->view('_partials/layout_2');
+    $this->load->view('_partials/patientLeft_sidebar');
 }
 
 ?>
