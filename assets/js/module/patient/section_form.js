@@ -14,6 +14,7 @@ function save_form_data(form) {
 				let section_id=result['section_id'];
 				$("#history_btn_"+section_id).click();
 				$('#data_form_'+section_id)[0].reset();
+				$('#data_form_'+section_id+' .custom-select').val(null).trigger("change");
 			}
 		} else {
 			app.errorToast("Failed To Save Data")
