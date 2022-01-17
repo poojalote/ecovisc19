@@ -167,17 +167,17 @@ $this->load->view('_partials/header');
 function getCollectionTable(category, tableID, patient_id = null) {
     // var p_id = $('#p_id').val();
     //console.log(""+tableID+"");
-    let formData = new FormData();
-    formData.set("category", category);
-    // if(category=="RADIOLOGY"){
-    let zone = $("#psampleAllPatient").val();
-    if (zone !== null) {
-        formData.set("zone_id", zone);
-    }
+    // let formData = new FormData();
+    // formData.set("category", category);
+    // // if(category=="RADIOLOGY"){
+    // let zone = $("#psampleAllPatient").val();
+    // if (zone !== null) {
+    //     formData.set("zone_id", zone);
+    // }
   
 
     app.dataTable('pathologySampleTable', {
-        url: baseURL + "getCollectionTable",
+        url: baseURL + "getLabCollectionTable",
        // data:formData
     }, [
             {
@@ -207,8 +207,8 @@ function getCollectionTable(category, tableID, patient_id = null) {
                     //         onclick="serviceOrderBillingInfo(${r[1]},${r[4]},${r[5]},${r[9]},${r[10]})">`;
                     // } else {
                         // let value = 0;
-                        return `<input type="checkbox"  id="sampleCollectionCheckbox_${r[10]}" 
-        onclick="serviceOrderBillingInfo('${r[1]}',${r[4]},${r[5]},${r[9]},${r[10]})">`;
+                        return `<input type="checkbox"  id="sampleCollectionCheckbox_${r[3]}" 
+        onclick="serviceOrderBillingInfo('${r[1]}',${r[4]},${r[5]},${r[9]},${r[3]})">`;
                     // }
 
                 }
