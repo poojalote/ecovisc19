@@ -206,21 +206,44 @@ $this->load->view('_partials/header');
 															<span>Lab Data Entry</span>
 														</a>
 													</li>
-													<li class="">
-														<a href="#labEntryHandsonPanel" class="icon" id="labEntryTabHandson">
-															<i class="fas fa-notes-medical  mr-1 fa_class"></i>
-															<span>Lab Excel Data Entry</span>
-														</a>
-													</li>
+                                                    <li class="">
+                                                        <a href="#labEntryHandsonPanel" class="icon" id="labEntryTabHandson">
+                                                            <i class="fas fa-notes-medical  mr-1 fa_class"></i>
+                                                            <span>Lab Excel Data Entry</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a href="#pathologyCollectionPanel" class="icon" id="labPathologyCollection">
+                                                            <i class="fas fa-notes-medical  mr-1 fa_class"></i>
+                                                            <span>Pathology Collection</span>
+                                                        </a>
+                                                    </li>
 												</ul>
 											</nav>
 											<div class="content-wrap content-wrap2" id="lab_master_panel">
 												<section id="labEntryNormalPanel" class="content-current">
 													<div id="tabmasterTestPanel0"></div>
 												</section>
-												<section id="labEntryHandsonPanel">
-													<div id="tabentryhandsondata"></div>
-												</section>
+                                                <section id="labEntryHandsonPanel">
+                                                    <div id="tabentryhandsondata"></div>
+                                                </section>
+                                                <section id="pathologyCollectionPanel">
+                                                    <table class="table table-bordered table-stripped" id="pathologyTable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Patient Name</th>
+                                                                <th>Service Code</th>
+                                                                <th style="width: 165px;">Service Name</th>
+                                                                <th>Confirm Service Given</th>
+                                                                <th>Delete Service</th>
+                                                                <th>Date and Time</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </section>
 											</div>
 										</div>
 
@@ -307,10 +330,62 @@ $this->load->view('_partials/header');
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="deleteSampleModel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body py-0">
+                <div class="card my-0 shadow-none">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush" id="sampleList">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ListPathologyServicesModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <form id="PathologyFileUploadationForm2" method="post">
+                <div class="modal-header">
+                    <h5>Pathology Sample Collection</h5>
+                </div>
+                <div class="modal-body py-0">
+                    <div class="card my-0 shadow-none">
+                        <div class="card-body">
+
+                            <div id="PathologyServiceList"></div>
+                            <br>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="service_file">File Upload</label>
+                                    <input type="file" class="form-control" name="service_file[]" multiple=""
+                                           data-valid="required" data-msg="Select file" id="service_Path_file">
+                                    <span id="radiology_diles_error" style="color: red"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Main Content  end-->
 
 <?php $this->load->view('_partials/footer'); ?>
-<script type="text/javascript">
+<script>
     var base_url = "<?php echo base_url(); ?>";
     $(document).ready(function () {
         get_lableftsidebar();
@@ -358,13 +433,148 @@ $this->load->view('_partials/header');
 			// get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
 			showPanel1('Normal',143);
 		})
-		$("#labEntryTabHandson").on('click',function (event) {
-			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+        $("#labEntryTabHandson").on('click',function (event) {
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
 
-			showPanel1('handson',143);
+            showPanel1('handson',143);
 
-		})
+        })
+        $("#labPathologyCollection").on('click',function (event) {
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+
+            showPanel1('labPathologyCollection',143);
+
+        })
     });
+
+function getCollectionTable(category, tableID, patient_id = null) {
+    // var p_id = $('#p_id').val();
+    //console.log(""+tableID+"");
+    // let formData = new FormData();
+    // formData.set("category", category);
+    // // if(category=="RADIOLOGY"){
+    // let zone = $("#psampleAllPatient").val();
+    // if (zone !== null) {
+    //     formData.set("zone_id", zone);
+    // }
+  
+    let base_url = `<?php echo base_url(); ?>`;
+    app.dataTable('pathologyTable', {
+        url: base_url+"getLabCollectionTable",
+       // data:formData
+        dataSrc: ""
+    }, [
+            {
+                data: 0
+            },
+            {
+                data: 1
+            },
+            {
+                data: 2
+            },
+            {
+                data: 7
+            },
+            {
+                data: 3
+            },
+            {
+                data: 6
+            },
+            {
+                data: 1,
+                render: (d, t, r, m) => {
+                    // if (parseInt(r[10]) === 1) {
+                    //     let value = 1;
+                    //     return `<input type="checkbox" id="sampleCollectionCheckbox_${r[10]}"
+                    //         onclick="serviceOrderBillingInfo(${r[1]},${r[4]},${r[5]},${r[9]},${r[10]})">`;
+                    // } else {
+                        // let value = 0;
+                        return `<input type="checkbox"  id="sampleCollectionCheckbox_${r[3]}" 
+        onclick="serviceOrderBillingInfo('${r[1]}',${r[4]},${r[5]},${r[9]},${r[3]})">`;
+                    // }
+
+                }
+            },
+    ] )
+}
+
+
+function serviceOrderBillingInfo(service_id, patient_id,branch_id,ext_pid,sid) {
+    if ($("#sampleCollectionCheckbox_" + sid).prop('checked') == true) {
+        var confirm_service_given = 1;
+        $("#ListPathologyServicesModal").modal('show');
+        $("#service_Path_file").val('');
+        var forminputs = `
+        <input type="hidden" id="Pservice_id" name="Pservice_id" value="${service_id}">
+        <input type="hidden" id="Ppatient_id" name="Ppatient_id" value="${patient_id}">
+        <input type="hidden" id="Pbranch_id" name="Pbranch_id" value="${branch_id}">
+        <input type="hidden" id="Pext_pid" name="Pext_pid" value="${ext_pid}">
+        <input type="hidden" id="PSid" name="PSid" value="${sid}">
+        <input type="hidden" id="Pservice_no" name="Pservice_no" value="PATHOLOGY">
+        `;
+        // var arr = service_names.split(",");
+        // var arr1 = serviceIDS.split(",");
+
+        $("#PathologyServiceList").html("");
+        // var data1 = ``;
+        // $(arr).each(function (index, data) {
+
+        //     data1 += `<input type="checkbox" checked name="SampleCollectionPathService[]"  id="SampleCollectionService_${index}" value="${arr1[index]}" > ${data} <br>`;
+        // });
+        // $("#PathologyServiceList").html(data1);
+        $("#PathologyServiceList").append(forminputs);
+
+    }
+
+}
+
+
+$("#PathologyFileUploadationForm2").validate({
+    rules: {
+        service_file: {
+            required: true,
+        },
+
+    },
+    messages: {
+        service_file: {
+            required: "Please Select File"
+        },
+
+    },
+    errorElement: 'span',
+    submitHandler: function (form) {
+        var file = document.getElementById("service_Path_file");
+        if (file.files.length == 0) {
+            $("#radiology_diles_error").html("Please Select File");
+            // app.errorToast("No files selected");
+        } else {
+            var formData = new FormData(form);
+            formData.append('confirm_service_given', '1');
+            formData.append('sample_pickup', '1');
+            // console.log(formData);
+            SavePathologyProgress2(formData);
+        }
+
+    }
+});
+
+function SavePathologyProgress2(formData) {
+    let base_url = `<?php echo base_url(); ?>`;
+    app.request(base_url + "getserviceOrderBillingInfo2", formData).then(response => {
+        if (response.status === 200) {
+            app.successToast(response.body);
+            $(".modal").modal('hide');
+            getCollectionTable($("#Pcategory").val(), $("#Ptablename").val(), $("#psampleAllPatient").val());
+
+        } else {
+            app.errorToast(response.body);
+        }
+    }).catch(error => console.log(error));
+}
+
     function showPanel(id) {
         $(".a_menu").css({
             "text-decoration": 'none',
@@ -407,12 +617,19 @@ $this->load->view('_partials/header');
 			$("#lab_entry_top_nav li:nth-child(1)").addClass("tab-current")
 			$("#labEntryNormalPanel").addClass("content-current");
 		}
-		if(id=='handson')
-		{
-			$("#lab_entry_top_nav li:nth-child(2)").addClass("tab-current")
-			$("#labEntryHandsonPanel").addClass("content-current");
-			loadEditableTable(sectionId);
-		}
+        if(id=='handson')
+        {
+            $("#lab_entry_top_nav li:nth-child(2)").addClass("tab-current")
+            $("#labEntryHandsonPanel").addClass("content-current");
+            loadEditableTable(sectionId);
+        }
+        if(id=='labPathologyCollection')
+        {
+            $("#lab_entry_top_nav li:nth-child(3)").addClass("tab-current")
+            $("#pathologyCollectionPanel").addClass("content-current");
+            // loadEditableTable(sectionId);
+            getCollectionTable('PATHOLOGY', 'pathologyTable');
+        }
 	}
     function loadPackageData(section_id, divId) {
         if (section_id == 136) {
