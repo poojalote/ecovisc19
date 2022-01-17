@@ -426,6 +426,7 @@ $route["getNotConfirmReport"]="ServiceOrderController/getNotConfirmReport";
 $route["getRadiologyNotConfirmReport"]="ServiceOrderController/getRadiologyNotConfirmReport";
 
 
+// $route["pathologyCollection"]="ServiceOrderController/pathologyCollection";
 
 
 $route["getserviceOrderBillingInfo"]="ServiceOrderController/getserviceOrderBillingInfo";
@@ -921,3 +922,9 @@ $route['otp'] = 'LoginController/otp';
 $route['OtpValidation'] = 'LoginController/validateOtp';
 $route['updateMobile'] = 'LoginController/updateMobile';
 $route['ResendOtp'] = 'LoginController/ResendOtp';
+
+// pathology service order
+$route["pathologyCollection"]="ServiceOrderController/pathologyCollection";
+$route["getCollectionTable"]="ServiceOrderController/getCollectionTable";
+$route["getserviceOrderBillingInfo2"]="ServiceOrderController/getserviceOrderBillingInfo2";
+
