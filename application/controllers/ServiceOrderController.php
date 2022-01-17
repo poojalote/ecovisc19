@@ -45,6 +45,12 @@ class ServiceOrderController extends HexaController
         $this->load->view('ServiceOrder/pathologySampleCollection', array("title" => "pathologySampleCollection"));
     }
 
+
+    public function pathologyCollection()
+    {
+        $this->load->view('ServiceOrder/pathologyCollection', array("title" => "pathologySampleCollection"));
+    }
+
     public function getOrderServicesName()
     {
         $category = $this->input->post('category');
@@ -565,9 +571,7 @@ class ServiceOrderController extends HexaController
 
             if (!empty($dataArray1)) {
                 $billing_transaction = $this->session->user_session->billing_transaction;
-                if ($this->ServiceOrderModel->placeServiceOrder(
-                    $tableName, $dataArray1, $billing_transaction, $billing_array1)) {
-
+                if ($this->ServiceOrderModel->placeServiceOrder($tableName, $dataArray1, $billing_transaction, $billing_array1,$patient_id,$branch_id)) {
                     $response["status"] = 200;
                     $response["body"] = "Order Placed Successfully";
 
@@ -1132,6 +1136,90 @@ class ServiceOrderController extends HexaController
     }
 
 
+
+    public function getCollectionTable()
+    {
+        // print_r($this->session->user_session);exit();
+        $branch_id = $this->session->user_session->branch_id;
+        $company_id = $this->session->user_session->company_id;
+        $patient_table = $this->session->user_session->patient_table;
+        $hospital_bed_table = $this->session->user_session->hospital_bed_table;
+
+        // $category="RADIOLOGY";
+        $category = $this->input->post('category');
+        $patient_id = $this->input->post('patient_id');
+        $zone = $this->input->post('zone_id');
+
+        // print_r($zone);exit();
+        // 
+        $where = array('branch_id' => $branch_id,"confirm_service_given"=>0);
+        if ($patient_id != null && $patient_id != '') {
+            $where = array('branch_id' => $branch_id,  'patient_id' => $patient_id,"confirm_service_given"=>0);
+        }
+
+        // $tableName = "service_order so";
+        $tableName = "lab_patient_serviceorder so";
+
+        $order = array('id' => 'desc');
+        $column_order = array('service_id');
+        $column_search = array();
+        $select = array("so.*,(Select patient_name from patient_master where id = so.patient_id) as patient_name",
+            "concat('AA',lpad(id,6,'0')) as order_id",
+            "(select lmt.name from lab_master_test lmt where id=service_id) as service_name ");
+
+        $this->db->select($select)->where($where);
+
+        if (!is_null($zone)) {
+            if ((int)$zone != -1) {
+                $this->db->having('room_id', $zone);
+            }
+        }
+        $memData = $this->db->get($tableName)->result();
+         $results_last_query = $this->db->last_query();
+
+        if (count($memData) > 0) {
+            $tableRows = array();
+            foreach ($memData as $row) {
+                $today = date('Y-m-d H:i:s');
+
+                if (date('Y-m-d', strtotime($row->service_date)) <= $today) {
+                    $tableRows[] = array(
+                        $row->patient_name,
+                        $row->service_id,
+                        $row->service_name,
+                        $row->id,
+                        $row->patient_id,
+                        $row->branch_id,
+                        $row->service_date,
+                        $row->confirm_service_given,
+                        $row->service_type,
+                        $row->ext_pid, 
+                        $row->id, 
+                    );
+                }
+            }
+
+            $results = array(
+                "draw" => 1,
+                "recordsTotal" => count($memData),
+                "recordsFiltered" => count($memData),
+                "data" => $tableRows
+            );
+        } else {
+            $results = array(
+                "draw" => 1,
+                "recordsTotal" => count($memData),
+                "recordsFiltered" => count($memData),
+                "data" => $memData
+            );
+        }
+
+
+        $results['last_query'] = $results_last_query;
+        echo json_encode($results);
+    }
+
+
     public function getRadiologySampleCollectionTable()
     {
         // print_r("hiiii");exit();
@@ -1430,6 +1518,111 @@ class ServiceOrderController extends HexaController
         }
         echo json_encode($response);
     }
+
+
+    public function getserviceOrderBillingInfo2()
+    {
+        // if (!is_null($this->input->post('Pservice_id')) && !is_null($this->input->post("Ppatient_id")) && !is_null($this->input->post("Pbranch_id"))) {
+            $service_order_id = $this->input->post('Pservice_order_id');
+            $confirm_service_given = $this->input->post('confirm_service_given');
+            $patient_id = $this->input->post("Ppatient_id");
+            $Pservice_no = $this->input->post("Pservice_no");
+            $order_id = $this->input->post("Porder_id");
+            $serviceIDS = $this->input->post("PserviceIDS");
+            $SampleCollectionPathService = $this->input->post("SampleCollectionPathService");
+
+            $Pservice_id = $this->input->post('Pservice_id');
+            $Ppatient_id = $this->input->post('Ppatient_id');
+            $Pbranch_id = $this->input->post('Pbranch_id');
+            $Pext_pid = $this->input->post('Pext_pid');
+            $PSid = $this->input->post('PSid');
+
+            $billing_transaction = $this->session->user_session->billing_transaction;
+            $user_id = $this->session->user_session->id;
+            $branch_id = $this->session->user_session->branch_id;
+            $company_id = $this->session->user_session->company_id;
+            try {
+                $this->db->trans_start();
+                $tableName = "service_order";
+                if ($confirm_service_given == 1) {
+                    $data = array('service_provider' => $user_id,
+                        'service_given_date' => date('Y-m-d H:i:s'),
+                    "file_upload_status"=>1,
+                        'confirm_service_given' => $confirm_service_given);
+                } else {
+                    $data = array('service_provider' => NULL,
+                        'service_given_date' => NULL,
+                    "file_upload_status"=>1,
+                        'confirm_service_given' => $confirm_service_given);
+                }
+
+                $Ids = explode(',', $serviceIDS);
+                // $lpswhere = array("id"=>$PSid);
+                $lpsData = array(
+                    "confirm_service_given"=>"1"
+                );
+                
+                $this->db->where(array("id"=>$PSid));
+                if ($this->db->set(array("confirm_service_given"=>1))->update('lab_patient_serviceorder')) {
+                    // $this->db->trans_rollback();
+                    $response['status'] = 200;
+                    $response['body'] = "service confirm";
+                    $response['last_q'] = " - ".$Pservice_id." - ".$Ppatient_id." - ".$Pbranch_id." - ".$Pext_pid." - ".$PSid;
+                } else {
+                    // $this->db->trans_commit();
+                    $response['status'] = 201;
+                    $response['body'] = "service not confirm 0";
+                    $response['last_q'] = " - ".$Pservice_id." - ".$Ppatient_id." - ".$Pbranch_id." - ".$Pext_pid." - ".$PSid;
+                }
+
+                if($Pservice_no == "PATHOLOGY"){
+                    $name_input = "service_file";
+
+                    $upload_path = "uploads";
+                    $combination = 2;
+                    $result = $this->upload_file($upload_path, $name_input, $combination);
+                    // print_r($result);exit();
+                    if ($result->status) {
+                        if ($result->body[0] == "uploads/") {
+                            $input_data = "";
+                        } else {
+                            $input_data = $result->body;
+                        }
+
+                    } else {
+                        $input_data = "";
+                    }
+
+                    if ($input_data != "") {
+                        if (count($input_data) > 1) {
+                            $input_data = implode(',', $input_data);
+                        } else {
+                            $input_data = $input_data[0];
+                        }
+                    } else {
+                        $input_data = "";
+                    }
+                    $dataNewTable=array(
+                        "service_ids"=>$this->input->post('PserviceIDS'),
+                        "patient_id"=>$Pext_pid,
+                        "branch_id"=>$branch_id,
+                        "file_uploaded"=>$input_data,
+                        "created_by"=>$user_id,
+                        "lab_patient_ext_id"=>$Ppatient_id
+                    );
+                    $this->db->insert("pathology_service_transaction_table", $dataNewTable);
+                }
+
+                $this->db->trans_complete();
+            } catch (Exception $exception) {
+                $this->db->trans_rollback();
+                $response['status'] = 201;
+                $response['body'] = "service not confirm 1";
+            }
+
+        echo json_encode($response);
+    }
+
 
     public function deleteServiceOrder()
     {

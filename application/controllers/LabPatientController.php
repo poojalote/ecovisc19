@@ -1391,12 +1391,12 @@ from lab_test_data_entry where patient_id=" . $patient_id . " and branch_id =" .
     public function getLabDataEntryExcelData()
 	{
 		$header = $this->is_parameter(array("section_id","dep_id","haskey"));
-		print_r($header);exit();
+//		print_r($header);exit();
 		if ($header->status) {
 			$sql = "select master_id,table_name,operation,header,type,configuration,column_name from dynamic_form_table_master m join dynamic_form_column_master c
  on m.id=c.master_id where m.has_key ='#" . $header->param->haskey . "' and m.section_id = ".$header->param->section_id." and m.dep_id = ".$header->param->dep_id." and m.status=1 and c.status=1";
 			$resultObject = $this->db->query($sql)->result();
-			$response["query"] = $this->db->last_query();
+//			$response["query"] = $this->db->last_query();
 			if (count($resultObject) > 0) {
 				$response["status"] = 200;
 				$response["body"] = $resultObject;

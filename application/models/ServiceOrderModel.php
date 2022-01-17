@@ -122,8 +122,9 @@ class ServiceOrderModel extends MasterModel
 		return $result;
 	}
 
-	public function placeServiceOrder($tableName, $formData, $transactiontabel, $billingData, $patientId = null, $branch_id = null)
+	public function placeServiceOrder($tableName, $formData, $transactiontabel, $billingData, $patientId, $branch_id)
 	{
+		$userid = $this->session->user_session->id;
 		try {
 			$this->db->trans_start();
 
@@ -155,9 +156,9 @@ class ServiceOrderModel extends MasterModel
 				$lab_patient_table = $this->session->user_session->lab_patient_table;
 				if ($lab_patient_table != null) {
 					$labPatientId = "";
-					$getPatientDetails = $this->MasterModel->_select($patient_table, array('id' => $patientId), '*', true)->data;
+					$getPatientDetails = $this->ServiceOrderModel->_select($patient_table, array('id' => $patientId), '*', true)->data;
 					$aadhar = $getPatientDetails->adhar_no;
-					$checkifPatientExistsinLab = $this->MasterModel->_select($lab_patient_table, array('adhar_no' => $aadhar), '*', true);
+					$checkifPatientExistsinLab = $this->ServiceOrderModel->_select($lab_patient_table, array('adhar_no' => $aadhar), '*', true);
 					if ($checkifPatientExistsinLab->totalCount > 0) {
 						$LabPatientDetails = $checkifPatientExistsinLab->data;
 						$labPatientId = $LabPatientDetails->id;
@@ -189,33 +190,21 @@ class ServiceOrderModel extends MasterModel
 							'status' => $getPatientDetails->status,
 							'bed_id' => $getPatientDetails->bed_id,
 							'roomid' => $getPatientDetails->roomid,
-							'id' => $getPatientDetails->id,
 							'discharge_date' => $getPatientDetails->discharge_date,
-							'diagnostic' => $getPatientDetails->diagnostic,
-							'treated_hospital' => $getPatientDetails->treated_hospital,
-							'course_hospital' => $getPatientDetails->course_hospital,
-							'followup_date' => $getPatientDetails->followup_date,
 							'event' => $getPatientDetails->event,
 							'swab_report' => $getPatientDetails->swab_report,
-							'significant_event' => $getPatientDetails->significant_event,
-							'discharge_condition' => $getPatientDetails->discharge_condition,
-							'medication' => $getPatientDetails->medication,
-							'physical_activity' => $getPatientDetails->physical_activity,
-							'urgent_care' => $getPatientDetails->urgent_care,
 							'is_transfered' => $getPatientDetails->is_transfered,
-							'transfer_to' => $getPatientDetails->transfer_to,
-							'transfer_reason' => $getPatientDetails->transfer_reason,
 							'close_bill_date' => $getPatientDetails->close_bill_date,
 							'bill_close_user' => $getPatientDetails->bill_close_user,
 							'mark_as_discharge' => $getPatientDetails->mark_as_discharge,
 							'type' => $getPatientDetails->type,
-							'billing_ope' => $getPatientDetails->billing_ope,
+							'billing_open' => $getPatientDetails->billing_open,
 							'payer' => $getPatientDetails->payer,
 							'patient_company' => $getPatientDetails->patient_company,
 							'work_location' => $getPatientDetails->work_location,
 							'discount_percent' => $getPatientDetails->discount_percent,
 						);
-						$insertLabPatient = $this->MasterModel->_insert($lab_patient_table, $data);
+						$insertLabPatient = $this->ServiceOrderModel->_insert($lab_patient_table, $data);
 						$labPatientId = $insertLabPatient->inserted_id;
 					}
 					foreach ($formData as $index1 => $value) {
@@ -226,10 +215,10 @@ class ServiceOrderModel extends MasterModel
 							'service_id' => $value['service_id'],
 							'service_date' => $value['order_date'],
 							'service_status' => 1,
-							'created_by' => $value['created_by'],
-							'created_on' => $value['created_on'],
-							'user_id' => $value['user_id'],
-							'transaction_date' => $value['created_on'],
+							'created_by' => $userid,
+							'created_on' => date('Y-m-d H:i:s'),
+							'user_id' => $userid,
+							'transaction_date' => date('Y-m-d H:i:s'),
 							'service_rate' => $value['price'],
 							'status' => 1,
 							'service_type' => 1
