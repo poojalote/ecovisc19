@@ -348,13 +348,12 @@ class LoginController extends HexaController
 	{
 		$user_id = $this->session->user_session->id;
 		$branch_id = $this->session->user_session->branch_id;
-		$user_type = $this->session->user_session->roles;
-		$mobile = $this->input->post('mobile');
+		$mobile = $this->session->user_session->mobile_number;
 		$rnd_no = rand(1111, 9999);
 		$date = date("Y-m-d H:i:s", strtotime(date("Y-m-d 23:59:59")));
-		$updateOtp = $this->MasterModel->_update('otp_master', array('otp' => $rnd_no, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')), array('user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type));
+		$updateOtp = $this->MasterModel->_update('otp_master', array('otp' => $rnd_no, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')), array('user_id' => $user_id, 'branch_id' => $branch_id));
 		$this->load->model("SmsModel");
-		$this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
+//		$this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
 		if($updateOtp)
 		{
 			$response['status'] = 200;

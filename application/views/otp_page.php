@@ -87,6 +87,14 @@
 			border: 1px solid red;
 			width: 140px
 		}
+		.resendbtn{
+			color: #891635;
+			margin: 0;
+			font-size: 16px;
+			padding: 0;
+			margin-top: -6px;
+			font-weight: bolder;
+		}
 	</style>
 </head>
 
@@ -107,49 +115,13 @@
 				<div class="mb-0 mt-3" style="font-size: small;">
 					<span>For more details contact with Authorised Person</span><small> 9320675610 / 9920482779 </small>
 				</div>
-				<div class="mb-0 mt-3" style="font-size: small;"><span>To Update your Mobile Number <a href="#" onclick="openModal()">Click Here!</a></span>
+				<div class="mb-0 mt-3" style="font-size: small;">Didn't Recieve the OTP? <span id="resend">Resend in <span id="countdowntimer">120</span> seconds</span>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 </body>
-<div class="modal " data-backdrop="static" data-keyboard="false" id="MobileModal" tabindex="-1" role="dialog"
-	 aria-labelledby="exampleModalCenterTitle"
-	 aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content"
-			 style="width: 89% !important; border-radius: 15px !important; box-shadow: 0px 0px 10px 0px lightgrey;">
-			<div class="modal-header justify-content-center border-bottom-0">
-				<h5 class="modal-title text-center" id="exampleModalLongTitle">
-					<img src="<?php echo base_url(); ?>dist/img/credit/healthstart.jpeg" height="50"
-						 width="50" alt="logo"
-						 class="rounded-circle">
-				</h5>
-
-			</div>
-			<form method="post" data-form-valid="updateMobile"
-				  id="updateMobileNo" onsubmit="return false">
-				<div class="modal-body p-0">
-					<div class="text-center">
-						<p>Enter Mobile Number to Update</p>
-					</div>
-					<div class="form-group d-flex flex-column align-items-center">
-						<input type="text" name="mobile_number" id="mobile_number"
-							   data-valid="required|number|minlength=10|maxlength=12"
-							   data-msg="Enter Mobile Number|Only Numbers Allowed|Enter 10 digit number|Mobile number should be between 10 to 12 Characters"
-							   required autofocus class="form-control m-auto w-75 border border-secondary">
-					</div>
-				</div>
-				<div class="justify-content-center modal-footer">
-					<button type="submit" id="updateMobileNo" class="btn text-light"
-							style="border-radius: 25px; background-color: #891635;border: 1px solid #b02a37;">Continue
-					</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
 
 
 <?php $this->load->view('_partials/js'); ?>
@@ -196,7 +168,6 @@
 		OTPInput();
 	});
 
-	let userData = [];
 	function validateOtp() {
 		var first = $('#first').val();
 		var second = $('#second').val();
@@ -218,7 +189,36 @@
 				localStorage.setItem('device_id', device_details);
 
 				userData = res.data;
-				redirect();
+				if (parseInt(userData.roles) === 1) {
+					window.location.href = baseURL + "admin/dashboard";
+				} else {
+					if (parseInt(userData.roles) === 2) {
+						if (parseInt(userData.user_type) === 5) {
+							window.location.href = baseURL + "hospitalMedicine";
+							// window.location.href = baseURL + "pharmeasy";
+						} else {
+							if (parseInt(userData.default_access) !== 2) {
+								window.location.href = baseURL + "patient_info";
+							} else {
+								window.location.href = baseURL + "icubedManagement";
+							}
+						}
+					} else if (parseInt(userData.roles) === 5) {
+						window.location.href = baseURL + "security";
+					} else {
+						if (parseInt(userData.user_type) === 4) {
+							window.location.href = baseURL + "pharmeasy";
+							// window.location.href = baseURL + "hospitalMedicine";
+						} else if (parseInt(userData.user_type) === 6) {
+							window.location.href = baseURL + "view_pickup";
+							// window.location.href = baseURL + "pharmeasy";
+						} else if (parseInt(userData.user_type) === 12) {
+							window.location.href = baseURL + "labpatient_info";
+						} else {
+							window.location.href = baseURL + "view_radiologypickup";
+						}
+					}
+				}
 			} else {
 				$('#first').val("");
 				$('#second').val("");
@@ -230,75 +230,29 @@
 		}).catch(error => console.log(error));
 	}
 
-
-	function openModal() {
-		$('#MobileModal').modal('show');
-		app.formValidation();
-	}
-
-	function updateMobile() {
-		var mobile = $('#mobile_number').val();
-		var formdata = new FormData();
-		formdata.set('mobile_number', mobile);
-		app.request(baseURL + "updateMobile", formdata).then(success => {
-			if (success.status === 200) {
-				resendOtp(mobile);
-				$('#MobileModal').hide();
-				$('.modal-backdrop').remove();
-				$('#otp_message').html('');
-				$('#otp_message').append(`Please enter the One Time Password <br> sent on ${mobile} <br> to verify your Device`);
-				app.successToast('Mobile Number Updated');
-			} else {
-				app.errorToast(success.body);
-			}
-		}).catch(error => console.log(error));
-	}
-
-
-	function redirect() {
-		if (parseInt(userData.roles) === 1) {
-			window.location.href = baseURL + "admin/dashboard";
-		} else {
-			if (parseInt(userData.roles) === 2) {
-				if (parseInt(userData.user_type) === 5) {
-					window.location.href = baseURL + "hospitalMedicine";
-					// window.location.href = baseURL + "pharmeasy";
-				} else {
-					if (parseInt(userData.default_access) !== 2) {
-						window.location.href = baseURL + "patient_info";
-					} else {
-						window.location.href = baseURL + "icubedManagement";
-					}
-				}
-			} else if (parseInt(userData.roles) === 5) {
-				window.location.href = baseURL + "security";
-			} else {
-				if (parseInt(userData.user_type) === 4) {
-					window.location.href = baseURL + "pharmeasy";
-					// window.location.href = baseURL + "hospitalMedicine";
-				} else if (parseInt(userData.user_type) === 6) {
-					window.location.href = baseURL + "view_pickup";
-					// window.location.href = baseURL + "pharmeasy";
-				} else if (parseInt(userData.user_type) === 12) {
-					window.location.href = baseURL + "labpatient_info";
-				} else {
-					window.location.href = baseURL + "view_radiologypickup";
-				}
-			}
-		}
-	}
-
 	function resendOtp(mobile) {
 		var formdata = new FormData();
 		formdata.set('mobile',mobile);
 		app.request(baseURL + "ResendOtp", formdata).then(success => {
 			if (success.status === 200) {
+				app.successToast("Otp Sent Successfully");
 			}
 			else{
 				console.log('Error Sending Otp');
 			}
 		}).catch(error => console.log(error));
 	}
+
+	var timeleft = 120;
+	var downloadTimer = setInterval(function(){
+		timeleft--;
+		document.getElementById("countdowntimer").textContent = timeleft;
+		if(timeleft <= 0){
+			clearInterval(downloadTimer);
+			$('#resend').html('');
+			$('#resend').append(`<button class="btn btn-link text-decoration-none resendbtn" onclick="resendOtp()">Resend OTP</button>`);
+		}
+	},1000);
 
 
 </script>
