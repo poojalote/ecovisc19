@@ -228,6 +228,13 @@ if(is_null($permission_array)){
 			</a>
 			<?php }
 			?>
+			<a href="<?php echo base_url(); ?>pathologyCollection"
+			   style="<?php echo $this->uri->segment(1) == 'pathologyCollection' ? 'color: white;text-decoration: none;' : 'color: black;text-decoration: none;'; ?>">
+				<li class="menu-header mt-2 <?php echo $this->uri->segment(1) == 'pathologyCollection' ? 'menu-header_section active' : 'menu-header_section1'; ?>"
+					style="">
+					Pathology Collection
+				</li>
+			</a>
             
 <!--			--><?php //if($default_access == 2){ ?>
 				<!--<a href="<?php /*echo base_url(); */?>icubedManagement"
