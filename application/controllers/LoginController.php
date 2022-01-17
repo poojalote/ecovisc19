@@ -330,9 +330,11 @@ class LoginController extends HexaController
             $date = date("Y-m-d H:i:s", strtotime(date("Y-m-d 23:59:59")));
             $checkOtpExists = $this->MasterModel->_select('otp_master', array('user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type), '*', true)->totalCount;
             if ($checkOtpExists > 0) {
+
                 $updateOtp = $this->MasterModel->_update('otp_master', array('otp' => $rnd_no, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')), array('user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type));
             } else {
                 $insertOtp = $this->MasterModel->_insert('otp_master', array('otp' => $rnd_no, 'user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')));
+
             }
             $this->load->model("SmsModel");
             $this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
