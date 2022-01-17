@@ -920,3 +920,4 @@ $route["saveUsersMgmtFormData"]="AccessManagementController/saveUsersMgmtFormDat
 $route['otp'] = 'LoginController/otp';
 $route['OtpValidation'] = 'LoginController/validateOtp';
 $route['updateMobile'] = 'LoginController/updateMobile';
+$route['ResendOtp'] = 'LoginController/ResendOtp';

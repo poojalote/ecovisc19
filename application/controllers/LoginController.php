@@ -330,9 +330,9 @@ class LoginController extends HexaController
             $date = date("Y-m-d H:i:s", strtotime(date("Y-m-d 23:59:59")));
             $checkOtpExists = $this->MasterModel->_select('otp_master', array('user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type), '*', true)->totalCount;
             if ($checkOtpExists > 0) {
-                $updateOtp = $this->MasterModel->_update('otp_master', array('otp' => $rnd_no, 'expiry_on' => $date), array('user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type));
+                $updateOtp = $this->MasterModel->_update('otp_master', array('otp' => $rnd_no, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')), array('user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type));
             } else {
-                $insertOtp = $this->MasterModel->_insert('otp_master', array('otp' => $rnd_no, 'user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type, 'expiry_on' => $date));
+                $insertOtp = $this->MasterModel->_insert('otp_master', array('otp' => $rnd_no, 'user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')));
             }
             $this->load->model("SmsModel");
             $this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
@@ -342,6 +342,30 @@ class LoginController extends HexaController
         $response['user_id'] = $user_id;
         $this->load->view('otp_page', $response);
     }
+
+
+    public function ResendOtp()
+	{
+		$user_id = $this->session->user_session->id;
+		$branch_id = $this->session->user_session->branch_id;
+		$user_type = $this->session->user_session->roles;
+		$mobile = $this->input->post('mobile');
+		$rnd_no = rand(1111, 9999);
+		$date = date("Y-m-d H:i:s", strtotime(date("Y-m-d 23:59:59")));
+		$updateOtp = $this->MasterModel->_update('otp_master', array('otp' => $rnd_no, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')), array('user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type));
+		$this->load->model("SmsModel");
+		$this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
+		if($updateOtp)
+		{
+			$response['status'] = 200;
+			$response['data'] = 'Otp sent Successfully';
+		}
+		else{
+			$response['status'] = 201;
+			$response['data'] = 'Otp Not Updated';
+		}
+		echo json_encode($response);
+	}
 
     function generate_password( $length = 8 ) {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
