@@ -1,4 +1,4 @@
-let role,company_id,branch_id;
+let role, company_id, branch_id;
 
 $(document).ready(function () {
 
@@ -6,22 +6,22 @@ $(document).ready(function () {
 	get_permission_div();
 	get_all_profile_data();
 	get_user_types();
-	 role = $("#role").val();
-	 company_id = $("#uAllCompanies").val();
-	 branch_id = $("#uAllBranches").val();
+	role = $("#role").val();
+	company_id = $("#uAllCompanies").val();
+	branch_id = $("#uAllBranches").val();
 
 	$('#fire-modal-users').on('show.bs.modal', function (e) {
 		$('#uploadUsers').trigger('reset');
 		$('#uploadUsers1').trigger('reset');
-		$( "#permission-tab2" ).show();
-		$( "#permission-tab1" ).show();
-			//$( "#normalUser" ).show();
-			//$( "#otheruser" ).show();
-			$('#normalUser').addClass("show active");  
-			
-			$('#otheruser').removeClass("show active");  
-			$('#permission-tab2').removeClass("active");  
-			$('#permission-tab1').addClass("active");  
+		$("#permission-tab2").show();
+		$("#permission-tab1").show();
+		//$( "#normalUser" ).show();
+		//$( "#otheruser" ).show();
+		$('#normalUser').addClass("show active");
+
+		$('#otheruser').removeClass("show active");
+		$('#permission-tab2').removeClass("active");
+		$('#permission-tab1').addClass("active");
 		$('#uploadUsers')[0].reset();
 		$('#uploadUsers1')[0].reset();
 		$('#uAllCompanies').val('');
@@ -187,9 +187,9 @@ function saveUser(form) {
 		if (result.status === 200) {
 
 			app.successToast(result.data);
-			if(role==2){
+			if (role == 2) {
 				getUsersTableData(1, company_id, branch_id);
-			}else{
+			} else {
 				getUsersTableData();
 			}
 
@@ -201,6 +201,7 @@ function saveUser(form) {
 	})
 
 }
+
 function saveUser1(form) {
 	$.LoadingOverlay("show");
 	let formData = new FormData(form);
@@ -210,9 +211,9 @@ function saveUser1(form) {
 		if (result.status === 200) {
 
 			app.successToast(result.data);
-			if(role==2){
+			if (role == 2) {
 				getUsersTableData(1, company_id, branch_id);
-			}else{
+			} else {
 				getUsersTableData();
 			}
 
@@ -234,94 +235,102 @@ function get_usersDataById(userId) {
 		if (result.status === 200) {
 			var user_data = result.body;
 			var data = result.data;
-			
-			if(data['oth']==1){
-				$( "#permission-tab1" ).hide();
-			//	$( "#normalUser" ).hide();
-				$( "#permission-tab2" ).show();
-				$('#otheruser').addClass("show active");   
-				$('#normalUser').removeClass("show active");   
+
+			if (data['oth'] == 1) {
+				$("#permission-tab1").hide();
+				//	$( "#normalUser" ).hide();
+				$("#permission-tab2").show();
+				$('#otheruser').addClass("show active");
+				$('#normalUser').removeClass("show active");
 				if (user_data[0]['id'] != null && user_data[0]['id'] != '') {
-				$("#forward_user1").val(user_data[0]['id']);
+					$("#forward_user1").val(user_data[0]['id']);
 				}
 				if (user_data[0]['name'] != null && user_data[0]['name'] != '') {
-				$("#user_name1").val(user_data[0]['name']);
+					$("#user_name1").val(user_data[0]['name']);
 				}
+				if (user_data[0]['mobile_number'] != null && user_data[0]['mobile_number'] != '') {
+					$("#user_contact").val(user_data[0]['mobile_number']);
+				}
+
 				if (data['user_type'] != null && data['user_type'] != '') {
-				let comp = data['user_type'];
-				console.log(comp);
-				$("#user_type1 option[value='" + comp + "']").prop("selected", true);
+					let comp = data['user_type'];
+					console.log(comp);
+					$("#user_type1 option[value='" + comp + "']").prop("selected", true);
 				}
 				if (user_data[0]['company_id'] != null && user_data[0]['company_id'] != '') {
-				let comp = user_data[0]['company_id'];
+					let comp = user_data[0]['company_id'];
 
-				$("#uAllCompanies1 option[value='" + comp + "']").prop("selected", true);
-				getCompanyBranches(comp).then(response => {
-					let branch = user_data[0]['branch_id'];
-					$("#uAllBranches1 option[value='" + branch + "']").prop("selected", true);
-					if (user_data[0]['udepartment'] != null && user_data[0]['udepartment'] != '') {
+					$("#uAllCompanies1 option[value='" + comp + "']").prop("selected", true);
+					getCompanyBranches(comp).then(response => {
+						let branch = user_data[0]['branch_id'];
+						$("#uAllBranches1 option[value='" + branch + "']").prop("selected", true);
+						if (user_data[0]['udepartment'] != null && user_data[0]['udepartment'] != '') {
 
-						let permission = user_data[0]['udepartment'].split(",");
-						permission.map(dep => {
-							let dep1 = dep.split("|||");
-							$(`#defaultCheck${dep1[0]}`).attr("checked", "checked");
-						});
+							let permission = user_data[0]['udepartment'].split(",");
+							permission.map(dep => {
+								let dep1 = dep.split("|||");
+								$(`#defaultCheck${dep1[0]}`).attr("checked", "checked");
+							});
 
-					}
-				})
-			}
-			if (user_data[0]['user_name'] != null && user_data[0]['user_name'] != '') {
-				$("#user_email1").val(user_data[0]['user_name']);
+						}
+					})
+				}
+				if (user_data[0]['user_name'] != null && user_data[0]['user_name'] != '') {
+					$("#user_email1").val(user_data[0]['user_name']);
 
-			}
-			if (user_data[0]['password'] != null && user_data[0]['password'] != '') {
-				$("#password1").val(user_data[0]['password']);
+				}
+				if (user_data[0]['password'] != null && user_data[0]['password'] != '') {
+					$("#password1").val(user_data[0]['password']);
 
-			}
-			}else{
-				$( "#permission-tab2" ).hide();
-				$( "#permission-tab1" ).show();;
-				$('#normalUser').addClass("show active"); 
-				$('#otheruser').removeClass("show active"); 
+				}
+			} else {
+				$("#permission-tab2").hide();
+				$("#permission-tab1").show();
+				$('#normalUser').addClass("show active");
+				$('#otheruser').removeClass("show active");
 				if (user_data[0]['id'] != null && user_data[0]['id'] != '') {
-				$("#forward_user").val(user_data[0]['id']);
-			}
-			if (user_data[0]['name'] != null && user_data[0]['name'] != '') {
-				$("#user_name").val(user_data[0]['name']);
-			}
-			if (user_data[0]['user_type'] != null && user_data[0]['user_type'] != '') {
-				let comp = user_data[0]['user_type'];
-				$("#user_type option[value='" + comp + "']").prop("selected", true);
-			}
-			if (user_data[0]['company_id'] != null && user_data[0]['company_id'] != '') {
-				let comp = user_data[0]['company_id'];
+					$("#forward_user").val(user_data[0]['id']);
+				}
+				if (user_data[0]['name'] != null && user_data[0]['name'] != '') {
+					$("#user_name").val(user_data[0]['name']);
+				}
+				if (user_data[0]['mobile_number'] != null && user_data[0]['mobile_number'] != '') {
+					$("#user_contact").val(user_data[0]['mobile_number']);
+				}
 
-				$("#uAllCompanies option[value='" + comp + "']").prop("selected", true);
-				getCompanyBranches(comp).then(response => {
-					let branch = user_data[0]['branch_id'];
-					$("#uAllBranches option[value='" + branch + "']").prop("selected", true);
-					if (user_data[0]['udepartment'] != null && user_data[0]['udepartment'] != '') {
+				if (user_data[0]['user_type'] != null && user_data[0]['user_type'] != '') {
+					let comp = user_data[0]['user_type'];
+					$("#user_type option[value='" + comp + "']").prop("selected", true);
+				}
+				if (user_data[0]['company_id'] != null && user_data[0]['company_id'] != '') {
+					let comp = user_data[0]['company_id'];
 
-						let permission = user_data[0]['udepartment'].split(",");
-						permission.map(dep => {
-							let dep1 = dep.split("|||");
-							$(`#defaultCheck${dep1[0]}`).attr("checked", "checked");
-						});
+					$("#uAllCompanies option[value='" + comp + "']").prop("selected", true);
+					getCompanyBranches(comp).then(response => {
+						let branch = user_data[0]['branch_id'];
+						$("#uAllBranches option[value='" + branch + "']").prop("selected", true);
+						if (user_data[0]['udepartment'] != null && user_data[0]['udepartment'] != '') {
 
-					}
-				})
-			}
-			if (user_data[0]['user_name'] != null && user_data[0]['user_name'] != '') {
-				$("#user_email").val(user_data[0]['user_name']);
+							let permission = user_data[0]['udepartment'].split(",");
+							permission.map(dep => {
+								let dep1 = dep.split("|||");
+								$(`#defaultCheck${dep1[0]}`).attr("checked", "checked");
+							});
 
-			}
-			if (user_data[0]['password'] != null && user_data[0]['password'] != '') {
-				$("#password").val(user_data[0]['password']);
+						}
+					})
+				}
+				if (user_data[0]['user_name'] != null && user_data[0]['user_name'] != '') {
+					$("#user_email").val(user_data[0]['user_name']);
 
-			}
+				}
+				if (user_data[0]['password'] != null && user_data[0]['password'] != '') {
+					$("#password").val(user_data[0]['password']);
+
+				}
 			}
 			console.log(user_data);
-			
+
 			// if (user_data[0]['alldepartments'] != null && user_data[0]['alldepartments'] != '') {
 			// 	$("#roleDepartment").empty();
 			// 	var str = user_data[0]['alldepartments'];
@@ -440,7 +449,6 @@ function save_permission() {
 }
 
 function save_profile() {
-	$.LoadingOverlay("show");
 	var form_data = document.getElementById('profile_form');
 	var Form_data = new FormData(form_data);
 	$.ajax({
@@ -460,18 +468,16 @@ function save_profile() {
 				$('#profile_form').trigger("reset");
 				get_permission_div();
 				$("#profile_management").modal('hide');
-				$.LoadingOverlay("hide");
+
 
 				//		loadPrescription();
 			} else {
 				app.errorToast(result.body);
-				$.LoadingOverlay("hide");
 			}
 		},
 		error: function (error) {
 			// $.LoadingOverlay("hide");
 			app.errorToast("something went wrong please try again");
-			$.LoadingOverlay("hide");
 		}
 	});
 }
@@ -546,21 +552,21 @@ function get_profile_edit(id) {
 	formData.set("id", id);
 	app.request(baseURL + "get_profile_edit", formData)
 		.then(result => {
-		if (result.status === 200) {
-			var data = result.data;
-			$("#all_permission_div").html(data);
-			$("#profile_name").val(result.name);
-			let permission = result.roles;
-			permission.map(dep => {
-				if(dep[1] === 1){
-					$(`#defaultCheck${dep[0]}`).attr("checked", "checked");
-				}else{
-					$(`#defaultCheck${dep[0]}`).attr("checked", false);
-				}
+			if (result.status === 200) {
+				var data = result.data;
+				$("#all_permission_div").html(data);
+				$("#profile_name").val(result.name);
+				let permission = result.roles;
+				permission.map(dep => {
+					if (dep[1] === 1) {
+						$(`#defaultCheck${dep[0]}`).attr("checked", "checked");
+					} else {
+						$(`#defaultCheck${dep[0]}`).attr("checked", false);
+					}
 
-			});
-		}
-	}).catch(error => {
+				});
+			}
+		}).catch(error => {
 
 	})
 }
