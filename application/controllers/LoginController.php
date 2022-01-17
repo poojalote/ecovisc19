@@ -322,7 +322,7 @@ class LoginController extends HexaController
         $checkTodaysOtp = $this->MasterModel->_rawQuery('SELECT otp FROM otp_master where expiry_on >= "' . $current_date . '" and user_id = "' . $user_id . '" and branch_id = "' . $branch_id . '" and user_type = "' . $user_type . '" order by id desc limit 1')->data;
         if ($checkTodaysOtp != null && !empty($checkTodaysOtp)) {
             $LastOtp = $checkTodaysOtp[0]->otp;
-            $message = "Please Use Previously Generated <br> OTP to Login ";
+            $message = "Please Use Previously sent OTP <br> on ".$mobile." to Login ";
 //            $this->MasterModel->sendSMS($mobile,array('otp'=>$LastOtp),'1107162869107284120','3');
         } else {
 
