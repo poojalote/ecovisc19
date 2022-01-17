@@ -180,39 +180,39 @@ function getCollectionTable(category, tableID, patient_id = null) {
         url: baseURL + "getCollectionTable",
        // data:formData
     }, [
-       {
-                    data: 0
-                },
-                {
-                    data: 1
-                },
-                {
-                    data: 2
-                },
-                {
-                    data: 7
-                },
-                {
-                    data: 3
-                },
-                {
-                    data: 6
-                },
-                {
-                    data: 1,
-                    render: (d, t, r, m) => {
-                        // if (parseInt(r[10]) === 1) {
-                        //     let value = 1;
-                        //     return `<input type="checkbox" id="sampleCollectionCheckbox_${r[10]}"
-                        //         onclick="serviceOrderBillingInfo(${r[1]},${r[4]},${r[5]},${r[9]},${r[10]})">`;
-                        // } else {
-                            // let value = 0;
-                            return `<input type="checkbox"  id="sampleCollectionCheckbox_${r[10]}" 
-            onclick="serviceOrderBillingInfo('${r[1]}',${r[4]},${r[5]},${r[9]},${r[10]})">`;
-                        // }
+            {
+                data: 0
+            },
+            {
+                data: 1
+            },
+            {
+                data: 2
+            },
+            {
+                data: 7
+            },
+            {
+                data: 3
+            },
+            {
+                data: 6
+            },
+            {
+                data: 1,
+                render: (d, t, r, m) => {
+                    // if (parseInt(r[10]) === 1) {
+                    //     let value = 1;
+                    //     return `<input type="checkbox" id="sampleCollectionCheckbox_${r[10]}"
+                    //         onclick="serviceOrderBillingInfo(${r[1]},${r[4]},${r[5]},${r[9]},${r[10]})">`;
+                    // } else {
+                        // let value = 0;
+                        return `<input type="checkbox"  id="sampleCollectionCheckbox_${r[10]}" 
+        onclick="serviceOrderBillingInfo('${r[1]}',${r[4]},${r[5]},${r[9]},${r[10]})">`;
+                    // }
 
-                    }
-                },
+                }
+            },
     ] )
 }
 

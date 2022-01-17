@@ -535,7 +535,7 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
     <script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/module/serviceOrder/serviceOrder.js?version=<?= time(); ?>"></script>
 <?php } ?>
-<?php if ($this->uri->segment(1) == "pathologySampleCollection") { ?>
+<?php if ($this->uri->segment(1) == "pathologySampleCollection" || $this->uri->segment(1) == "pathologyCollection") { ?>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
