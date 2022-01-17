@@ -19,23 +19,25 @@ class FormController extends HexaController
 	function index($id = 0)
 	{
 		$dep_id = base64_decode(urldecode($id));
-		
+
 //		$dep_id=1;
 		//$data['id']=$dep_id;
 		$this->load->view("admin/templates/section_form", array("title" => "Forms", "department_id" => $dep_id));
 	}
-    function section_individual($id = 0)
-    {
-        $dep_id = base64_decode(urldecode($id));
+
+	function section_individual($id = 0)
+	{
+		$dep_id = base64_decode(urldecode($id));
 
 //		$dep_id=1;
-        //$data['id']=$dep_id;
-        $this->load->view("admin/templates/seaction_from_individual", array("title" => "Forms", "department_id" => $dep_id));
-    }
+		//$data['id']=$dep_id;
+		$this->load->view("admin/templates/seaction_from_individual", array("title" => "Forms", "department_id" => $dep_id));
+	}
+
 	function index_personal($id = 0)
 	{
 		$dep_id = base64_decode(urldecode($id));
-		$dep_id=$id;
+		$dep_id = $id;
 //		$dep_id=1;
 		//$data['id']=$dep_id;
 		$this->load->view("admin/templates/section_form_personal", array("title" => "Forms", "department_id" => $dep_id));
@@ -57,10 +59,10 @@ class FormController extends HexaController
 	{
 		$department_id = $this->input->post('department_id');
 		$patient_id = $this->input->post('patient_id');
-		$branch_id=$this->session->user_session->branch_id;
-		$get_DataDoctor=$this->db->query("Select emergency_contact_doctor from branch_master where id=".$branch_id);
-		if($this->db->affected_rows() > 0){
-			$emergency_contact_doctor=$get_DataDoctor->row()->emergency_contact_doctor;
+		$branch_id = $this->session->user_session->branch_id;
+		$get_DataDoctor = $this->db->query("Select emergency_contact_doctor from branch_master where id=" . $branch_id);
+		if ($this->db->affected_rows() > 0) {
+			$emergency_contact_doctor = $get_DataDoctor->row()->emergency_contact_doctor;
 		}
 		$query = $this->Formmodel->get_form($department_id);
 		$data = "";
@@ -91,7 +93,7 @@ class FormController extends HexaController
 				$tb_history = $value->tb_history;
 				$template_name = $value->template_name;
 				if ($patientResultObject == null) {
-					$patientResultObject = $this->Formmodel->getPatientDetails($value->tb_name, array('patient_id' => $patient_id,'branch_id'=>$branch_id));
+					$patientResultObject = $this->Formmodel->getPatientDetails($value->tb_name, array('patient_id' => $patient_id, 'branch_id' => $branch_id));
 					if ($patientResultObject->totalCount > 0) {
 						$patientObject = (array)$patientResultObject->data;
 
@@ -132,8 +134,8 @@ class FormController extends HexaController
 										   value="' . $patient_id . '">
 							
 							';
-						$weightfield = "";
-						$heightfield = "";
+				$weightfield = "";
+				$heightfield = "";
 				foreach ($querysec as $value1) {
 					$patientValue = "";
 					if ($patientObject != null) {
@@ -143,32 +145,31 @@ class FormController extends HexaController
 							}
 						}
 
-						
-						
+
 						if ($value1->name == 'Weight (Kg)') {
-						
+
 							$weightfield = $value1->field_name;
-							
+
 						}
 						if ($value1->name == 'Height (cm)') {
 							$heightfield = $value1->field_name;
 						}
-						
-						$w_val="";
+
+						$w_val = "";
 						if (array_key_exists($weightfield, $patientObject)) {
 							$w_val = $patientObject[$weightfield];
 						}
-						$h_val="";
+						$h_val = "";
 						if (array_key_exists($heightfield, $patientObject)) {
-							if(is_numeric($patientObject[$heightfield])){
+							if (is_numeric($patientObject[$heightfield])) {
 								$h_val = ($patientObject[$heightfield]) / 100;
 							}
 						}
-					
+
 						//echo $patientValue = round(($w_val / ($h_val * $h_val)), 2);
-					
+
 						if ($value1->name == 'BMI' && $h_val != '' && $w_val != '' && is_numeric($h_val) && is_numeric($w_val)) {
-							
+
 							$patientValue = round(($w_val / ($h_val * $h_val)), 2);
 						}
 
@@ -181,25 +182,25 @@ class FormController extends HexaController
 
 					if ($value1->ans_type == 1) {
 						if ($value1->name == 'user id') {
-							$disabled ="readonly";
-							$patientValue= $this->session->user_session->id;
+							$disabled = "readonly";
+							$patientValue = $this->session->user_session->id;
 
-							$type="hidden";
+							$type = "hidden";
 							$lable = "d-none";
-						}else{
-							$disabled="";
-							$type="text";
+						} else {
+							$disabled = "";
+							$type = "text";
 							$lable = "";
 
 						}
-						if((int)$value1->id == 179){
-							$patientValue=$emergency_contact_doctor;
+						if ((int)$value1->id == 179) {
+							$patientValue = $emergency_contact_doctor;
 						}
 						$field = '
-					<label class="col-sm-3 col-form-label font-weight-bold '.$lable.'"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
+					<label class="col-sm-3 col-form-label font-weight-bold ' . $lable . '"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9">
 
-					<input type="'.$type.'" class="form-control" '.$disabled.' id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' /></div>';
+					<input type="' . $type . '" class="form-control" ' . $disabled . ' id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' /></div>';
 
 
 					} else if ($value1->ans_type == 10) {
@@ -225,15 +226,15 @@ class FormController extends HexaController
 //   var date=output+\"T\"+time;
    document.getElementById("form_field' . $value1->id . '").min = app.getDate(output);
 					</script>';
-						if((int)$value1->id == 83 || (int)$value1->id == 17|| (int)$value1->id == 258|| (int)$value1->id == 364){
+						if ((int)$value1->id == 83 || (int)$value1->id == 17 || (int)$value1->id == 258 || (int)$value1->id == 364) {
 							$isDate = "";
 						}
 						$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9 d-flex">
 					<input type="datetime-local" class="form-control" id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
-					'.$isDate.'
-					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\','.$value1->ans_type.')">X</button>
+					' . $isDate . '
+					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 					</div>';
 					} else if ($value1->ans_type == 2) {
 						$field = '
@@ -254,7 +255,7 @@ class FormController extends HexaController
 								}
 							}
 
-							$option .= '<option value="' . $option_value->id . '" ' . $selected . '>' .ucfirst($option_value->name) . '</option>';
+							$option .= '<option value="' . $option_value->id . '" ' . $selected . '>' . ucfirst($option_value->name) . '</option>';
 						}
 						$check_dependancy = $this->Formmodel->check_dependancy($value1->name, $section_id);
 
@@ -273,13 +274,13 @@ class FormController extends HexaController
 					<div class="col-sm-9 d-flex" >
 					<select class="custom-select" id="form_field' . $value1->id . '"  onchange="' . $onchange . '" name="form_field' . $value1->id . '" ' . $validation . '>
 							' . $option . '
-									</select><button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\','.$value1->ans_type.')">X</button>
+									</select><button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 									<script>$("#form_field' . $value1->id . '").select2()</script></div>';
 					} else if ($value1->ans_type == 4) {
 						$get_option = $this->Formmodel->get_all_options($value1->id);
 						$option = "<option value='' selected disabled></option>";
 						$selectedOptions = explode(",", $patientValue);
-						if(is_array($get_option)){
+						if (is_array($get_option)) {
 							foreach ($get_option as $option_value) {
 								$selected = "";
 								foreach ($selectedOptions as $o_value) {
@@ -521,14 +522,13 @@ class FormController extends HexaController
 		$department_id = $this->input->post('department_id');
 		$patient_id = $this->input->post('patient_id');
 		$form_section_id = $this->input->post('section_id');
-		$is_history_on=0;
+		$is_history_on = 0;
 //		$company_id = $this->session->user_session->company_id;
-		$getSection = $this->Formmodel->_select('section_master',array('id'=>$form_section_id),array('is_history'));
-		if($getSection->totalCount>0)
-		{
-			$is_history_on=$getSection->data->is_history;
+		$getSection = $this->Formmodel->_select('section_master', array('id' => $form_section_id), array('is_history'));
+		if ($getSection->totalCount > 0) {
+			$is_history_on = $getSection->data->is_history;
 		}
-		$get_data = $this->Formmodel->get_all_data($department_id,$form_section_id);
+		$get_data = $this->Formmodel->get_all_data($department_id, $form_section_id);
 		if ($get_data != false) {
 			$data_to_insert = array();
 			foreach ($get_data as $value) {
@@ -550,7 +550,7 @@ class FormController extends HexaController
 					} else {
 						$input_data = "";
 					}
-					
+
 				} else if ($ans_type == 4) {
 					if (is_array($this->input->post($name_input))) {
 						$input_data = implode(',', $this->input->post($name_input));
@@ -564,7 +564,7 @@ class FormController extends HexaController
 
 				if ($input_data != "") {
 					$data_to_insert[$field_name] = $input_data;
-				}else{
+				} else {
 					$data_to_insert[$field_name] = "";
 				}
 			}
@@ -608,32 +608,32 @@ class FormController extends HexaController
 										//echo $this->input->post($transDate);
 										if ((int)$is_trans == 1) {
 											if (!is_null($this->input->post($transDate))) {
-											//	echo 1;
+												//	echo 1;
 												$section_array["trans_date"] = $this->input->post($transDate);
 												$data_to_insert["trans_date"] = $this->input->post($transDate);
-												$response['trans1'][]=$this->input->post($transDate);
-											}else{
-											//	echo 2;
+												$response['trans1'][] = $this->input->post($transDate);
+											} else {
+												//	echo 2;
 												$section_array["trans_date"] = date('Y-m-d H:i:s');
 												$data_to_insert["trans_date"] = date('Y-m-d H:i:s');
-												$response['trans1'][]=date('Y-m-d H:i:s');;
+												$response['trans1'][] = date('Y-m-d H:i:s');;
 											}
 
 										} else {
 											if (is_null($this->input->post($transDate))) {
-											//	echo 3;
+												//	echo 3;
 												$section_array["trans_date"] = date('Y-m-d H:i:s');
 												$data_to_insert["trans_date"] = date('Y-m-d H:i:s');
-												$response['trans0'][]=date('Y-m-d H:i:s');
+												$response['trans0'][] = date('Y-m-d H:i:s');
 											} else {
 												//echo 4;
 												$section_array["trans_date"] = $this->input->post($transDate);
 												$data_to_insert["trans_date"] = $this->input->post($transDate);
-												$response['trans0'][]=$this->input->post($transDate);;
+												$response['trans0'][] = $this->input->post($transDate);;
 											}
 
 										}
-										
+
 										$this->db->insert($tb_history, $data_to_insert);
 									}
 								}
@@ -644,25 +644,25 @@ class FormController extends HexaController
 				if ($this->db->trans_status() === FALSE) {
 					$this->db->trans_rollback();
 					$response['code'] = 201;
-					$response['section_id']=$form_section_id;
-					$response['is_history']=$is_history_on;
+					$response['section_id'] = $form_section_id;
+					$response['is_history'] = $is_history_on;
 				} else {
 					$this->db->trans_commit();
 					$response['code'] = 200;
-					$response['section_id']=$form_section_id;
-					$response['is_history']=$is_history_on;
+					$response['section_id'] = $form_section_id;
+					$response['is_history'] = $is_history_on;
 				}
 				$this->db->trans_complete();
 			} catch (Exception $exception) {
 				$this->db->trans_rollback();
 				$response['code'] = 201;
-				$response['section_id']=$form_section_id;
-				$response['is_history']=$is_history_on;
+				$response['section_id'] = $form_section_id;
+				$response['is_history'] = $is_history_on;
 			}
 		} else {
 			$response['code'] = 201;
-			$response['section_id']=$form_section_id;
-			$response['is_history']=$is_history_on;
+			$response['section_id'] = $form_section_id;
+			$response['is_history'] = $is_history_on;
 		}
 		echo json_encode($response);
 	}
@@ -700,11 +700,11 @@ class FormController extends HexaController
 					array_push($labelArray, $column->name);
 				}
 			}
-			$totalColumn=count($resultTemplateObject->data );
+			$totalColumn = count($resultTemplateObject->data);
 			$response["transColumnIndex"] = $totalColumn;
 			$data .= "<th>Date</th><th>Action</th>";
 			$data .= "</thead><tbody>";
-			$resultObject = $this->Formmodel->history_data($table_name, array("patient_id" => $patient_id,"branch_id"=>$branch_id));
+			$resultObject = $this->Formmodel->history_data($table_name, array("patient_id" => $patient_id, "branch_id" => $branch_id));
 			$response["query"] = $this->db->last_query();
 			// print_r($resultObject);exit();
 			if (count($resultObject) > 0) {
@@ -749,18 +749,18 @@ class FormController extends HexaController
 							$td .= "<td></td>";
 						}
 					}
-					$edit_btn='';
-					$permission_array=$this->session->user_permission;
-						if (in_array("history_update", $permission_array)){ 
-						$edit_btn="<button class='btn btn-primary btn-sm' data-toggle='modal' data-target='#editHistoryModal'  data-patient_id='" . $patient_id . "' data-section_id='" . $section_id . "' data-history_id='" . $record->id . "' id='editSectionButton_" . $section_id . "'><i class='fa fa-edit'></i></button>";
-						}else{
-							//$edit_btn="<button class='btn btn-primary btn-sm'id='editSectionButton_" . $section_id . "' disabled><i class='fa fa-edit'></i></button>";
-						}
+					$edit_btn = '';
+					$permission_array = $this->session->user_permission;
+					if (in_array("history_update", $permission_array)) {
+						$edit_btn = "<button class='btn btn-primary btn-sm' data-toggle='modal' data-target='#editHistoryModal'  data-patient_id='" . $patient_id . "' data-section_id='" . $section_id . "' data-history_id='" . $record->id . "' id='editSectionButton_" . $section_id . "'><i class='fa fa-edit'></i></button>";
+					} else {
+						//$edit_btn="<button class='btn btn-primary btn-sm'id='editSectionButton_" . $section_id . "' disabled><i class='fa fa-edit'></i></button>";
+					}
 					if ($count == 1) {
 						$data .= "<tr>";
 						$data .= $td;
 						$data .= "<td>" . date('d/m H:i:a', strtotime($row['trans_date'])) . "</td>";
-						$data .= "<td>".$edit_btn."</td>";
+						$data .= "<td>" . $edit_btn . "</td>";
 						$data .= "</tr>";
 						array_push($transArray, date('jS M H:i:a', strtotime($row['trans_date'])));
 					}
@@ -769,7 +769,7 @@ class FormController extends HexaController
 			}
 			$data .= "</tbody></table>";
 		}
-		
+
 		$response["table"] = $data;
 		$response["label"] = $labelArray;
 		$response["trans"] = $transArray;
@@ -1134,7 +1134,7 @@ class FormController extends HexaController
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9 d-flex">
 					<input type="datetime-local" class="form-control" id="u_form_field' . $value1->id . '" value="' . $patientValue . '" name="u_form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
-					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'u_form_field' . $value1->id . '\','.$value1->ans_type.')">X</button>
+					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'u_form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 					<script>
 //						var dt = new Date();
 //   var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
@@ -1188,7 +1188,7 @@ class FormController extends HexaController
 					<select class="custom-select" id="u_form_field' . $value1->id . '"  onchange="' . $onchange . '" name="u_form_field' . $value1->id . '" ' . $validation . '>
 							' . $option . '
 									</select>
-									<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'u_form_field' . $value1->id . '\','.$value1->ans_type.')">X</button>
+									<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'u_form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 									<script>$("#u_form_field' . $value1->id . '").select2()</script></div>';
 						} else if ($value1->ans_type == 4) {
 							$get_option = $this->Formmodel->get_all_options($value1->id);
@@ -1352,16 +1352,16 @@ class FormController extends HexaController
 					// 		$now = date('Y-m-d\TH:i:sP');
 					// 		$data .= ' 
 
-     //                  <div class="form-group row mb-3">
-     //                  		<label  class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">Date</label>
-     //                  		<div class="col-sm-9">
+					//                  <div class="form-group row mb-3">
+					//                  		<label  class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">Date</label>
+					//                  		<div class="col-sm-9">
 					// 		<input type="datetime-local" id="u_transaction_date' . $section_id . '" name="transaction_date' . $section_id . '" value="' . $patientObject['trans_date'] . '"  class="form-control" data-valid="required" data-msg="Please Fill this Field"></div>		
 					//   </div>
 					//   <script>
-					  
+
 					//   	$("#u_transaction_date' . $section_id . '").val(app.getDate("' . $patientObject['trans_date'] . '"));
 					//   </script>
-     //                ';
+					//                ';
 
 					// 	}
 					// } else {
@@ -1369,17 +1369,17 @@ class FormController extends HexaController
 					// 		$now = date('Y-m-d\TH:i:sP');
 					// 		$data .= ' 
 
-     //                  <div class="form-group row mb-3">
-     //                  		<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">Date</label>
-     //                  		<div class="col-sm-9">
+					//                  <div class="form-group row mb-3">
+					//                  		<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">Date</label>
+					//                  		<div class="col-sm-9">
 					// 			<input type="datetime-local" id="u_transaction_date' . $section_id . '" name="transaction_date' . $section_id . '" value="' . $patientObject['trans_date'] . '" class="form-control" data-valid="required" data-msg="Please Fill this Field">		
 					// 		</div>
 					//   </div>
 					//   <script>
-					 
+
 					//   	$("#u_transaction_date' . $section_id . '").val(app.getDate("' . $patientObject['trans_date'] . '"));
 					//   </script>
-     //                ';
+					//                ';
 					// 	}
 					// }
 
@@ -1417,7 +1417,7 @@ class FormController extends HexaController
 
 		$branch_id = $this->session->user_session->branch_id;
 		// print_r($branch_id);exit();
-		$get_data = $this->Formmodel->get_all_data($department_id,$form_section_id);
+		$get_data = $this->Formmodel->get_all_data($department_id, $form_section_id);
 
 		if ($get_data != false) {
 
@@ -1471,7 +1471,7 @@ class FormController extends HexaController
 			// print_r($data_to_insert);exit();
 			try {
 				$this->db->trans_start();
-				$query = $this->Formmodel->get_form1($department_id,$form_section_id);
+				$query = $this->Formmodel->get_form1($department_id, $form_section_id);
 
 				if ($query != false) {
 					foreach ($query as $value) {
@@ -1493,7 +1493,7 @@ class FormController extends HexaController
 
 						// }
 						// print_r($this->input->post($transDate));exit();
-							$history_where = array('patient_id' => $patient_id,
+						$history_where = array('patient_id' => $patient_id,
 							'id' => $history_id,
 							'branch_id' => $branch_id);
 
@@ -1528,26 +1528,27 @@ class FormController extends HexaController
 		}
 		echo json_encode($response);
 	}
-	
-	public function getPatientHistoryData(){
-		$p_id=$this->input->post('p_id');
-		$query=$this->db->query("select * from section_master where status=1 AND is_history=1 AND id=2");
-		if($this->db->affected_rows() > 0){
-			$result=$query->result();
-			$data="";
-			
-			foreach($result as $row){
-				$data .='<div class="row">
+
+	public function getPatientHistoryData()
+	{
+		$p_id = $this->input->post('p_id');
+		$query = $this->db->query("select * from section_master where status=1 AND is_history=1 AND id=2");
+		if ($this->db->affected_rows() > 0) {
+			$result = $query->result();
+			$data = "";
+
+			foreach ($result as $row) {
+				$data .= '<div class="row">
 				<div class="col-8 col-sm-8 col-md-2">
 				 <ul class="nav nav-pills flex-column" id="myTab4" role="tablist">
 				  <li class="nav-item">
-                            <a class="nav-link" id="home-tab'.$row->id.'" onclick="get_TableData(\'' . $row->id . '\',\'' . $p_id . '\',\'' . $row->tb_history . '\')" data-toggle="tab" href="#panel-body'.$row->id.'" role="tab" aria-controls="home" aria-selected="true">'.$row->name.'</a>
+                            <a class="nav-link" id="home-tab' . $row->id . '" onclick="get_TableData(\'' . $row->id . '\',\'' . $p_id . '\',\'' . $row->tb_history . '\')" data-toggle="tab" href="#panel-body' . $row->id . '" role="tab" aria-controls="home" aria-selected="true">' . $row->name . '</a>
                           </li>
 				 </ul>
 				</div>
 				<div class="col-12 col-sm-12 col-md-8" id="content_data" >
 				<div class="tab-content no-padding" id="myTab2Content">
-                          <div class="tab-pane fade" id="panel-body'.$row->id.'" role="tabpanel" aria-labelledby="home-tab1">
+                          <div class="tab-pane fade" id="panel-body' . $row->id . '" role="tabpanel" aria-labelledby="home-tab1">
                           
                           </div>
 						  </div>
@@ -1558,32 +1559,31 @@ class FormController extends HexaController
 			}
 			$response['data'] = $data;
 			$response['code'] = 200;
-		}else{
-		$response['code'] = 200;	
-		}echo json_encode($response);
+		} else {
+			$response['code'] = 200;
+		}
+		echo json_encode($response);
 	}
-	
-	function getCriticalParaData(){
-			$p_id=$this->input->post('p_id');
-		$data_li =' <li class="nav-item"><a class="nav-link" id="home-tab_critical" onclick="get_data_critical('.$p_id.')" data-toggle="tab" href="#panel-bodyCP" role="tab"  aria-selected="false">Critical Parameter</a>
+
+	function getCriticalParaData()
+	{
+		$p_id = $this->input->post('p_id');
+		$data_li = ' <li class="nav-item"><a class="nav-link" id="home-tab_critical" onclick="get_data_critical(' . $p_id . ')" data-toggle="tab" href="#panel-bodyCP" role="tab"  aria-selected="false">Critical Parameter</a>
                           </li>';
-		$data_li .=' <li class="nav-item"><a class="nav-link" id="home-tab_critical" onclick="load_medicine_history('.$p_id.')" data-toggle="tab" href="#panel-bodyLB" role="tab"  aria-selected="false">Medication History</a>
+		$data_li .= ' <li class="nav-item"><a class="nav-link" id="home-tab_critical" onclick="load_medicine_history(' . $p_id . ')" data-toggle="tab" href="#panel-bodyLB" role="tab"  aria-selected="false">Medication History</a>
                           </li>';
-		$data_body=' <div class="tab-pane " id="panel-bodyCP" role="tabpanel" aria-labelledby="home-tab2"></div>';
-		$data_body .=' <div class="tab-pane " id="panel-bodyLB" role="tabpanel" aria-labelledby="home-tab2">
+		$data_body = ' <div class="tab-pane " id="panel-bodyCP" role="tabpanel" aria-labelledby="home-tab2"></div>';
+		$data_body .= ' <div class="tab-pane " id="panel-bodyLB" role="tabpanel" aria-labelledby="home-tab2">
 		<section id="history_table_section">
 								</section></div>';
-						  
-			$response['data_li'] = $data_li;
-			$response['data_body'] = $data_body;
-			$response['code'] = 200;			  
-					  
-						
-			
-			echo json_encode($response);
+
+		$response['data_li'] = $data_li;
+		$response['data_body'] = $data_body;
+		$response['code'] = 200;
+
+
+		echo json_encode($response);
 	}
-	
-	
 
 
 }

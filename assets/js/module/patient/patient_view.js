@@ -492,13 +492,13 @@ $("#patientForm").validate({
 // app.successToast(result);
 				$.LoadingOverlay("hide");
 				if (result.status === 200) {
-
+					let patientId=$("#patientId").val();
 					app.successToast(result.data);
 
 					$('#patientForm').trigger('reset');
 
 					$('#patientForm')[0].reset();
-					if($("#patientId").val()==0 || $("#patientId").val()=="")
+					if(patientId==0 || patientId=="")
 					{
 						get_forms(result.patient_id,4,result.patient_name);
 					}

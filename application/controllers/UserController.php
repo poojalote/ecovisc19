@@ -136,7 +136,7 @@ class UserController extends HexaController
 
 	}
 	public function uploadOtherUsers(){
-		
+
 			$c_name = $this->input->post('uAllCompanies1');
 			$b_name = $this->input->post('uAllBranches1');
 			$u_name = $this->input->post('user_name1');
@@ -156,7 +156,7 @@ class UserController extends HexaController
 			}
 			$session_data = $this->session->user_session;
 			$user_id = $session_data->id;
-		
+
 			if (!empty($u_id)) {
 					$userData = array('name' => $u_name,
 					'user_name' => $u_email,
@@ -169,7 +169,7 @@ class UserController extends HexaController
 					'create_by' => $user_id);
 				$where=array("id"=>$u_id);
 				$set=$userData;
-				
+
 				 $this->db->where($where);
 				$result=$this->db->update("users_master",$set);
 					if ($result == TRUE) {
@@ -180,7 +180,7 @@ class UserController extends HexaController
 						$response["data"] = "Not Found";
 					}
 			}else{
-				
+
 					$userData = array('name' => $u_name,
 					'user_name' => $u_email,
 					'password' => $u_pass,
@@ -209,12 +209,13 @@ class UserController extends HexaController
 				}
 			}
 			echo json_encode($response);
-			
+
 	}
 	public function uploadUsers()
 	{
 		//print_r($this->input->post('depCheck'));exit();
-		if (!is_null($this->input->post('uAllCompanies')) && !is_null($this->input->post('user_name')) && !is_null($this->input->post('user_email')) && !is_null($this->input->post('password'))) {
+		if (!is_null($this->input->post('uAllCompanies')) && !is_null($this->input->post('user_name')) &&
+            !is_null($this->input->post('user_email')) && !is_null($this->input->post('password'))) {
 
 			$c_name = $this->input->post('uAllCompanies');
 			$b_name = $this->input->post('uAllBranches');
@@ -223,9 +224,11 @@ class UserController extends HexaController
 			$u_pass = $this->input->post('password');
 			$u_id = $this->input->post('forward_user');
 			$user_type = $this->input->post('user_type');
-			$role = 2;
-			
-			
+            $u_contact = $this->input->post('user_contact');
+
+            $role = 2;
+
+
 
 //			$chkdepartment = array();
 //			if (!is_null($this->input->post('depCheck')) && !empty($this->input->post('depCheck')) && $this->input->post('depCheck') != '') {
@@ -235,14 +238,16 @@ class UserController extends HexaController
 
 			$session_data = $this->session->user_session;
 			$user_id = $session_data->id;
-			
+
 			$table_name1 = 'users_master';
 			$table_name2 = 'role_master';
 			if (!empty($u_id)) {
 				$userData = array('name' => $u_name,
 					'user_name' => $u_email,
 					'password' => $u_pass,
-					'company_id' => $c_name,
+                    'mobile_number' => $u_contact,
+
+                    'company_id' => $c_name,
 					'branch_id' => $b_name,
 					'user_type' => $user_type,
 					'status' => 1,
@@ -300,7 +305,9 @@ class UserController extends HexaController
 				$userData = array('name' => $u_name,
 					'user_name' => $u_email,
 					'password' => $u_pass,
-					'company_id' => $c_name,
+                    'mobile_number' => $u_contact,
+
+                    'company_id' => $c_name,
 					'branch_id' => $b_name,
 					'user_type' => $user_type,
 					'status' => 1,
@@ -373,7 +380,7 @@ class UserController extends HexaController
 			$user_type=$obj[0]->user_type;
 			$role=$obj[0]->roles;
 			$oth=0;
-			
+
 			if($role == 3 && $user_type==7){
 				$user_type1 =1;//radiology
 				$oth=1;
@@ -387,12 +394,12 @@ class UserController extends HexaController
 				$oth=0;
 				$user_type1=$user_type;
 			}
-		
+
 			$data=array(
 			"oth"=>$oth,
 			"user_type"=>$user_type1,
 			);
-			
+
 			if ($resultObject->totalCount > 0) {
 				$response["status"] = 200;
 				$response["body"] = $resultObject->data;
