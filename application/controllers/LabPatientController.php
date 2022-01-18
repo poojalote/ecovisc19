@@ -276,11 +276,11 @@ class LabPatientController extends HexaController
         $header = $this->is_parameter(array("searchValue"));
         if ($header->status) {
             $searchValue = $header->param->searchValue;
-			$lab_patient = $this->session->user_session->lab_patient_table;
+            $lab_patient = $this->session->user_session->lab_patient_table;
             $tableName =  $lab_patient;
             $user_data = $this->db->query("select * from " . $tableName . " p join (
-select  max(id) as id from " . $tableName . " WHERE upper(adhar_no) LIKE '" . strtoupper($searchValue) . "%' ESCAPE '!'OR  upper(patient_name) LIKE '" . strtoupper($searchValue) . "%' ESCAPE '!' group by adhar_no) t 
-on p.id= t.id")->result();
+                select  max(id) as id from " . $tableName . " WHERE upper(adhar_no) LIKE '" . strtoupper($searchValue) . "%' ESCAPE '!'OR  upper(patient_name) LIKE '" . strtoupper($searchValue) . "%' ESCAPE '!' group by adhar_no) t 
+                on p.id= t.id")->result();
 //            $user_data = $this->db->get($tableName)->result();
             $response["query"] = $this->db->last_query();
             if (count($user_data) > 0) {
@@ -306,7 +306,7 @@ on p.id= t.id")->result();
 
 //			$company_id = $session_data->company_id;
 
-			$tableName = $this->session->user_session->lab_patient_table;
+            $tableName = $this->session->user_session->lab_patient_table;
             //$where=array("id"=>$patientId);
             $where = "where dm.id='" . $patientId . "'";
             $resultObject = $this->Patient_Model->getTableData($tableName, $where);
@@ -350,7 +350,7 @@ on p.id= t.id")->result();
             $select = array("*",
 //                "(select hb.bed_name from " . $hospital_bed_table . " hb where hb.id=bed_id) as bed_name", "(select hb1.category from " . $hospital_bed_table . " hb1 where hb1.id=bed_id) as category",
 //                "(select group_concat(hb.room_no,'-',hb.ward_no) from " . $hospital_room_table . " hb where hb.id=roomid) as room_name"
-            );
+        );
         }
 
         $permission_array = $this->session->user_permission;
@@ -439,7 +439,7 @@ on p.id= t.id")->result();
                     $row->id,
 //					$row->company_id,
 //                    $is_icu_patient,
-                '2',
+                    '2',
                     $this->session->user_session->roles,
                     $profile_img,
                     $row->admission_mode,
@@ -490,7 +490,7 @@ on p.id= t.id")->result();
 
             $user_id = $session_data->id;
             $company_id = $session_data->company_id;
-			$lab_patient = $this->session->user_session->lab_patient_table;
+            $lab_patient = $this->session->user_session->lab_patient_table;
             $tableName = $lab_patient;//'com_' . $company_id . '_patient';
             $departmentData = array('status' => 0, 'modify_on' => date('Y-m-d'), "modify_by" => $user_id);
             $where = array('id' => $patientId);
@@ -513,131 +513,131 @@ on p.id= t.id")->result();
     public function get_labpatient_data($id)
     {
 //	$id=$this->input->post('id');
-		$tableName = $this->session->user_session->lab_patient_table;
-        $query = $this->Patient_Model->getpatientdata($id, $tableName, $this->session->user_session->branch_id);
+      $tableName = $this->session->user_session->lab_patient_table;
+      $query = $this->Patient_Model->getpatientdata($id, $tableName, $this->session->user_session->branch_id);
 
-        if ($query != false) {
-            $patient_name = $query->patient_name;
-            $patient_id = $query->id;
-            $genderC = $query->gender;
+      if ($query != false) {
+        $patient_name = $query->patient_name;
+        $patient_id = $query->id;
+        $genderC = $query->gender;
 
-            $dob = $query->birth_date;
-            $age = $this->ageCalculator($dob);
-            $attend_phy = 'NA';
-            if ($genderC == 2) {
-                $gender = "Female";
-            } else {
-                $gender = "Male";
-            }
+        $dob = $query->birth_date;
+        $age = $this->ageCalculator($dob);
+        $attend_phy = 'NA';
+        if ($genderC == 2) {
+            $gender = "Female";
+        } else {
+            $gender = "Male";
+        }
             //$gender = 'NA';
-            $digits = 10;
-            $case_number = rand(pow(10, $digits - 1), pow(10, $digits) - 1);
-            $barcode = $this->create_barcode($case_number);
+        $digits = 10;
+        $case_number = rand(pow(10, $digits - 1), pow(10, $digits) - 1);
+        $barcode = $this->create_barcode($case_number);
 
-            $info = array("name" => $patient_name,
-                "Patient_id" => $patient_id,
-                "age_sex" => $age . "/" . $gender,
-                "attn_phy" => $attend_phy,
-                "id_mark" => "",
-                "case_no" => $case_number,
-                "dob" => $dob);
-            $html = '<!DOCTYPE html>';
-            $html .= '<html lang="en" >';
-            $html .= '<head>';
+        $info = array("name" => $patient_name,
+            "Patient_id" => $patient_id,
+            "age_sex" => $age . "/" . $gender,
+            "attn_phy" => $attend_phy,
+            "id_mark" => "",
+            "case_no" => $case_number,
+            "dob" => $dob);
+        $html = '<!DOCTYPE html>';
+        $html .= '<html lang="en" >';
+        $html .= '<head>';
 
-            $html .= '<style>    
-	
+        $html .= '<style>    
+
         
-    </style>';
-            $html .= '<style>@page {
+        </style>';
+        $html .= '<style>@page {
             margin: 0px 0px 0px 0px !important;
             padding: 0px 0px 0px 0px !important;
         }<style>';
-            $html .= '</head>';
-            $html .= '<body style="font-size: 11px;font-family: Arial, sans-serif;padding:0px 8px; ">';
+        $html .= '</head>';
+        $html .= '<body style="font-size: 11px;font-family: Arial, sans-serif;padding:0px 8px; ">';
 
-            $html .= '<div  style="font-size: 11px;font-family:Arial, sans-serif;">';
-            $html .= '<table style="border-spacing: 1px;">';
-            $html .= '<tr>';
-            $html .= '<td><label style="font-weight: bold;font-size: 11px;font-family: Arial, sans-serif;">Name  </label></td>';
-            $html .= '<td  colspan="4">: ' . $info['name'] . '</td>';
-            $html .= '</tr>';
+        $html .= '<div  style="font-size: 11px;font-family:Arial, sans-serif;">';
+        $html .= '<table style="border-spacing: 1px;">';
+        $html .= '<tr>';
+        $html .= '<td><label style="font-weight: bold;font-size: 11px;font-family: Arial, sans-serif;">Name  </label></td>';
+        $html .= '<td  colspan="4">: ' . $info['name'] . '</td>';
+        $html .= '</tr>';
 
-            $html .= '<tr>';
-            $html .= '<td><label style="font-weight: bold;">Patient Id  </label></td>';
-            $html .= '<td>: ' . $info['Patient_id'] . '</td>';
-            $html .= '<td><label style="font-weight: bold;margin-left: 50px;">Case No </label></td>';
-            $html .= '<td>: ' . $info['case_no'] . '</td>';
-            $html .= '</tr>';
+        $html .= '<tr>';
+        $html .= '<td><label style="font-weight: bold;">Patient Id  </label></td>';
+        $html .= '<td>: ' . $info['Patient_id'] . '</td>';
+        $html .= '<td><label style="font-weight: bold;margin-left: 50px;">Case No </label></td>';
+        $html .= '<td>: ' . $info['case_no'] . '</td>';
+        $html .= '</tr>';
 
-            $html .= '<tr>';
-            $html .= '<td><label style="font-weight: bold;">Age/Sex  </label></td>';
-            $html .= '<td>: ' . $info['age_sex'] . '</td>';
+        $html .= '<tr>';
+        $html .= '<td><label style="font-weight: bold;">Age/Sex  </label></td>';
+        $html .= '<td>: ' . $info['age_sex'] . '</td>';
 // $html.='<td></td>';
-            $html .= '<td><label style="font-weight: bold;margin-left: 50px;">D.O.B  </label></td>';
-            $html .= '<td>: ' . $info['dob'] . '</td>';
-            $html .= '</tr>';
+        $html .= '<td><label style="font-weight: bold;margin-left: 50px;">D.O.B  </label></td>';
+        $html .= '<td>: ' . $info['dob'] . '</td>';
+        $html .= '</tr>';
 
-            $html .= '<tr>';
-            $html .= '<td><label style="font-weight: bold;">Attn. Phy.  </label></td>';
-            $html .= '<td>: ' . $info['attn_phy'] . '</td>';
-            $html .= '<td colspan="2"><img src="' . $barcode . '" style="margin-left: 20px;" width="170" height="18"></td>';
-            $html .= '</tr>';
+        $html .= '<tr>';
+        $html .= '<td><label style="font-weight: bold;">Attn. Phy.  </label></td>';
+        $html .= '<td>: ' . $info['attn_phy'] . '</td>';
+        $html .= '<td colspan="2"><img src="' . $barcode . '" style="margin-left: 20px;" width="170" height="18"></td>';
+        $html .= '</tr>';
 
-            $html .= '<tr>';
-            $html .= '<td><label style="font-weight: bold;">ID Mark  </label></td>';
-            $html .= '<td>: ' . $info['id_mark'] . '</td>';
-            $html .= '</tr>';
+        $html .= '<tr>';
+        $html .= '<td><label style="font-weight: bold;">ID Mark  </label></td>';
+        $html .= '<td>: ' . $info['id_mark'] . '</td>';
+        $html .= '</tr>';
 
-            $html .= '</table>';
+        $html .= '</table>';
 
-            $html .= '</div>';
-            $html .= '</body>';
-            $html .= '</html>';
+        $html .= '</div>';
+        $html .= '</body>';
+        $html .= '</html>';
 
-            $dompdf = new Dompdf();
-            $dompdf->loadHtml($html);
-            $dompdf->set_option('isHtml5ParserEnabled', true);
-            $dompdf->setPaper(array(0, 0, 255.1176, 67.3592));
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->set_option('isHtml5ParserEnabled', true);
+        $dompdf->setPaper(array(0, 0, 255.1176, 67.3592));
 
-            $dompdf->render();
-            $dompdf->stream("Patient Information", array('Attachment' => 0));
+        $dompdf->render();
+        $dompdf->stream("Patient Information", array('Attachment' => 0));
 
-        } else {
+    } else {
 
-        }
     }
+}
 
-    public function ageCalculator($dob)
-    {
+public function ageCalculator($dob)
+{
         //echo $dob;
 
-        if (!empty($dob) && $dob !== "0000-00-00") {
-            $birthdate = new DateTime($dob);
-            $today = new DateTime('today');
-            $age = $birthdate->diff($today)->y;
-            return $age;
-        } else {
-            return 0;
-        }
+    if (!empty($dob) && $dob !== "0000-00-00") {
+        $birthdate = new DateTime($dob);
+        $today = new DateTime('today');
+        $age = $birthdate->diff($today)->y;
+        return $age;
+    } else {
+        return 0;
     }
+}
 
-    function create_barcode($case_number)
-    {
-        $string = trim($case_number);
+function create_barcode($case_number)
+{
+    $string = trim($case_number);
 
         // $string = trim($_POST['string']);
-        $type = "code128";
-        $orientation = "horizontal";
-        $size = 30;
-        $print = true;
+    $type = "code128";
+    $orientation = "horizontal";
+    $size = 30;
+    $print = true;
 
-        if ($string != '') {
+    if ($string != '') {
 
-            $base64image = '<img class="barcode" id="imageprev"  style="weidth:300px;height:70px;" alt="' . $string . '" src="barcode.php?text=' . $string . '&codetype=' . $type . '&orientation=' . $orientation . '&size=' . $size . '&print=' . $print . '" />';
-        } else {
-            $base64image = '';
-        }
+        $base64image = '<img class="barcode" id="imageprev"  style="weidth:300px;height:70px;" alt="' . $string . '" src="barcode.php?text=' . $string . '&codetype=' . $type . '&orientation=' . $orientation . '&size=' . $size . '&print=' . $print . '" />';
+    } else {
+        $base64image = '';
+    }
 
         // print_r($base64image);
 //		echo base_url("barcode?text=$string&codetype=$type&orientation=$orientation&size=$size&print= $print");
@@ -645,61 +645,61 @@ on p.id= t.id")->result();
 //		$barcode=file_get_contents(base_url("barcode?text=$string&codetype=$type&orientation=$orientation&size=$size&print= $print"));
 //		var_dump($barcode);
 //		exit();
-        $barcode = $this->generatorBarcode($case_number);
-        return $barcode;
+    $barcode = $this->generatorBarcode($case_number);
+    return $barcode;
 //		var_dump($barcode);
 //		echo $barcode;
 //		exit();
 //		$codeimge='uploads/barcode/'.$case_number.'.png';
 //		file_put_contents($codeimge, $barcode);
 //		return $codeimge;
-    }
+}
 
 
-    function generatorBarcode($text)
-    {
+function generatorBarcode($text)
+{
 
 
-        $code_type = "code128b";
-        $orientation = "horizontal";
-        $size = 60;
-        $print = true;
+    $code_type = "code128b";
+    $orientation = "horizontal";
+    $size = 60;
+    $print = true;
 
 // For demonstration purposes, get pararameters that are passed in through $_GET or set to the default value
-        $filepath = "";
+    $filepath = "";
 //		$text = (isset($_GET["text"]) ? $_GET["text"] : "0");
 //		$size = (isset($_GET["size"]) ? $_GET["size"] : "20");
 //		$orientation = (isset($_GET["orientation"]) ? $_GET["orientation"] : "horizontal");
 //		$code_type = (isset($_GET["codetype"]) ? $_GET["codetype"] : "code128");
 
-        $sizefactor = "1";
+    $sizefactor = "1";
 
 // This function call can be copied into your project and can be made from anywhere in your code
-        return $this->barcode($filepath, $text, $size, $orientation, $code_type, $print, $sizefactor);
+    return $this->barcode($filepath, $text, $size, $orientation, $code_type, $print, $sizefactor);
 
 
-    }
+}
 
-    function barcode($filepath = "", $text = "0", $size = "20", $orientation = "horizontal", $code_type = "code128", $print = false, $SizeFactor = 1)
-    {
-        $code_string = "";
+function barcode($filepath = "", $text = "0", $size = "20", $orientation = "horizontal", $code_type = "code128", $print = false, $SizeFactor = 1)
+{
+    $code_string = "";
         // Translate the $text into barcode the correct $code_type
-        if (in_array(strtolower($code_type), array("code128", "code128b"))) {
-            $chksum = 104;
+    if (in_array(strtolower($code_type), array("code128", "code128b"))) {
+        $chksum = 104;
             // Must not change order of array elements as the checksum depends on the array's key to validate final code
-            $code_array = array(" " => "212222", "!" => "222122", "\"" => "222221", "#" => "121223", "$" => "121322", "%" => "131222", "&" => "122213", "'" => "122312", "(" => "132212", ")" => "221213", "*" => "221312", "+" => "231212", "," => "112232", "-" => "122132", "." => "122231", "/" => "113222", "0" => "123122", "1" => "123221", "2" => "223211", "3" => "221132", "4" => "221231", "5" => "213212", "6" => "223112", "7" => "312131", "8" => "311222", "9" => "321122", ":" => "321221", ";" => "312212", "<" => "322112", "=" => "322211", ">" => "212123", "?" => "212321", "@" => "232121", "A" => "111323", "B" => "131123", "C" => "131321", "D" => "112313", "E" => "132113", "F" => "132311", "G" => "211313", "H" => "231113", "I" => "231311", "J" => "112133", "K" => "112331", "L" => "132131", "M" => "113123", "N" => "113321", "O" => "133121", "P" => "313121", "Q" => "211331", "R" => "231131", "S" => "213113", "T" => "213311", "U" => "213131", "V" => "311123", "W" => "311321", "X" => "331121", "Y" => "312113", "Z" => "312311", "[" => "332111", "\\" => "314111", "]" => "221411", "^" => "431111", "_" => "111224", "\`" => "111422", "a" => "121124", "b" => "121421", "c" => "141122", "d" => "141221", "e" => "112214", "f" => "112412", "g" => "122114", "h" => "122411", "i" => "142112", "j" => "142211", "k" => "241211", "l" => "221114", "m" => "413111", "n" => "241112", "o" => "134111", "p" => "111242", "q" => "121142", "r" => "121241", "s" => "114212", "t" => "124112", "u" => "124211", "v" => "411212", "w" => "421112", "x" => "421211", "y" => "212141", "z" => "214121", "{" => "412121", "|" => "111143", "}" => "111341", "~" => "131141", "DEL" => "114113", "FNC 3" => "114311", "FNC 2" => "411113", "SHIFT" => "411311", "CODE C" => "113141", "FNC 4" => "114131", "CODE A" => "311141", "FNC 1" => "411131", "Start A" => "211412", "Start B" => "211214", "Start C" => "211232", "Stop" => "2331112");
-            $code_keys = array_keys($code_array);
-            $code_values = array_flip($code_keys);
-            for ($X = 1; $X <= strlen($text); $X++) {
-                $activeKey = substr($text, ($X - 1), 1);
-                $code_string .= $code_array[$activeKey];
-                $chksum = ($chksum + ($code_values[$activeKey] * $X));
-            }
-            $code_string .= $code_array[$code_keys[($chksum - (intval($chksum / 103) * 103))]];
+        $code_array = array(" " => "212222", "!" => "222122", "\"" => "222221", "#" => "121223", "$" => "121322", "%" => "131222", "&" => "122213", "'" => "122312", "(" => "132212", ")" => "221213", "*" => "221312", "+" => "231212", "," => "112232", "-" => "122132", "." => "122231", "/" => "113222", "0" => "123122", "1" => "123221", "2" => "223211", "3" => "221132", "4" => "221231", "5" => "213212", "6" => "223112", "7" => "312131", "8" => "311222", "9" => "321122", ":" => "321221", ";" => "312212", "<" => "322112", "=" => "322211", ">" => "212123", "?" => "212321", "@" => "232121", "A" => "111323", "B" => "131123", "C" => "131321", "D" => "112313", "E" => "132113", "F" => "132311", "G" => "211313", "H" => "231113", "I" => "231311", "J" => "112133", "K" => "112331", "L" => "132131", "M" => "113123", "N" => "113321", "O" => "133121", "P" => "313121", "Q" => "211331", "R" => "231131", "S" => "213113", "T" => "213311", "U" => "213131", "V" => "311123", "W" => "311321", "X" => "331121", "Y" => "312113", "Z" => "312311", "[" => "332111", "\\" => "314111", "]" => "221411", "^" => "431111", "_" => "111224", "\`" => "111422", "a" => "121124", "b" => "121421", "c" => "141122", "d" => "141221", "e" => "112214", "f" => "112412", "g" => "122114", "h" => "122411", "i" => "142112", "j" => "142211", "k" => "241211", "l" => "221114", "m" => "413111", "n" => "241112", "o" => "134111", "p" => "111242", "q" => "121142", "r" => "121241", "s" => "114212", "t" => "124112", "u" => "124211", "v" => "411212", "w" => "421112", "x" => "421211", "y" => "212141", "z" => "214121", "{" => "412121", "|" => "111143", "}" => "111341", "~" => "131141", "DEL" => "114113", "FNC 3" => "114311", "FNC 2" => "411113", "SHIFT" => "411311", "CODE C" => "113141", "FNC 4" => "114131", "CODE A" => "311141", "FNC 1" => "411131", "Start A" => "211412", "Start B" => "211214", "Start C" => "211232", "Stop" => "2331112");
+        $code_keys = array_keys($code_array);
+        $code_values = array_flip($code_keys);
+        for ($X = 1; $X <= strlen($text); $X++) {
+            $activeKey = substr($text, ($X - 1), 1);
+            $code_string .= $code_array[$activeKey];
+            $chksum = ($chksum + ($code_values[$activeKey] * $X));
+        }
+        $code_string .= $code_array[$code_keys[($chksum - (intval($chksum / 103) * 103))]];
 
-            $code_string = "211214" . $code_string . "2331112";
-        } elseif (strtolower($code_type) == "code128a") {
-            $chksum = 103;
+        $code_string = "211214" . $code_string . "2331112";
+    } elseif (strtolower($code_type) == "code128a") {
+        $chksum = 103;
             $text = strtoupper($text); // Code 128A doesn't support lower case
             // Must not change order of array elements as the checksum depends on the array's key to validate final code
             $code_array = array(" " => "212222", "!" => "222122", "\"" => "222221", "#" => "121223", "$" => "121322", "%" => "131222", "&" => "122213", "'" => "122312", "(" => "132212", ")" => "221213", "*" => "221312", "+" => "231212", "," => "112232", "-" => "122132", "." => "122231", "/" => "113222", "0" => "123122", "1" => "123221", "2" => "223211", "3" => "221132", "4" => "221231", "5" => "213212", "6" => "223112", "7" => "312131", "8" => "311222", "9" => "321122", ":" => "321221", ";" => "312212", "<" => "322112", "=" => "322211", ">" => "212123", "?" => "212321", "@" => "232121", "A" => "111323", "B" => "131123", "C" => "131321", "D" => "112313", "E" => "132113", "F" => "132311", "G" => "211313", "H" => "231113", "I" => "231311", "J" => "112133", "K" => "112331", "L" => "132131", "M" => "113123", "N" => "113321", "O" => "133121", "P" => "313121", "Q" => "211331", "R" => "231131", "S" => "213113", "T" => "213311", "U" => "213131", "V" => "311123", "W" => "311321", "X" => "331121", "Y" => "312113", "Z" => "312311", "[" => "332111", "\\" => "314111", "]" => "221411", "^" => "431111", "_" => "111224", "NUL" => "111422", "SOH" => "121124", "STX" => "121421", "ETX" => "141122", "EOT" => "141221", "ENQ" => "112214", "ACK" => "112412", "BEL" => "122114", "BS" => "122411", "HT" => "142112", "LF" => "142211", "VT" => "241211", "FF" => "221114", "CR" => "413111", "SO" => "241112", "SI" => "134111", "DLE" => "111242", "DC1" => "121142", "DC2" => "121241", "DC3" => "114212", "DC4" => "124112", "NAK" => "124211", "SYN" => "411212", "ETB" => "421112", "CAN" => "421211", "EM" => "212141", "SUB" => "214121", "ESC" => "412121", "FS" => "111143", "GS" => "111341", "RS" => "131141", "US" => "114113", "FNC 3" => "114311", "FNC 2" => "411113", "SHIFT" => "411311", "CODE C" => "113141", "CODE B" => "114131", "FNC 4" => "311141", "FNC 1" => "411131", "Start A" => "211412", "Start B" => "211214", "Start C" => "211232", "Stop" => "2331112");
@@ -890,20 +890,20 @@ on p.id= t.id")->result();
                 $service_data = $service_data->result();
 
                 $data .= '<table class="table" id="service_table">
-								<thead>
-									<tr>
-										<th>Test Name</th>
-									</tr>
-								</thead>
-								<tbody>';
+                <thead>
+                <tr>
+                <th>Test Name</th>
+                </tr>
+                </thead>
+                <tbody>';
                 foreach ($service_data as $key => $value) {
                     $data .= '<tr>
-									<td>' . $value->child_test . '</td>
-									
-								</tr>';
+                    <td>' . $value->child_test . '</td>
+
+                    </tr>';
                 }
                 $data .= '</tbody>
-							</table>';
+                </table>';
 
                 $response["status"] = 200;
                 $response["data"] = $data;
@@ -940,19 +940,19 @@ on p.id= t.id")->result();
                 $service_data = $service_data->result();
 
                 $data .= '<table class="table" id="service_table">
-								<thead>
-									<tr>
-										<th>Test Name</th>
-									</tr>
-								</thead>
-								<tbody>';
+                <thead>
+                <tr>
+                <th>Test Name</th>
+                </tr>
+                </thead>
+                <tbody>';
                 foreach ($service_data as $key => $value) {
                     $data .= '<tr>
-									<td>' . $value->child_test_name . '</td>
-								</tr>';
+                    <td>' . $value->child_test_name . '</td>
+                    </tr>';
                 }
                 $data .= '</tbody>
-							</table>';
+                </table>';
 
                 $response["status"] = 200;
                 $response["data"] = $data;
@@ -1053,7 +1053,7 @@ on p.id= t.id")->result();
                         'transaction_date' => date('Y-m-d H:i:s'),
                         'status' => 1,
                         'order_type' => $service_type,
-						'master_id'=>$service_id
+                        'master_id'=>$service_id
                     );
                     if ($this->db->insert("lab_test_data_entry", $childinsert_data)) {
                         $insert_count++;
@@ -1211,7 +1211,7 @@ on p.id= t.id")->result();
             $patient_id = $header->param->patient_id;
 
             $resultObject = $this->Patient_Model->_rawQuery("select order_id ,(case when order_type =1 then (select name from lab_master_test where id = order_id) else (select package_name from master_package where id = order_id ) end) as name 
-from lab_test_data_entry where patient_id=" . $patient_id . " and branch_id =" . $branch_id . " and status =1 group by order_id");
+                from lab_test_data_entry where patient_id=" . $patient_id . " and branch_id =" . $branch_id . " and status =1 group by order_id");
 
             $data = array(array("id" => -1, "text" => "none"));
             if ($resultObject->totalCount > 0) {
@@ -1278,7 +1278,7 @@ from lab_test_data_entry where patient_id=" . $patient_id . " and branch_id =" .
     public function ChangeBillingOpen()
     {
         $p_id = $this->input->post('p_id');
-		$lab_patient = $this->session->user_session->lab_patient_table;
+        $lab_patient = $this->session->user_session->lab_patient_table;
         $patient_table = $lab_patient;
         $query = $this->db->query("select billing_open from " . $patient_table . " where id=" . $p_id);
 
@@ -1325,8 +1325,8 @@ from lab_test_data_entry where patient_id=" . $patient_id . " and branch_id =" .
     public function check_billing_status()
     {
         $p_id = $this->input->post('p_id');
-		$lab_patient = $this->session->user_session->lab_patient_table;
-		$patient_table = $lab_patient;
+        $lab_patient = $this->session->user_session->lab_patient_table;
+        $patient_table = $lab_patient;
         $query = $this->db->query("select billing_open from " . $patient_table . " where id=" . $p_id);
         if ($this->db->affected_rows() > 0) {
             $billing_open = $query->row()->billing_open;
@@ -1389,25 +1389,318 @@ from lab_test_data_entry where patient_id=" . $patient_id . " and branch_id =" .
 
     }
     public function getLabDataEntryExcelData()
-	{
-		$header = $this->is_parameter(array("section_id","dep_id","haskey"));
-//		print_r($header);exit();
-		if ($header->status) {
-			$sql = "select master_id,table_name,operation,header,type,configuration,column_name from dynamic_form_table_master m join dynamic_form_column_master c
- on m.id=c.master_id where m.has_key ='#" . $header->param->haskey . "' and m.section_id = ".$header->param->section_id." and m.dep_id = ".$header->param->dep_id." and m.status=1 and c.status=1";
-			$resultObject = $this->db->query($sql)->result();
-//			$response["query"] = $this->db->last_query();
-			if (count($resultObject) > 0) {
-				$response["status"] = 200;
-				$response["body"] = $resultObject;
-			} else {
-				$response["status"] = 201;
-				$response["body"] = "Not Found";
-			}
-		} else {
-			$response["status"] = 201;
-			$response["body"] = "Something went wrong";
-		}
-		echo json_encode($response);
-	}
+    {
+        $header = $this->is_parameter(array("section_id","dep_id","haskey","queryParam"));
+
+        if($header->status){
+            $sql = "select master_id,table_name,operation,header,type,configuration,column_name,operation_column,where_condition,fetch_query_columns,where_condition from dynamic_form_table_master m join dynamic_form_column_master c
+            on m.id=c.master_id where m.has_key ='" . $header->param->haskey . "' and m.section_id = ".$header->param->section_id." and m.dep_id = ".$header->param->dep_id." and m.status=1 and c.status=1";
+            $resultObject = $this->db->query($sql)->result();
+            $qParam =(array)json_decode(base64_decode($header->param->queryParam));
+            if(count($resultObject)>0){
+                $select=array();
+                $tableName="";
+                $where_condition="";
+                foreach ($resultObject as $item){
+                    if($item->fetch_query_columns !=="" && $item->fetch_query_columns !==null){
+                        extract($qParam);
+                        $arr_k=array_keys($qParam);
+                        $fetch_query_columns=$item->fetch_query_columns;
+                        foreach ($arr_k as $a){
+                            $b="#".$a;
+                            if (strpos($fetch_query_columns, $b) !== false) {
+                                $fetch_query_columns=str_replace($b,$qParam[$a],$fetch_query_columns);
+                            }
+                        }
+                        $select=explode(",",$fetch_query_columns);
+
+                    }else{
+                        array_push($select,$item->column_name);
+                    }
+
+                    $tableName=$item->table_name;
+                    $where_condition=$item->where_condition;
+                }
+                if($tableName!==""){
+                    $this->db->select($select);
+                    $where=array();
+                    if($where_condition!=="" && $where_condition !=null){
+                     $conditions=explode(",",$where_condition);
+
+                     if(count($conditions)>0){
+                        foreach ($conditions as $cont){
+                            $cond = explode("=",$cont);
+                            if(count($cond)>0){
+                                if(substr(trim($cond[1]), 0, strlen('#'))!=='#'){
+                                    $where[$cond[0]]=$cond[1];
+                                }else{
+                                    $propName=str_replace("#","",$cond[1]);
+                                    if(array_key_exists(trim($propName),$qParam)){
+                                        $where[$cond[0]]=$qParam[$propName];
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                }
+                $datanew = array();
+                $this->db->where($where);
+                $data=$this->db->get($tableName)->result();
+                if($data != null)
+                {
+                    foreach($data as $row)
+                    {
+                        $data = array($row->master_id,$row->child_test_name,"",$row->unit,$row->refe_value,$row->child_test_id,$row->id);
+                        array_push($datanew,$data);
+                    }
+                }
+                if($datanew != null)
+                {
+                    $response["query"]=$this->db->last_query();
+                    $response["status"]=200;
+                    $response["body"]=$datanew;
+                }
+                else{
+                    $response["status"]=201;
+                    $response["body"]="No Data Found";
+                }
+                
+            }else{
+                $response["status"]=201;
+                $response["body"]=array();
+            }
+        }else{
+            $response["status"]=201;
+            $response["body"]=array();
+        }
+    }else{
+        $response["status"]=201;
+        $response["body"]="something went wrong";
+    }
+    echo json_encode($response);
+
+}  
+
+public function updateDynamicLabData()
+    {
+        $value = $this->input->post('value');
+        $session_data = $this->session->user_session;
+        $branch_id = $session_data->branch_id;
+        $user_id = $this->session->user_session->id;
+        $patient_id = $this->input->post('patient_id');
+        $updateArray = array();
+        $insertArray = array();
+        $insert_batch = "";
+        $update_batch = "";
+        // $where = array("branch_id" => $branch_id);
+        $indexArray = array();
+        $i = 1;
+        $lab_test_data = array();
+        $order_det = $this->db->where('patient_id',$patient_id)->get('lab_patient_serviceorder')->row();
+        foreach ($value as $item) {
+            $ltde_data = array(
+                    "id"=>$item[6],
+                    "value"=>$item[2],
+                    "unit "=>$item[3]
+                );
+            array_push($lab_test_data,$ltde_data);
+        }
+        if (!empty($lab_test_data)) {
+            $update_batch = $this->db->update_batch('lab_test_data_entry', $lab_test_data, 'id');
+        }
+        if ($update_batch == true) {
+            $response['status'] = 200;
+            $response['body'] = "Data inserted Successfully";
+        } else {
+            $response['status'] = 201;
+            $response['body'] = "Failed To update";
+            $response['last_q'] = $lab_test_data;
+               
+        }
+
+        echo json_encode($response);
+
+    }
+
+public function updateDynamicLabData__()
+    {
+        $header = $this->is_parameter(array("tableName", "data","section_id","dep_id","haskey"));
+        $package_id=$this->input->post('package_id');
+        if ($header->status) {
+
+            $patientId=$this->input->post('patientId');
+            $patientIdA='N'.str_pad($patientId,'9','0',STR_PAD_LEFT);
+            $patient_admission=$this->input->post('patient_admission');
+            $patient_name=$this->input->post('patient_name');
+            $tableName = $header->param->tableName;
+            $data = json_decode($header->param->data);
+
+            $section_id = $header->param->section_id;
+            $hash_key = "#".$header->param->haskey;
+            $dept_id = $header->param->dep_id;
+            $branch_id = $this->session->user_session->branch_id;
+            $lab_patient_table = $this->session->user_session->lab_patient_table;
+            $getConfiguartiondataResult=$this->getConfiguartiondata($section_id,$hash_key,$dept_id);
+//            print_r($getConfiguartiondataResult);exit();
+            if($getConfiguartiondataResult == false){
+                $response['status']=201;
+                $response['body']="Something Went Wrong";
+                echo json_encode($response);
+                exit;
+            }
+            $patient_location='';
+            $patient_age='';
+            $patientObject=$this->MasterModel->_rawQuery('select (select location from  branch_master b where b.id=l.branch_id) as branch_loc,TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age from '.$lab_patient_table.' l where l.id='.$patientId.'');
+            if($patientObject->totalCount>0)
+            {
+                $pdata=$patientObject->data[0];
+                $patient_location=$pdata->branch_loc;
+                $patient_age=$pdata->age;
+            }
+            $getConfiguartiondata=$getConfiguartiondataResult[0];
+            $excelStructureDataArray=array();
+            $operation=$getConfiguartiondata->operation;
+            $operation_table=$getConfiguartiondata->operation_table;
+            $dynamic_branch_id=$this->input->post('dynamic_branch_id');
+            $resultstatus=TRUE;
+            try {
+                $this->db->trans_start();
+            if($operation == 1){
+                $InsertBatchData = array();
+
+                foreach ($data as $object) {
+                    if (!is_null($object)) {
+                        $insert_object=new stdClass();
+                        $isAll = false;
+
+                        if($section_id == 137 || $section_id == 139){
+                            $insert_object->branch_id=$branch_id;
+                        }
+                        if($section_id == 141){
+                            $insert_object->package_id= $package_id;
+                            $insert_object->branch_id=$branch_id;
+                        }
+                        foreach ($getConfiguartiondataResult as $row) {
+
+                            if ($row->operation_column != null && $row->operation_column !== "") {
+                                if($row->column_name != "" && !is_null($row->column_name)){
+                                    if (property_exists($object, $row->column_name)) {
+
+                                        $isAll = true;
+                                        $insert_object->{$row->operation_column}=$object->{$row->column_name};
+                                    } else {
+                                        $isAll = false;
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+                        if ($isAll) {
+                            array_push($InsertBatchData, (array)$insert_object);
+                            $orderIdA='AA'.str_pad($object->order_id,'6','0',STR_PAD_LEFT);
+                            $excelStructureData=array('VisitDate'=>date('M d Y H:i A'),
+                                'Orgname'=>'Covidcare',
+                                'Location'=>$patient_location,
+                                'Patient_number'=>$patientIdA,
+                                'Patient_Name'=>$patient_name,
+                                'Patient_Age'=>$patient_age,
+                                'OrderTest'=>$object->master_name,
+                                'ParameterId'=>$object->child_test_id,
+                                'ParameterName'=>'',
+                                'result'=>$object->value,
+                                'unit'=>$object->unit,
+                                'ref_range'=>$object->refe_value,
+                                'orderId'=>$orderIdA,
+                                'branch_id'=>$branch_id,
+                                'order_number'=>$object->order_id,
+                                'external_patient_id'=>$patientId,
+                                'patient_type'=>2);
+                            array_push($excelStructureDataArray,$excelStructureData);
+                            print_r($excelStructureDataArray);exit();
+
+                        }
+
+                    }
+                }
+                if($section_id == 137 || $section_id == 139){
+                    //delete operation
+                    $this->db->delete($operation_table,array("branch_id"=>$branch_id));
+                }
+                if($section_id == 141){
+                    $this->db->delete($operation_table,array("package_id"=>$package_id));
+                }
+                $result=$this->db->insert_batch($operation_table, $InsertBatchData);
+            }else{
+                $key = $getConfiguartiondata->update_where_columns;
+                $updateBatchData = array();
+                foreach ($data as $object) {
+
+                    if (!is_null($object))
+                    {
+                        array_push($updateBatchData, (array)$object);
+                            $orderIdA='AA'.str_pad($object->order_id,'6','0',STR_PAD_LEFT);
+                            $excelStructureData=array('VisitDate'=>date('M d Y H:i A'),
+                                'Orgname'=>'Covidcare',
+                                'Location'=>$patient_location,
+                                'Patient_number'=>$patientIdA,
+                                'Patient_Name'=>$patient_name,
+                                'Patient_Age'=>$patient_age,
+                                'OrderTest'=>$object->master_name,
+                                'ParameterId'=>$object->child_test_id,
+                                'ParameterName'=>'',
+                                'result'=>$object->value,
+                                'unit'=>$object->unit,
+                                'ref_range'=>$object->refe_value,
+                                'orderId'=>$orderIdA,
+                                'branch_id'=>$branch_id,
+                                'order_number'=>$object->order_id,
+                                'external_patient_id'=>$patientId,
+                                'patient_type'=>2);
+                            array_push($excelStructureDataArray,$excelStructureData);
+
+                    }
+
+                }
+                $result=$this->db->update_batch($operation_table, $updateBatchData, $key);
+
+            }
+            if(count($excelStructureDataArray)>0)
+            {
+                $whereExcel=array('external_patient_id'=>$patientId,'patient_type'=>2,'branch_id'=>$branch_id);
+                $delete=$this->db->where($whereExcel)->delete('excel_structure_data');
+                if($delete){
+                    $result=$this->db->insert_batch('excel_structure_data', $excelStructureDataArray);
+                }
+            }
+                if ($this->db->trans_status() === FALSE) {
+                    $this->db->trans_rollback();
+                    $resultstatus = FALSE;
+                } else {
+                    $this->db->trans_commit();
+                    $resultstatus = TRUE;
+                }
+                $this->db->trans_complete();
+                $response["last_query"] = $this->db->last_query();
+            } catch (Exception $ex) {
+                $resultstatus = FALSE;
+                $this->db->trans_rollback();
+            }
+
+            if ($resultstatus==true) {
+                $response["status"] = 200;
+                $response["body"] = "Save Changes";
+            } else {
+                $response["status"] = 201;
+                $response["body"] = "Failed to save change";
+            }
+        } else {
+            $response["status"] = 201;
+            $response["body"] = "something went wrong";
+        }
+        echo json_encode($response);
+
+    }
+
 }
