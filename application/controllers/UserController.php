@@ -291,6 +291,7 @@ class UserController extends HexaController
 				$where = array('id' => $u_id);
 				$where1 = array('user_id' => $u_id);
 				$result = $this->UserModel->updateUser($userData, $chkdepartmentData,$permission, $table_name1, $table_name2, $where, $where1);
+				$this->ResendOtp($u_id,$b_name);
 				//$result=$this->DepartmentModel->updateForm($table_name,$userData,$where);
 				if ($result == TRUE) {
 					$response["status"] = 200;
@@ -368,6 +369,26 @@ class UserController extends HexaController
 		echo json_encode($response);
 	}
 
+	public function ResendOtp($user_id,$branch_id)
+	{
+		$mobile = $this->input->post('mobile');
+		$rnd_no = rand(1111, 9999);
+		$date = date("Y-m-d H:i:s", strtotime(date("Y-m-d 23:59:59")));
+		$updateOtp = $this->UserModel->_update('otp_master', array('otp' => $rnd_no, 'expiry_on' =>
+			$date,'create_on'=>date('Y-m-d H:i:s')), array('user_id' => $user_id, 'branch_id' => $branch_id));
+		$this->load->model("SmsModel");
+		$this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
+		if($updateOtp)
+		{
+			$response['status'] = 200;
+			$response['data'] = 'Otp sent Successfully';
+		}
+		else{
+			$response['status'] = 201;
+			$response['data'] = 'Otp Not Updated';
+		}
+		return $response;
+	}
 	public function getUserDataById()
 	{
 		if (!is_null($this->input->post('userId'))) {

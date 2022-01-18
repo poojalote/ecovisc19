@@ -1449,4 +1449,117 @@ on p.id= t.id")->result();
 		}
 		echo json_encode($response);
 	}
+
+
+	public function get_patient_history_data()
+	{
+		$this->load->model('Formmodel');
+		$table_name = $this->input->post('table_name');
+		$patient_id = $this->input->post('patient_id');
+		$section_id = $this->input->post('section_id');
+		$branch_id = $this->session->user_session->branch_id;
+		$resultTemplateObject = $this->Formmodel->getHistoryTableColumn($section_id);
+		$labelArray = array();
+		$dataArray = array();
+		$transArray = array();
+		$data = "";
+		$optionsValue = array();
+		if ($resultTemplateObject->totalCount > 0) {
+			$data = "<table class='table table-responsive' style='width:100%' id='history_table_" . $section_id . "'><thead>";
+			foreach ($resultTemplateObject->data as $column) {
+				$data .= "<th>" . $column->name . "</th>";
+				if ((int)$column->ans_type == 3) {
+					$options = $this->Formmodel->get_all_options($column->id);
+					if (is_array($options)) {
+						$optionsValue[$column->field_name] = $options;
+					}
+				}
+				if ((int)$column->ans_type == 4) {
+					$options = $this->Formmodel->get_all_options($column->id);
+					if (is_array($options)) {
+						$optionsValue[$column->field_name] = $options;
+					}
+				}
+
+				if ((int)$column->ans_type == 6) {
+					array_push($labelArray, $column->name);
+				}
+			}
+			$totalColumn = count($resultTemplateObject->data);
+			$response["transColumnIndex"] = $totalColumn;
+			$data .= "<th>Date</th>";
+			$data .= "</thead><tbody>";
+			$resultObject = $this->Formmodel->history_data($table_name, array("patient_id" => $patient_id, "branch_id" => $branch_id));
+			$response["query"] = $this->db->last_query();
+			// print_r($resultObject);exit();
+			if (count($resultObject) > 0) {
+				foreach ($resultObject as $recordIndex => $record) {
+					$row = (array)$record;
+					$td = "";
+					$count = 0;
+					foreach ($resultTemplateObject->data as $column) {
+						$value = $row[$column->field_name];
+						if ((int)$column->ans_type == 7) {
+							if ($row[$column->field_name] != "" && $row[$column->field_name] != null)
+								$value = '<a href="' . base_url($row[$column->field_name]) . '" class="btn btn-link" download><i class="fa fa-download"></i> Download</a>';
+						}
+
+						if ((int)$column->ans_type == 4) {
+							$option = $optionsValue[$column->field_name];
+							if (is_array($option)) {
+								foreach ($option as $optionValues) {
+									if ($optionValues->id == $value) {
+										$value = $optionValues->name;
+										break;
+									}
+								}
+							}
+						}
+						if ((int)$column->ans_type == 3) {
+							$option = $optionsValue[$column->field_name];
+							if (is_array($option)) {
+								foreach ($option as $optionValues) {
+									if ($optionValues->id == $value) {
+										$value = $optionValues->name;
+										break;
+									}
+								}
+							}
+						}
+						if ($value != "" && $value != null) {
+							$td .= "<td>" . $value . "</td>";
+							$dataArray[$column->name][date('jS M H:i:a', strtotime($row['trans_date']))] = $row[$column->field_name];
+							$count = 1;
+						} else {
+							$td .= "<td></td>";
+						}
+					}
+					$edit_btn = '';
+					$permission_array = $this->session->user_permission;
+//					if (in_array("history_update", $permission_array)) {
+//						$edit_btn = "<button class='btn btn-primary btn-sm' data-toggle='modal' data-target='#editHistoryModal'  data-patient_id='" . $patient_id . "' data-section_id='" . $section_id . "' data-history_id='" . $record->id . "' id='editSectionButton_" . $section_id . "'><i class='fa fa-edit'></i></button>";
+//					} else {
+//						//$edit_btn="<button class='btn btn-primary btn-sm'id='editSectionButton_" . $section_id . "' disabled><i class='fa fa-edit'></i></button>";
+//					}
+					if ($count == 1) {
+						$data .= "<tr>";
+						$data .= $td;
+						$data .= "<td>" . date('d/m H:i:a', strtotime($row['trans_date'])) . "</td>";
+//						$data .= "<td>" . $edit_btn . "</td>";
+						$data .= "</tr>";
+						array_push($transArray, date('jS M H:i:a', strtotime($row['trans_date'])));
+					}
+
+				}
+			}
+			$data .= "</tbody></table>";
+		}
+
+		$response["table"] = $data;
+		$response["label"] = $labelArray;
+		$response["trans"] = $transArray;
+		$response["data"] = $dataArray;
+
+		echo json_encode($response);
+	}
 }
