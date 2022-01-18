@@ -527,9 +527,6 @@ if (is_null($user_permission_array)) {
 							"columnDefs": [{"targets": result.transColumnIndex, "type": "date-eu"}],
 						}
 				);
-				labelsCollection = result.label;
-				record = result.data;
-				trans.push(result.trans);
 			}, error: function (error) {
 				$('#vitals').html('No Data Found');
 				app.errorToast('Something went wrong please try again');
