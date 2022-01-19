@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 $this->load->view('_partials/header');
-$branchpermission_array = $this->session->Branch_permission;
+ $branchpermission_array = $this->session->Branch_permission;
 $user_permission_array = $this->session->user_permission;
 if (is_null($branchpermission_array)) {
 	$branchpermission_array = array();
@@ -250,10 +250,10 @@ if (is_null($user_permission_array)) {
 									<nav>
 
 										<ul>
-											<li>
-												<button type="button" class="btn btn-info btn-lg"
-														onclick="getMedicVitals()">Open Modal
-											</li>
+<!--											<li>-->
+<!--												<button type="button" class="btn btn-info btn-lg"-->
+<!--														onclick="getMedicVitals()">Open Modal-->
+<!--											</li>-->
 											<?php
 											if (array_search("IPD_TAB", $user_permission_array) && array_search("IPD_TAB", $branchpermission_array)) {
 												?>
@@ -411,21 +411,32 @@ if (is_null($user_permission_array)) {
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="col-md-12 pl-0" id="medication_vital">
-					<div class="form-group">
-						<label style="font-size: 20px;font-weight: bolder;">Vital History</label>
-						<div id="vitals">
-						</div>
+				<section>
+					<div class="tabs tabs-style-underline">
+						<nav>
+							<ul>
+								<li id="vt" class="tab-current"><a onclick="vitaltab()">Vitals</a></li>
+								<li id="nt" ><a onclick="notestab()">Progress Notes</a></li>
+								<li id="mt" ><a onclick="medictab()">Medicines</a></li>
+							</ul>
+						</nav>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-sm-12">
-						<div id="schedule_table">
-							<label style="font-size: 20px;font-weight: bolder;">Medicines</label>
+					<div class="content-wrap">
+						<section id="vitalsTab" class="content-current">
+							<div id="vitals">
+
+							</div>
+						</section>
+						<section id="schedule_table">
 							<div id="currentDoesTableBox"></div>
-						</div>
+						</section>
+						<section id="notesTab">
+							<div id="notes">
+
+							</div>
+						</section>
 					</div>
-				</div>
+				</section>
 			</div>
 		</div>
 	</div>
@@ -462,11 +473,152 @@ if (is_null($user_permission_array)) {
 		</div>
 	</div>
 </div>
+
+<!--UPDATE MODAL MEDICINE-->
+<div class="modal fade" id="update_modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" id="closeUpdate" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="updateMedicineForm" class="form-horizontal" method="POST"
+					  data-form-valid="updateMedicineForm">
+					<input type="hidden" id="u_medicine_id" name="u_medicine_id">
+					<input type="hidden" id="u_p_id" name="u_p_id">
+					<div class="form-group">
+						<strong>Remark</strong>
+						<textarea name="u_remark" id="u_remark" class="form-control" maxlength="255"></textarea>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<label>Route</label>
+							<select data-value="2" class="form-control" name="u_route" id="u_route">
+								<option disabled="" selected="">Select Route
+								</option>
+								<option value="PO/NG">PO/ NG</option>
+								<option value="IV">IV</option>
+								<option value="IM">IM</option>
+								<option value="SC">SC</option>
+								<option value="PR">PR</option>
+								<option value="LA">LA</option>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<label>Dose</label>
+							<select data-value="2" class="form-control" name="u_quantity" id="u_quantity">
+								<option disabled="" selected="">Select Dose
+								</option>
+								<option value="0.25">0.25</option>
+								<option value="0.5">0.5</option>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-2">
+							<label>Flow Rate</label>
+							<input type="checkbox" name="u_flow_rate_check" id="flow_rate_check"
+								   onchange="$('#update_flow_rate').toggleClass('d-none')"/>
+						</div>
+						<div class="form-group col-md-10 d-none" id="update_flow_rate">
+							<label>Flow Rate</label>
+							<input type="text" name="u_flow_rate_update" id="flow_rate_update" class="form-control"/>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">save</button>
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+<!--delete form-->
+<div class="modal fade" id="edit_modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" id="closeedit1" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+
+			<div class="modal-body">
+				<form id="editForm_new" class="form-horizontal" method="POST" data-form-valid="deleteMedicine"
+					  onsubmit="return false">
+					<input type="hidden" id="e_medicine_id" name="id">
+					<input type="hidden" id="e_p_id" name="e_p_id">
+
+					<div class="form-group">
+						<strong>Delete Reason</strong>
+						<textarea name="deleteReason" id="reason" class="form-control" maxlength="255"
+								  data-valid="required" data-msg="Enter reason"></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">save</button>
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<button type="button" class="btn btn-primary d-none" id="commentMedicineModalBtn" data-toggle="modal" data-target="#commentMedicineModal">Open Modal</button>
+<!--Medicine Comment modal -->
+<div class="modal fade" id="commentMedicineModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4>Comment</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="medicineCommentForm" method="post">
+					<input type="hidden" name="m_patient_id" id="m_patient_id">
+					<input type="hidden" name="c_medicine_id" id="c_medicine_id">
+					<input type="hidden" name="m_iteration_id" id="m_iteration_id">
+					<input type="hidden" name="m_dose_date" id="m_dose_date">
+
+					<div class="form-row">
+						<textarea class="form-control" type="text" name="medicine_comment" id="medicine_comment"></textarea>
+					</div>
+					<div class="align-items-baseline form-row justify-content-end mt-2">
+						<button class="btn btn-primary mr-1" type="button" onclick="addMecidineCommentData()">
+							Save
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 <!-- Main Content end -->
 <?php $this->load->view('_partials/footer'); ?>
 <script src="<?=base_url('assets/js/module/medicine/medicine.js');?>"></script>
 
 <script type="text/javascript">
+
 	const videoStreaming = 'https://vs.docango.com/';
 	let cameraCapture = null;
 	var base_url = "<?php echo base_url(); ?>";
@@ -480,18 +632,48 @@ if (is_null($user_permission_array)) {
 		});
 	});
 
-	function getMedicVitals() {
+	function getMedicVitals(section_id,patient_id) {
 		$('#vitals').html('');
-		var patient_id = 396;
 		$('#currentDoesTableBox').html('');
-		// var section_id = $('#section_id').val();
-		var section_id = 2;
+		$('#notes').html('');
 		$('#medication_vitals').modal('show');
-		getVitals(section_id,patient_id);
+		getVitals(patient_id);
+		getNotes(patient_id)
 		getDoesDetails(patient_id);
 	}
 
-	function getVitals(section_id,patient_id) {
+	function notestab()
+	{
+		$('#notesTab').addClass('content-current');
+		$('#schedule_table').removeClass('content-current');
+		$('#vitalsTab').removeClass('content-current');
+		$('#nt').addClass('tab-current');
+		$('#vt').removeClass('tab-current');
+		$('#mt').removeClass('tab-current');
+	}
+
+	function vitaltab()
+	{
+		$('#notesTab').removeClass('content-current');
+		$('#schedule_table').removeClass('content-current');
+		$('#vitalsTab').addClass('content-current');
+		$('#nt').removeClass('tab-current');
+		$('#vt').addClass('tab-current');
+		$('#mt').removeClass('tab-current');
+	}
+
+	function medictab()
+	{
+		$('#notesTab').removeClass('content-current');
+		$('#schedule_table').addClass('content-current');
+		$('#vitalsTab').removeClass('content-current');
+		$('#nt').removeClass('tab-current');
+		$('#vt').removeClass('tab-current');
+		$('#mt').addClass('tab-current');
+	}
+
+	function getVitals(patient_id) {
+		var section_id = 2;
 		var table_name = "his_com_1_dep_2";
 		$.ajax({
 			type: "POST",
@@ -534,6 +716,50 @@ if (is_null($user_permission_array)) {
 		});
 	}
 
+	function getNotes(patient_id) {
+		var section_id = 25;
+		var table_name = "his_com_1_dep_8";
+		$.ajax({
+			type: "POST",
+			url: baseURL + "get_patient_history_data",
+			dataType: "json",
+			data: {table_name: table_name, patient_id: patient_id, section_id: section_id},
+			success: function (result) {
+				$('#notes').empty();
+				$('#notes').append(result.table);
+
+				$("#example").on("mousedown", "td .fa.fa-minus-square", function (e) {
+					table.row($(this).closest("tr")).remove().draw();
+				});
+				$("#example").on('mousedown.edit', "i.fa.fa-pencil-square", function (e) {
+
+					$(this).removeClass().addClass("fa fa-envelope-o");
+					var $row = $(this).closest("tr").off("mousedown");
+					var $tds = $row.find("td").not(':first').not(':last');
+
+					$.each($tds, function (i, el) {
+						var txt = $(this).text();
+						$(this).html("").append("<input type='text' value=\"" + txt + "\">");
+					});
+				});
+
+				$('#history_table_' + section_id).on('mousedown', "#selectbasic", function (e) {
+					e.stopPropagation();
+				});
+
+				$('#history_table_' + section_id).DataTable(
+						{
+							order: [[result.transColumnIndex, "desc"]],
+							"columnDefs": [{"targets": result.transColumnIndex, "type": "date-eu"}],
+						}
+				);
+			}, error: function (error) {
+				$('#notes').html('No Data Found');
+				app.errorToast('Something went wrong please try again');
+			}
+		});
+	}
+
 
 	function getDoesDetails(p_id) {
 		new Promise((resolve, reject) => {
@@ -551,10 +777,10 @@ if (is_null($user_permission_array)) {
 			});
 		}).then((result) => {
 			if (result.status === 200) {
-				$('#currentDoesTableBox').empty();
+				$('#currentDoesTableBox').html("");
 				$('#currentDoesTableBox').append(result.currentArray);
 			} else {
-				$('#currentDoesTableBox').empty();
+				$('#currentDoesTableBox').html("");
 				$('#currentDoesTableBox').append(result.currentArray);
 			}
 
@@ -593,4 +819,84 @@ if (is_null($user_permission_array)) {
 		})
 	}
 
+	$('#update_modal').on('show.bs.modal', function (e) {
+		let medicine_id = $(e.relatedTarget).data('id');
+		let patient_id = $(e.relatedTarget).data('pid');
+
+		let flow_rate = parseInt(atob($(e.relatedTarget).data('flow_rate')));
+		let flow_text = atob($(e.relatedTarget).data('flow_text'));
+		let remark = atob($(e.relatedTarget).data('remark'));
+		let route = atob($(e.relatedTarget).data('route'));
+		let quantity = atob($(e.relatedTarget).data('quantity'));
+
+		app.formValidation();
+		$("#u_medicine_id").val(medicine_id);
+		$("#u_p_id").val(patient_id);
+		if (flow_rate === 1) {
+			$("#flow_rate_check").click();
+			$("#update_flow_rate").removeClass('d-none')
+		}
+
+		$("#flow_rate_update").val(flow_text);
+		$("#u_remark").val(remark);
+		$("#u_route").val(route);
+		$("#u_quantity").val(quantity);
+	});
+
+	function updateMedicineForm(form) {
+		let patient_id = $('#u_p_id').val();
+		app.request(baseURL + "saveMedicineUpdate", new FormData(form)).then(res => {
+			if (res.status === 200) {
+				app.successToast(res.body);
+				$("#updateMedicineForm").trigger('reset');
+				$("#closeUpdate").click();
+				getDoesDetails(patient_id);
+			} else {
+				app.errorToast(res.body);
+			}
+		}).catch(error => console.log(error));
+	}
+
+	$('#edit_modal').on('show.bs.modal', function (e) {
+		let id = $(e.relatedTarget).data('id');
+		let pid = $(e.relatedTarget).data('pid');
+		$('#e_medicine_id').val(id);
+		$('#e_p_id').val(pid);
+	});
+	onclick = 'deleteMedicineHome(" . $doesObject->id . ",".$p_id.");'
+
+	function addMedicineComment(p_id,m_id,iteration,dosedate)
+	{
+		$("#commentMedicineModalBtn").click();
+		$("#m_patient_id").val(p_id);
+		$("#c_medicine_id").val(m_id);
+		$("#m_iteration_id").val(iteration);
+		$("#m_dose_date").val(dosedate);
+	}
+
+	function addMecidineCommentData()
+	{
+		var comment=$("#medicine_comment").val();
+		if(comment!="")
+		{
+			// var form=$('#medicineCommentForm').serialize();
+			let form = document.getElementById("medicineCommentForm");
+			let formData = new FormData(form);
+			app.request(baseURL + "addmedicineCommentForm", formData).then(res => {
+				if (res.status === 200) {
+					app.successToast(res.body);
+					$("#commentMedicineModalBtn").click();
+				} else {
+					app.errorToast(res.body);
+				}
+			}).catch(error => {
+				console.log(error);
+			})
+		}
+		else
+		{
+			app.errorToast('Enter comment');
+		}
+
+	}
 </script>

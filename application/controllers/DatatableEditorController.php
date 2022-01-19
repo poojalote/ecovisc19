@@ -681,13 +681,10 @@ class DatatableEditorController extends HexaController
 							//array_push($tempData, $rowData->{$columns});
 							//var_dump($columns);
 							if(property_exists($rowData,$columns)){
-
-
 								array_push($tempData, $rowData->{$columns});
 							}else{
 								$position = strpos($columns, "Age_Gender");
 								if($position != false){
-
 									array_push($tempData, $rowData->Age_Gender);
 								}
 							}
@@ -739,7 +736,7 @@ class DatatableEditorController extends HexaController
 										</button>';
 							}
                             $actionButtonTemplate .='<a class="btn btn-link" href="'.base_url().'get_patient_data/'.$rowData->id.'" target="_blank"><i class="fa fa-download"></i></a>';
-
+							$actionButtonTemplate .='<a class="btn btn-reddit" onclick="getMedicVitals(2,'.$rowData->id.')" target="_blank"><i class="fa fa-plus"></i></a>';
                         }
                         else{
                             foreach ($actionButton as $button) {
