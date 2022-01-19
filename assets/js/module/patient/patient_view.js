@@ -558,6 +558,10 @@ function get_PatientDataById(patientId) {
 				$("#dob").val(user_data[0]['birth_date']);
 
 			}
+			if (user_data[0]['reference_id'] != null && user_data[0]['reference_id'] != '') {
+				$("#reference_id").val(user_data[0]['reference_id']);
+
+			}
 			if (user_data[0]['blood_group'] != null && user_data[0]['blood_group'] != '') {
 				let blood = user_data[0]['blood_group'];
 

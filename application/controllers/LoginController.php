@@ -337,14 +337,8 @@ class LoginController extends HexaController
 					array('otp' => $rnd_no, 'user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')));
             }
 
-			$company = "";
-			if (base_url()=="https://covidcare.ecovisrkca.com/") {
-				$company = "Covidcare";
-			}
-			if(base_url()=="https://c19.ecovisrkca.com/") {
-				$company = "C19";
-			}
 
+			$company = "C19";
 			$this->load->model("SmsModel");
             $this->SmsModel->sendSMS($mobile, array('company' => $company, 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
             $message = "Please enter the One Time Password <br> sent on ".$mobile." <br> to verify your Device";
@@ -369,14 +363,7 @@ class LoginController extends HexaController
 		}
 
 
-		$company = "";
-		if (base_url()=="https://covidcare.ecovisrkca.com/") {
-			$company = "Covidcare";
-		}
-		if(base_url()=="https://c19.ecovisrkca.com/") {
-			$company = "C19";
-		}
-
+		$company = "C19";
 		$this->SmsModel->sendSMS($mobile, array('company' => $company, 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
 		if($updateOtp)
 		{
