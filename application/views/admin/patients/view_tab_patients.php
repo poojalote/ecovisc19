@@ -640,6 +640,12 @@ if (is_null($user_permission_array)) {
 		getVitals(patient_id);
 		getNotes(patient_id)
 		getDoesDetails(patient_id);
+		$('#notesTab').removeClass('content-current');
+		$('#schedule_table').removeClass('content-current');
+		$('#vitalsTab').addClass('content-current');
+		$('#nt').removeClass('tab-current');
+		$('#vt').addClass('tab-current');
+		$('#mt').removeClass('tab-current');
 	}
 
 	function notestab()
