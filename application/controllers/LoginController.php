@@ -338,9 +338,10 @@ class LoginController extends HexaController
             }
 
 			$company = "";
-			if (base_url()=="https://covidcare.ecovisrkca.com") {
+			if (base_url()=="https://covidcare.ecovisrkca.com/") {
 				$company = "Covidcare";
-			} else {
+			}
+			if(base_url()=="https://c19.ecovisrkca.com/") {
 				$company = "C19";
 			}
 
@@ -369,9 +370,10 @@ class LoginController extends HexaController
 
 
 		$company = "";
-		if (base_url()=="https://covidcare.ecovisrkca.com") {
+		if (base_url()=="https://covidcare.ecovisrkca.com/") {
 			$company = "Covidcare";
-		} else {
+		}
+		if(base_url()=="https://c19.ecovisrkca.com/") {
 			$company = "C19";
 		}
 
