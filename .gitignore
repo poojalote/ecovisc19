@@ -36,3 +36,5 @@ application/views/admin/patients/view_patients.php
 
 application/config/config.php
 
+application/controllers/LoginController.php
+application/config/database.php

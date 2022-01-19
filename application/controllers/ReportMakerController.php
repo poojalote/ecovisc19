@@ -18,7 +18,7 @@ class ReportMakerController extends HexaController
 		$this->load->model('ReportMakerModel');
 		$this->load->model('Global_model');
 		date_default_timezone_set('Asia/Kolkata');
-		$this->db2 = $this->load->database('live', TRUE);
+
 	}
 
 	public function index()
@@ -1614,16 +1614,17 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
 				if ($data == true) {
 					echo "added";
 				} else {
-					echo "not added";
+					echo "1";
 				}
 			}
 		} else {
-			echo "not added";
+			echo "2";
 		}
 	}
 
 	function getCriticalParameterData($patient_id, $branch_id, $category)
 	{
+        $this->db2 = $this->load->database('live', TRUE);
 		$patient_table = $this->session->user_session->patient_table;
 		$query = $this->db->query("select result,ParameterId,(select group_concat(patient_name,'|',adhar_no,'|',bed_id) from " . $patient_table . " where id=" . $patient_id . " AND branch_id=" . $branch_id . ") as patient_details,
 (select group_concat(sec_1_f_8,'|',sec_1_f_16) from com_1_dep_1 where patient_id=" . $patient_id . " AND branch_id=" . $branch_id . " ) as case_history
@@ -1918,7 +1919,7 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
 					}
 				}
 			} else {
-				$query2 = $this->db->query("select sec_2_f_4,sec_2_f_21,sec_2_f_20 from com_1_dep_2 where patient_id=" . $patient_id . " order by id desc");
+				$query2 = $this->db->query("select sec_2_f_4,sec_2_f_21,sec_2_f_20,sec_2_f_347 from com_1_dep_2 where patient_id=" . $patient_id . " and branch_id=" . $branch_id . " order by id desc");
 				if ($this->db->affected_rows() > 0) {
 					$res = $query2->row();
 					$dataToinsert['SPO2'] = $res->sec_2_f_4;
@@ -1946,9 +1947,16 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
 					} else {
 						$dataToinsert['RR_status'] = 3; //Very High
 					}
+					$dataToinsert['oxygen'] = $res->sec_2_f_347;//Oxygen support
+					if ($res->sec_2_f_347 == 1565 || $res->sec_2_f_347 == "" || is_null($res->sec_2_f_347)) {
+						$dataToinsert['oxygen_status'] = 1; //low
+					} else if ($res->sec_2_f_347 > 1565 && $res->sec_2_f_347 <= 1569) {
+						$dataToinsert['oxygen_status'] = 2; //medium
+					} else {
+						$dataToinsert['oxygen_status'] = 3; //high
+					}
 				}
 			}
-
 			$where = array("patient_id" => $patient_id, "branch_id" => $branch_id);
 			$this->db->delete("patient_critical_data", $where);
 			$insert = $this->db->insert("patient_critical_data", $dataToinsert);

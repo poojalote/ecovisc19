@@ -177,6 +177,11 @@ function deleteUser(userId) {
 		} else {
 			app.errorToast(result.body);
 		}
+		if (role == 2) {
+			getUsersTableData(1, company_id, branch_id);
+		} else {
+			getUsersTableData();
+		}
 	}).catch(error => console.log(error));
 }
 

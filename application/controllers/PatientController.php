@@ -206,7 +206,6 @@ class PatientController extends HexaController
                     'locality' => $locality,
 
                 );
-//                print_r($update_data);exit();
                 if ($patient_image != "") {
                     $update_data["patient_image"] = $patient_image;
                 }
@@ -259,7 +258,7 @@ class PatientController extends HexaController
                 );
                 //$condition = 'where dm.adhar_no="' . $adhhar_no . '" and dm.discharge_date is null';
 
-                if(!is_null($searchSelectPatient)){
+                if(!is_null($searchSelectPatient) && $searchSelectPatient !==""){
                     $condition = 'where dm.id="' . $searchSelectPatient . '"';
                 }else{
                     $condition = 'where dm.adhar_no="' . $adhhar_no . '"  group by adhar_no order by id desc';
@@ -310,7 +309,7 @@ class PatientController extends HexaController
                                     $this->db->update($table_name, array("adhar_no" => $adhar_no));
                                 }
                                 $response["status"] = 200;
-                                $response["data"] = "uploaded successfully 1";
+                                $response["data"] = "uploaded successfully ";
 								$response["patient_id"] = $patientId;
 								$response["patient_name"] = $patient_name;
                             } else {
@@ -346,7 +345,7 @@ class PatientController extends HexaController
                             }
                         }
                         $response["status"] = 200;
-                        $response["data"] = "uploaded successfully 2";
+                        $response["data"] = "uploaded successfully";
 						$response["patient_id"] = $patientId;
 						$response["patient_name"] = $patient_name;
                     } else {
