@@ -489,7 +489,7 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$resulObject=$this->DashboardModel->_rawQuery('select sum(case when status=1 and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL then 1 else 0 end ) as active_cases,sum(case when date(discharge_date)=CURRENT_DATE() and event =\'mortality\' then 1 else 0 end) as death_today,
   														sum(case when date(admission_date)=CURRENT_DATE() then 1 else 0 end) as admitted_today,
   														sum(case when date(discharge_date)=CURRENT_DATE() and (is_transfered=0 or is_transfered is null) then 1 else 0 end) as discharge_today,sum(case when date(discharge_date)=CURRENT_DATE() and is_transfered =1 then 1 else 0 end) as transfer_today,
-  														sum(case when (select cd.id from com_1_dep_2 cd where cd.branch_id=cp.branch_id and cd.patient_id=cp.id and cd.sec_2_f_347!=1565 and cd.sec_2_f_347 is not null order by cd.id desc limit 1 ) and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL then 1 else 0 end) as o2_patient,
+  														sum(case when (select cd.id from com_1_dep_2 cd where cd.branch_id=cp.branch_id and cd.patient_id=cp.id and cd.sec_2_f_347!=1565 and cd.sec_2_f_347!="" and cd.sec_2_f_347 is not null order by cd.id desc limit 1 ) and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL then 1 else 0 end) as o2_patient,
   														sum(case when status=1 and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL and bed_id is not null and bed_id!=0 then 1 else 0 end ) as bedactive_cases from '.$patient_table.' cp where branch_id='.$branch_id);
 
 		if($resulObject->totalCount>0)

@@ -403,7 +403,10 @@ class Report extends HexaController
 			$table_td="";
 			$table_th="";
 			$table="";
+
+
 		$query_new=$this->db->query($query_val);
+
 		if($this->db->affected_rows() > 0){
 			$q_result=$query_new->result();
 			
