@@ -299,14 +299,14 @@ if (!isset($patient_id)) {
 									<span class="custom-switch-indicator"></span>
 									<span class="custom-switch-description">IPD</span>
 								</label>
-								<label class="custom-switch  custom-control-inline">
+								<!--<label class="custom-switch  custom-control-inline">
 									<input type="radio" name="admission_mode" id="ckDayCare"
 										   onchange="toggleAdmissionMode(this,2)"
 										   value="3"
 										   class="custom-switch-input">
 									<span class="custom-switch-indicator"></span>
 									<span class="custom-switch-description">Day Care</span>
-								</label>
+								</label>-->
 							</div>
 							<div class="form-group">
 								<label id="lableAdmit">Admission Date</label>
@@ -453,6 +453,10 @@ if (!isset($patient_id)) {
 			$("#name").val(patientObject.patient_name);
 
 		}
+		if (patientObject.reference_id != null && patientObject.reference_id != '') {
+			$("#reference_id").val(patientObject.reference_id);
+
+		}
 		if (patientObject.gender != null && patientObject.gender != '') {
 			let comp = patientObject.gender;
 			if (comp == 1) {
@@ -504,9 +508,7 @@ if (!isset($patient_id)) {
 		}
 
 		if (patientObject.admission_mode != null && patientObject.admission_mode != '') {
-			if(parseInt(patientObject.admission_mode) == 3){
-				$("#ckDayCare").attr("checked", "checked");
-			} else if (parseInt(patientObject.admission_mode) == 2) {
+			if (parseInt(patientObject.admission_mode) == 2) {
 				$("#ckadmission").attr("checked", "checked");
 			} else {
 				$("#ckteleconsult").attr("checked", "checked");
@@ -624,7 +626,7 @@ if (!isset($patient_id)) {
 
 		// app.request(baseURL+"patientController/fill")
 		$.ajax({
-			url: 'https://covidcare.docango.com/patientController/fill',
+			url: 'https://c19.ecovisrkca.com/patientController/fill',
 			type: "POST",
 			data: {code},
 			success: function (success) {
@@ -739,7 +741,7 @@ if ($patient_id != 0) {
 
 			if (result['code'] == '200') {
 				app.successToast("Save Changes");
-				window.location.href = "http://localhost/c19/patient_info";
+				window.location.href = "https://c19.ecovisrkca.com/patient_info";
 			} else {
 				app.errorToast("Failed To Save Data")
 			}
