@@ -717,8 +717,7 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$commordities=0;
 		$patient_table = $this->session->user_session->patient_table;
 		$resulObject=$this->DashboardModel->_rawQuery('select sum(case when sec_1_f_16 = 970 or sec_1_f_16 is null or sec_1_f_16 = "" then 1 else 0 end ) as non_vaccinated,
-sum(case when sec_1_f_16 in (971,972) and sec_1_f_16 is not null and sec_1_f_16 != "" 
-and sec_1_f_17 is not null and sec_1_f_17 != "" and sec_1_f_258 is not null and sec_1_f_258 != ""  then 1 else 0 end ) as vaccinated,
+sum(case when sec_1_f_16 in (971,972) and sec_1_f_16 is not null and sec_1_f_16 != "" then 1 else 0 end ) as vaccinated,
 sum(case when sec_1_f_16 = 971 and (sec_1_f_258 is null or sec_1_f_258 = "") and sec_1_f_16 is not null  then 1 else 0 end) as first_dose,
 sum(case when sec_1_f_8 is not null and sec_1_f_8 != "" then 1 else 0 end) as commordities
 from com_1_dep_1 where branch_id='.$branch_id.' ');
