@@ -15,9 +15,7 @@
 	"ext-json": "*",
 	"ext-curl": "*",
 	"dompdf/dompdf": "^1.0",
-	"aranyasen/hl7": "^2.0",
-    "phpro/soap-client": "^1.4",
-	"ext-soap": "*"
+    "guzzlehttp/guzzle": "^6.5"
   },
   "suggest": {
 	"paragonie/random_compat": "Provides better randomness in PHP 5.x"

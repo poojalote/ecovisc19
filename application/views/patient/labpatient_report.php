@@ -226,6 +226,7 @@ $this->load->view('_partials/header');
 												</section>
                                                 <section id="labEntryHandsonPanel">
                                                     <div id="tabentryhandsondata"></div>
+                                                    <button class="btn btn-primary" type="button" id="saveLabExcelDataEntry" onclick="saveExcelData();">Save</button>
                                                 </section>
                                                 <section id="pathologyCollectionPanel">
                                                     <table class="table table-bordered table-stripped" id="pathologyTable">
@@ -447,22 +448,24 @@ $this->load->view('_partials/header');
         })
     });
 
-function getCollectionTable(category, tableID, patient_id = null) {
+
+function getCollectionTable(category, tableID) {
+    
     // var p_id = $('#p_id').val();
     //console.log(""+tableID+"");
+    let patient_id = localStorage.getItem("patient_id");
     // let formData = new FormData();
-    // formData.set("category", category);
+    // formData.set("patient_id", patient_id);
     // // if(category=="RADIOLOGY"){
     // let zone = $("#psampleAllPatient").val();
     // if (zone !== null) {
     //     formData.set("zone_id", zone);
     // }
-  
     let base_url = `<?php echo base_url(); ?>`;
     app.dataTable('pathologyTable', {
         url: base_url+"getLabCollectionTable",
-       // data:formData
-        dataSrc: ""
+        data:{patient_id:patient_id},
+        dataType:'json',
     }, [
             {
                 data: 0
@@ -1015,10 +1018,12 @@ function SavePathologyProgress2(formData) {
 </script>
 <script>
 	function loadEditableTable(sectionId) {
+        // console.log("p id = == "+localStorage.getItem("patient_id"));
 		let formData = new FormData();
 		formData.set("section_id", sectionId);
 		formData.set("dep_id", $("#department_id").val());
 		formData.set("haskey", $("#excelhiddenelement").val());
+        formData.set('queryParam',$('#queryparameter_hidden').val());
 		$.ajax({
 			type: "POST",
 			url: "<?= base_url("getLabDataEntryExcelData") ?>",
@@ -1032,27 +1037,25 @@ function SavePathologyProgress2(formData) {
 				{
 					userType=result.data;
 				}
-				var rows = [['', '', '', '', '',],];
+                data = result.body;
+				var rows = data;
 				var types = [
+                    {type: 'text'},
 					{type: 'text'},
 					{type: 'text'},
-					{type: 'text'},
-					{
-						type: 'dropdown', source: ['Doctor','Nurse','Other'],
-					},
-					{
-						type: 'dropdown', source: userType,
-					},
-
-
+                    {type: 'text'},
+                    {type: 'text'},
+                    {type: 'text'},
+                    {type: 'text'},
 				];
-				var hideArra = [];
-				var columns = ['Name(A)', 'User Name(B)', 'Password(C)', 'Role(D)', 'User Type(E)'];
+				var hideArra = [0,5,6];
+				var columns = ["Master Id",'Test Name(A)', 'Value(B)', 'Unit(C)', 'Bio Ref Interval(D)',"Child Test Id","Id"];
 				hideColumn = {
 					// specify columns hidden by default
 					columns: hideArra,
 					copyPasteEnabled: false,
 				};
+                // console.log(result.body);
 				createHandonTable(columns, rows, types, 'tabentryhandsondata', hideColumn);
 
 			}, error: function (error) {
@@ -1073,8 +1076,6 @@ function SavePathologyProgress2(formData) {
 			formulas: true,
 			manualColumnResize: true,
 			manualRowResize: true,
-
-			// ],
 			columns: columnTypes,
 			minSpareRows:1,
 			stretchH: 'all',
@@ -1092,4 +1093,52 @@ function SavePathologyProgress2(formData) {
 
 		hotDiv.validateCells();
 	}
+
+    function saveExcelData() {
+        $.LoadingOverlay("show");
+        // $("#newErrorDiv").html('');
+        var array=hotDiv.getData();
+        console.log(array);
+        if (confirm("Are You Sure You want to upload?")) {
+            $.ajax({
+                url: "<?= base_url();?>" + "updateDynamicLabData",
+                type: "POST",
+                dataType: "json",
+                data: {value: array,patient_id:localStorage.getItem("patient_id")},
+                success: function (result) {
+                    $.LoadingOverlay("hide");
+                    if (result.status == 200) {
+                        toastr.success(result.body);
+                        location.reload();
+                        // getDataMain();
+                    } else {
+                        // if(result.type==1)
+                        // {
+                        //     $("#newErrorDiv").html(`<div><div class="alert alert-light alert-has-icon">
+                        //                       <div class="alert-icon"><i class="fa fa-exclamation-circle"></i></div>
+                        //                       <div class="alert-body">
+                        //                         <div class="alert-title">At this Position Data will be <b>Mandatory</b> </div>
+                        //                          ${result.body}
+                        //                       </div>
+                        //                     </div></div>`);
+                        // }
+                        // else
+                        // {
+                            toastr.error(result.body);
+                        // }
+                        
+                    }
+
+
+                },
+                error: function (error) {
+
+                    $.LoadingOverlay("hide");
+                    console.log(error);
+                    // $.LoadingOverlay("hide");
+                }
+            });
+        }
+
+    }
 </script>

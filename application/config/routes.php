@@ -925,7 +925,8 @@ $route['ResendOtp'] = 'LoginController/ResendOtp';
 
 // pathology service order
 $route["pathologyCollection"]="ServiceOrderController/pathologyCollection";
-$route["getCollectionTable"]="ServiceOrderController/getCollectionTable";
+$route["getLabCollectionTable"]="ServiceOrderController/getCollectionTable";
 $route["getserviceOrderBillingInfo2"]="ServiceOrderController/getserviceOrderBillingInfo2";
 
+$route["updateDynamicLabData"]="LabPatientController/updateDynamicLabData";
 $route["get_patient_history_data"]="PatientController/get_patient_history_data";

@@ -34,9 +34,16 @@ $this->load->view('_partials/header');
 									<button class="btn btn-icon btn-primary" data-toggle="modal"
 											data-target="#fire-modal-users" id="userAdd"><i
 												class="fas fa-plus"></i></button>
-									<button class="btn btn-icon btn-primary" data-toggle="modal"
-											data-target="#profile_management" id="profileadd">
-										<i class="fas fa-users"></i> <i class="fas fa-plus"></i></button>
+<!--									<button class="btn btn-icon btn-primary" data-toggle="modal"-->
+<!--											data-target="#profile_management" id="profileadd">-->
+<!--										<i class="fas fa-users"></i> <i class="fas fa-plus"></i></button>-->
+
+									<?php
+									if((int)$this->session->user_session->roles == 1){?>
+										<button class="btn btn-icon btn-primary" data-toggle="modal"
+												data-target="#profile_management" id="profileadd">
+											<i class="fas fa-users"></i> <i class="fas fa-plus"></i></button>
+									<?php } ?>
 								</div>
 							</div>
 						</div>

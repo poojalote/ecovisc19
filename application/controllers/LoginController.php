@@ -322,7 +322,7 @@ class LoginController extends HexaController
         $checkTodaysOtp = $this->MasterModel->_rawQuery('SELECT otp FROM otp_master where expiry_on >= "' . $current_date . '" and user_id = "' . $user_id . '" and branch_id = "' . $branch_id . '" and user_type = "' . $user_type . '" order by id desc limit 1')->data;
         if ($checkTodaysOtp != null && !empty($checkTodaysOtp)) {
             $LastOtp = $checkTodaysOtp[0]->otp;
-            $message = "Please Use Previously sent OTP <br> on ".$mobile." to Login ";
+            $message = "Please use previously sent OTP <br> on ".$mobile." to login ";
 //            $this->MasterModel->sendSMS($mobile,array('otp'=>$LastOtp),'1107162869107284120','3');
         } else {
 
@@ -355,7 +355,10 @@ class LoginController extends HexaController
 		$date = date("Y-m-d H:i:s", strtotime(date("Y-m-d 23:59:59")));
 		$updateOtp = $this->MasterModel->_update('otp_master', array('otp' => $rnd_no, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')), array('user_id' => $user_id, 'branch_id' => $branch_id));
 		$this->load->model("SmsModel");
-//		$this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
+		if(base_url()=="https://covidcare.ecovisrkca.com"){
+			$company="";
+		}
+		$this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
 		if($updateOtp)
 		{
 			$response['status'] = 200;
