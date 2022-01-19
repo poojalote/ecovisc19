@@ -706,6 +706,102 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 					</div>';
 		return $result;
 	}
+
+
+	function getPatientVaccinationData($branch_id)
+	{
+		$result='';
+		$non_vaccinated=0;
+		$vaccinated = 0;
+		$first_dose=0;
+		$commordities=0;
+		$patient_table = $this->session->user_session->patient_table;
+		$resulObject=$this->DashboardModel->_rawQuery('select sum(case when sec_1_f_16 = 970 or sec_1_f_16 is null or sec_1_f_16 = "" then 1 else 0 end ) as non_vaccinated,
+sum(case when sec_1_f_16 in (971,972) and sec_1_f_16 is not null and sec_1_f_16 != "" 
+and sec_1_f_17 is not null and sec_1_f_17 != "" and sec_1_f_258 is not null and sec_1_f_258 != ""  then 1 else 0 end ) as vaccinated,
+sum(case when sec_1_f_16 = 971 and (sec_1_f_258 is null or sec_1_f_258 = "") and sec_1_f_16 is not null  then 1 else 0 end) as first_dose,
+sum(case when sec_1_f_8 is not null and sec_1_f_8 != "" then 1 else 0 end) as commordities
+from com_1_dep_1 where branch_id='.$branch_id.' ');
+
+		if($resulObject->totalCount>0)
+		{
+			$resuldata=$resulObject->data[0];
+			if(!empty($resuldata->non_vaccinated) || $resuldata->non_vaccinated!=null) {
+				$non_vaccinated = $resuldata->non_vaccinated;
+			}
+			if(!empty($resuldata->vaccinated) || $resuldata->vaccinated!=null) {
+				$vaccinated=$resuldata->vaccinated;
+			}
+			if(!empty($resuldata->first_dose) || $resuldata->first_dose!=null) {
+				$first_dose=$resuldata->first_dose;
+			}
+			if(!empty($resuldata->commordities) || $resuldata->commordities!=null) {
+				$commordities=$resuldata->commordities;
+			}
+
+		}
+		$result.='<div class="col-lg-3 col-md-3 col-sm-12">
+						<div class="card card-statistic-2">
+							<div class="card-icon shadow-primary bg-primary">
+								<i class="fas fa-syringe"></i>
+							</div>
+							<div class="card-wrap">
+								<div class="card-header">
+									<h4>Non Vaccinated Patients</h4>
+								</div>
+								<div class="card-body">
+									'.$non_vaccinated.'
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12">
+						<div class="card card-statistic-2">
+							<div class="card-icon shadow-primary bg-primary">
+								<i class="fas fa-notes-medical"></i>
+							</div>
+							<div class="card-wrap">
+								<div class="card-header">
+									<h4>Vaccinated Patients</h4>
+								</div>
+								<div class="card-body">
+									'.$vaccinated.'
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12">
+						<div class="card card-statistic-2">
+							<div class="card-icon shadow-primary bg-primary">
+								<i class="fas fa-notes-medical"></i>
+							</div>
+							<div class="card-wrap">
+								<div class="card-header">
+									<h4>Patient with First Dose</h4>
+								</div>
+								<div class="card-body">
+									'.$first_dose.'
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12">
+						<div class="card card-statistic-2">
+							<div class="card-icon shadow-primary bg-primary">
+								<i class="fas fa-ambulance"></i>
+							</div>
+							<div class="card-wrap">
+								<div class="card-header">
+									<h4>Commordities</h4>
+								</div>
+								<div class="card-body">
+									'.$commordities.'
+								</div>
+							</div>
+						</div>
+					</div>';
+		return $result;
+	}
 	public function get_dashboard_Data()
 	{
 		$data='';
@@ -714,7 +810,12 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$data.=$this->getAllPatientDashboardData($branch_id);
 		//beds occupied and vacant
 		$data.=$this->getAllbedsDashboarddata($branch_id);
+
+		$data1=$this->getPatientVaccinationData($branch_id);
+
 		$response['data'] = $data;
+		$response['vaccine_data'] = $data1;
+		$response['query'] = $this->db->last_query();
 		$response['status'] = 200;
 		echo json_encode($response);
 	}

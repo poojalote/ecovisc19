@@ -202,14 +202,25 @@ a:hover{
 									</div>
 								</div>
 							</div>
-							<div class="row" id="data_div_monthly">
-<!--								<div class="col-lg-6 col-md-6 col-sm-12" id="data_div_monthly">-->
-<!---->
-<!--								</div>-->
-<!--								<div class="col-lg-6 col-md-6 col-sm-12" id="data_div_yearly">-->
-<!---->
-<!--								</div>-->
+							<div class="card">
+
 							</div>
+							<div class="card" style="background: transparent;box-shadow: none;">
+								<div class="card-header" style="background: white;margin-bottom: 20px;">
+									<h4>Hospital Data</h4>
+								</div>
+								<div class="row" id="data_div_monthly">
+								</div>
+							</div>
+
+							<div class="card" style="background: transparent;box-shadow: none;">
+								<div class="card-header" style="background: white;margin-bottom: 20px;">
+									<h4>Patient Vaccination Data</h4>
+								</div>
+								<div class="row" id="vaccination_data">
+								</div>
+							</div>
+
 							<div class="row" style="display: none">
 								<div class="col-12 col-md-6 col-lg-6">
 									<div class="card">

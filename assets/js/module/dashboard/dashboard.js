@@ -221,6 +221,7 @@ function getDashboardBillingReport()
 function get_monthly_Data(){
 	app.request(baseURL +"get_dashboard_Data", null).then(response => {
 	$("#data_div_monthly").html(response.data);
+	$('#vaccination_data').html(response.vaccine_data);
 	}).catch(error => {
 		console.log(error);
 	})
