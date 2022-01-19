@@ -1085,7 +1085,7 @@ function barcode($filepath = "", $text = "0", $size = "20", $orientation = "hori
         $session_data = $this->session->user_session;
         $branch_id = $session_data->branch_id;
         // $branch_id=2;
-        $select = array(" id", "service_id", "service_rate", "service_date", "service_type", '(case when service_type=1 then (select sm.name from lab_master_test sm where sm.master_service_id=t1.service_id) else (select mp.package_name from master_package mp where mp.id=t1.service_id) end) as service_name');
+        $select = array(" id", "service_id", "service_rate", "service_date", "service_type", '(case when service_type=1 then (select sm.name from lab_master_test sm where (sm.id=t1.service_id or sm.master_service_id=t1.service_id)) else (select mp.package_name from master_package mp where mp.id=t1.service_id) end) as service_name');
         $order = array('created_on' => 'desc');
         $column_order = array('',);
         $column_search = array("", "");
