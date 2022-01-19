@@ -7,12 +7,15 @@ class MedicineOrderModel extends MasterModel
 {
 
 
-	public function getPatients($patientTable,$date)
+	public function getPatients($patientTable,$date,$discharge)
 	{
 
-			return $this->_select("com_1_medicine_order o", array("o.order_status" => 1,"confirm_status"=>1, "status" => 1, "branch_id" => $this->session->user_session->branch_id,"create_on >="=>date($date)),
+		$listArr = array("(select group_concat(p.patient_name,' ',p.adhar_no) from " . $patientTable . " p where p.id=o.patient_id and (p.discharge_date is null or p.discharge_date='0000-00-00 00:00:00')) as patient_name", "o.patient_id");
 
-			array("(select group_concat(p.patient_name,' ',p.adhar_no) from " . $patientTable . " p where p.id=o.patient_id and (p.discharge_date is null or p.discharge_date='0000-00-00 00:00:00')) as patient_name", "o.patient_id"), false, "o.patient_id");
+			if ($discharge ==1) {
+				$listArr = array("(select group_concat(p.patient_name,' ',p.adhar_no) from " . $patientTable . " p where p.id=o.patient_id) as patient_name", "o.patient_id");
+			}
+			return $this->_select("com_1_medicine_order o", array("o.order_status" => 1,"confirm_status"=>1, "status" => 1, "branch_id" => $this->session->user_session->branch_id,"create_on >="=>date($date)),$listArr, false, "o.patient_id");
 
 			// array("(select group_concat(p.patient_name,' ',p.adhar_no) from " . $patientTable . " p where p.id=o.patient_id AND (p.discharge_date is null OR p.discharge_date='0000:00:00 00:00:00')) as patient_name", "o.patient_id"), false, "o.patient_id");
 

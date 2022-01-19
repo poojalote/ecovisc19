@@ -5,6 +5,23 @@ function get_order_patients(url) {
 var date=$("#from_date").val();
 let formData = new FormData();
 	formData.set("date", date);
+	formData.set("discharge", "0");
+	app.request(baseURL +url, formData).then(response => {
+		$('#patient-order-list').select2({allowClear: true,data: response.body});
+		$("#patient-order-list").select2("val", "");
+	}).catch(error => {
+		console.log(error);
+	})
+}
+
+
+function get_order_patients_discharge(url) {
+
+	$("#patient-order-list").html("");
+var date=$("#from_date").val();
+let formData = new FormData();
+	formData.set("date", date);
+	formData.set("discharge", "1");
 	app.request(baseURL +url, formData).then(response => {
 		$('#patient-order-list').select2({allowClear: true,data: response.body});
 		$("#patient-order-list").select2("val", "");

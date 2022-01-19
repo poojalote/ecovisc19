@@ -330,10 +330,10 @@ role="button" data-toggle="popover" data-trigger="focus" data-html="true" title=
 	public function getOrderMedicinePatient()
 	{
 		$date = $this->input->post('date');
-
+		$discharge = $this->input->post('discharge');
 		$patientTable = $this->session->user_session->patient_table;
 
-		$patientListObject = $this->MedicineOrderModel->getPatients($patientTable, $date);
+		$patientListObject = $this->MedicineOrderModel->getPatients($patientTable, $date,$discharge);
 
 		$data = array(array("id" => -1, "text" => "select Name", "disabled" => true, "selected" => true));
 		if ($patientListObject->totalCount > 0) {

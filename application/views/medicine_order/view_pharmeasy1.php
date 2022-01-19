@@ -183,9 +183,16 @@ $username = $session_data->name;
 										<!-- <div class="row" style="float: right;">
 											<button class="btn btn-primary mb-2" type="button" id="printButton" onclick="printDiv()">Print</button>
 										</div> -->
+
+										<div class="row">
+											<div class="col-md-10 form-group"></div>
+											<div class="col-md-2 form-group">
+												<label><input type="checkbox" name="load_discharge_patient" id="load_discharge_patient" value="1"> Load Discharge Patient</label>
+											</div>
+										</div>
 										<div class="row">
 											<div class="col-md-6 form-group">
-												<label>Patient Name</label>
+												<label>Patient Name 1</label>
 												<select id="patient-order-list" name="patient_order_id"
 														class="form-control"
 														style="width: 100%;" onchange="load_patient_order(this.value)">
@@ -404,6 +411,7 @@ $username = $session_data->name;
 								</div>
 								<div class="tab-pane fade" role="tabpanel" id="backOrderPanel">
 									<div class="col-md-12">
+
 										<div class="row">
 											<div class="col-md-6 form-group">
 												<label>Patient Name</label>
@@ -810,7 +818,13 @@ $username = $session_data->name;
 		getDeparment();
 		getZone();
 
-
+		$("#load_discharge_patient").click(function(){
+			if($(this).prop('checked') == true){
+			    get_order_patients_discharge(url);
+			}else{
+				get_order_patients(url);
+			}
+		})
 	});
 
 	function date_change() {
