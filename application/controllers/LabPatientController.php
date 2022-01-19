@@ -1451,7 +1451,7 @@ function barcode($filepath = "", $text = "0", $size = "20", $orientation = "hori
                 {
                     foreach($data as $row)
                     {
-                        $data = array($row->master_id,$row->child_test_name,"",$row->unit,$row->refe_value,$row->child_test_id,$row->id);
+                        $data = array($row->master_id,$row->child_test_name,$row->value,$row->unit,$row->refe_value,$row->child_test_id,$row->id);
                         array_push($datanew,$data);
                     }
                 }

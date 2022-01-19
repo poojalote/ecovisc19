@@ -1,6 +1,6 @@
 <?php
 require_once 'HexaController.php';
-require_once '/var/www/html/vendor/autoload.php';
+require_once './vendor/autoload.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -2413,9 +2413,8 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
 		$options->set('isRemoteEnabled', true);
 		$dompdf = new Dompdf($options);
 		$html = $this->labReportGeneration($patient_data->patient_id,$patient_data->service_id);
-
 		$dompdf->loadHtml($html);
-		$dompdf->set_base_path("https://c19.docango.com/");
+		$dompdf->set_base_path("https://c19.ecovisrkca.com/");
 		// (Optional) Setup the paper size and orientation
 		$dompdf->setPaper('A4', '');
 
@@ -2447,7 +2446,8 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
     {
         $html='';
         $branch_id = $this->session->user_session->branch_id;
-        $patient_data=$this->db->query('select * from lab_patient where id="'.$patient_id.'" and status=1');
+		$lab_branch_table = $this->session->user_session->lab_patient_table;
+        $patient_data=$this->db->query('select * from '.$lab_branch_table.' where id="'.$patient_id.'" and status=1');
         if($this->db->affected_rows()>0)
         {
             $patient_data=$patient_data->row();

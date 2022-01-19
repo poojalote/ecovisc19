@@ -1,4 +1,4 @@
-<?php
+	<?php
 defined('BASEPATH') or exit('No direct script access allowed');
 $this->load->view('_partials/header');
 ?>
@@ -200,19 +200,19 @@ $this->load->view('_partials/header');
 										<div class="tabs tabs-style-underline">
 											<nav>
 												<ul id="lab_entry_top_nav">
-													<li class="tab-current">
+													<li class="tab-current" id="LabTabNormal">
 														<a href="#labEntryNormalPanel" class="icon" id="labEntryTabNormal">
 															<i class="fas fa-file-medical-alt  mr-1 fa_class"></i>
 															<span>Lab Data Entry</span>
 														</a>
 													</li>
-                                                    <li class="">
+                                                    <li class="" id="LabTabHandson">
                                                         <a href="#labEntryHandsonPanel" class="icon" id="labEntryTabHandson">
                                                             <i class="fas fa-notes-medical  mr-1 fa_class"></i>
                                                             <span>Lab Excel Data Entry</span>
                                                         </a>
                                                     </li>
-                                                    <li class="">
+                                                    <li class="" id="PathologyTab">
                                                         <a href="#pathologyCollectionPanel" class="icon" id="labPathologyCollection">
                                                             <i class="fas fa-notes-medical  mr-1 fa_class"></i>
                                                             <span>Pathology Collection</span>
@@ -412,7 +412,11 @@ $this->load->view('_partials/header');
             document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
             get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
             showPanel(143);
-        })
+			$('#LabTabNormal').removeClass('tab-current');
+			$('#LabTabHandson').removeClass('tab-current');
+			$('#PathologyTab').removeClass('tab-current');
+			$('#LabTabNormal').addClass('tab-current');
+        });
 
         $("#tabChildTest0").on('click',function (event) {
             document.getElementById("hiddenDivName").value= 'tabchildTestPanel0';
@@ -432,6 +436,8 @@ $this->load->view('_partials/header');
 		$("#labEntryTabNormal").on('click',function (event) {
 			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
 			// get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
+			get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
+			// showPanel(143);
 			showPanel1('Normal',143);
 		})
         $("#labEntryTabHandson").on('click',function (event) {
@@ -619,6 +625,7 @@ function SavePathologyProgress2(formData) {
 		{
 			$("#lab_entry_top_nav li:nth-child(1)").addClass("tab-current")
 			$("#labEntryNormalPanel").addClass("content-current");
+			get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
 		}
         if(id=='handson')
         {

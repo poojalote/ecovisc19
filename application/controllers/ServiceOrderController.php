@@ -1144,6 +1144,7 @@ class ServiceOrderController extends HexaController
         $company_id = $this->session->user_session->company_id;
         $patient_table = $this->session->user_session->patient_table;
         $hospital_bed_table = $this->session->user_session->hospital_bed_table;
+        $lab_branch_table = $this->session->user_session->lab_patient_table;
 
         // $category="RADIOLOGY";
         $category = $this->input->post('category');
@@ -1163,7 +1164,7 @@ class ServiceOrderController extends HexaController
         $order = array('id' => 'desc');
         $column_order = array('service_id');
         $column_search = array();
-        $select = array("so.*,(Select patient_name from patient_master where id = so.patient_id) as patient_name",
+        $select = array("so.*,(Select patient_name from ".$lab_branch_table." where id = so.patient_id) as patient_name",
             "concat('AA',lpad(id,6,'0')) as order_id",
             "(select lmt.name from lab_master_test lmt where id=service_id) as service_name ");
 
@@ -1181,8 +1182,7 @@ class ServiceOrderController extends HexaController
             $tableRows = array();
             foreach ($memData as $row) {
                 $today = date('Y-m-d H:i:s');
-
-                if (date('Y-m-d', strtotime($row->service_date)) <= $today) {
+//                if (date('Y-m-d', strtotime($row->service_date)) <= $today) {
                     $tableRows[] = array(
                         $row->patient_name,
                         $row->service_id,
@@ -1196,7 +1196,7 @@ class ServiceOrderController extends HexaController
                         $row->ext_pid, 
                         $row->id, 
                     );
-                }
+//                }
             }
 
             $results = array(
