@@ -336,8 +336,16 @@ class LoginController extends HexaController
                 $insertOtp = $this->MasterModel->_insert('otp_master',
 					array('otp' => $rnd_no, 'user_id' => $user_id, 'branch_id' => $branch_id, 'user_type' => $user_type, 'expiry_on' => $date,'create_on'=>date('Y-m-d H:i:s')));
             }
-            $this->load->model("SmsModel");
-            $this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
+
+			$company = "";
+			if (base_url()=="https://covidcare.ecovisrkca.com") {
+				$company = "Covidcare";
+			} else {
+				$company = "C19";
+			}
+
+			$this->load->model("SmsModel");
+            $this->SmsModel->sendSMS($mobile, array('company' => $company, 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
             $message = "Please enter the One Time Password <br> sent on ".$mobile." <br> to verify your Device";
         }
         $response['data'] = $message;
@@ -358,7 +366,16 @@ class LoginController extends HexaController
 		if(base_url()=="https://covidcare.ecovisrkca.com"){
 			$company="";
 		}
-		$this->SmsModel->sendSMS($mobile, array('company' => base_url(), 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
+
+
+		$company = "";
+		if (base_url()=="https://covidcare.ecovisrkca.com") {
+			$company = "Covidcare";
+		} else {
+			$company = "C19";
+		}
+
+		$this->SmsModel->sendSMS($mobile, array('company' => $company, 'otp' => $rnd_no, 'time' => $date), '1107164205399035078', '3');
 		if($updateOtp)
 		{
 			$response['status'] = 200;
