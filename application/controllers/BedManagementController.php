@@ -1915,6 +1915,9 @@ from " . $patient_table . "  pt where pt.bed_id in (select cb.id from com_1_bed 
                                                 } else {
                                                     $bedClassName = "#239f38"; // low
                                                 }
+												if ($medCount >= 1) {
+													$bedClassName = "#239f38";// med
+												}
                                             }
                                         }
                                     }

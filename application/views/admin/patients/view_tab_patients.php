@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 $this->load->view('_partials/header');
- $branchpermission_array = $this->session->Branch_permission;
+$branchpermission_array = $this->session->Branch_permission;
 $user_permission_array = $this->session->user_permission;
 if (is_null($branchpermission_array)) {
 	$branchpermission_array = array();
@@ -223,7 +223,7 @@ if (is_null($user_permission_array)) {
 		margin-top: 6px !important;
 	}
 
-	@media (min-width: 992px){
+	@media (min-width: 992px) {
 		.modal-lg {
 			max-width: 1050px;
 		}
@@ -241,7 +241,7 @@ if (is_null($user_permission_array)) {
 						<div class="card-body px-1">
 							<section>
 								<input type="hidden" id="department_id" name="department_id"
-									   value="2">
+									   value="">
 								<input type="hidden" id="section_id" name="section_id"
 									   value="">
 								<input type="hidden" id="queryparameter_hidden" name="queryparameter_hidden"
@@ -250,10 +250,6 @@ if (is_null($user_permission_array)) {
 									<nav>
 
 										<ul>
-<!--											<li>-->
-<!--												<button type="button" class="btn btn-info btn-lg"-->
-<!--														onclick="getMedicVitals()">Open Modal-->
-<!--											</li>-->
 											<?php
 											if (array_search("IPD_TAB", $user_permission_array) && array_search("IPD_TAB", $branchpermission_array)) {
 												?>
@@ -271,14 +267,6 @@ if (is_null($user_permission_array)) {
 													><i
 																class="fa fa-stethoscope mr-1 fa_class"></i>
 														<span> OPD</span></a></li>
-											<?php } ?>
-											<?php
-											if (array_search("DC_TAB", $branchpermission_array)) {
-												?>
-												<li class=""><a href="#daycare" class="icon"
-																onclick="daycareOperation()"><i
-																class="fa fa-diagnoses mr-1 fa_class"></i> <span> Day Care</span></a>
-												</li>
 											<?php } ?>
 											<?php
 											if (array_search("ICU_TAB", $user_permission_array) && array_search("ICU_TAB", $branchpermission_array)) {
@@ -310,7 +298,6 @@ if (is_null($user_permission_array)) {
 
 										</section>
 										<section id="opd"></section>
-										<section id="daycare"></section>
 										<section id="icu">
 											<div class="section-header card-primary" style="border-top: 0px!important;">
 												<h1 style="color: #891635">ICU Management</h1>
@@ -416,8 +403,8 @@ if (is_null($user_permission_array)) {
 						<nav>
 							<ul>
 								<li id="vt" class="tab-current"><a onclick="vitaltab()">Vitals</a></li>
-								<li id="nt" ><a onclick="notestab()">Progress Notes</a></li>
-								<li id="mt" ><a onclick="medictab()">Medicines</a></li>
+								<li id="nt"><a onclick="notestab()">Progress Notes</a></li>
+								<li id="mt"><a onclick="medictab()">Medicines</a></li>
 							</ul>
 						</nav>
 					</div>
@@ -582,7 +569,9 @@ if (is_null($user_permission_array)) {
 	</div>
 </div>
 
-<button type="button" class="btn btn-primary d-none" id="commentMedicineModalBtn" data-toggle="modal" data-target="#commentMedicineModal">Open Modal</button>
+<button type="button" class="btn btn-primary d-none" id="commentMedicineModalBtn" data-toggle="modal"
+		data-target="#commentMedicineModal">Open Modal
+</button>
 <!--Medicine Comment modal -->
 <div class="modal fade" id="commentMedicineModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-md" role="document">
@@ -601,7 +590,8 @@ if (is_null($user_permission_array)) {
 					<input type="hidden" name="m_dose_date" id="m_dose_date">
 
 					<div class="form-row">
-						<textarea class="form-control" type="text" name="medicine_comment" id="medicine_comment"></textarea>
+						<textarea class="form-control" type="text" name="medicine_comment"
+								  id="medicine_comment"></textarea>
 					</div>
 					<div class="align-items-baseline form-row justify-content-end mt-2">
 						<button class="btn btn-primary mr-1" type="button" onclick="addMecidineCommentData()">
@@ -615,24 +605,22 @@ if (is_null($user_permission_array)) {
 </div>
 <!-- Main Content end -->
 <?php $this->load->view('_partials/footer'); ?>
-<script src="<?=base_url('assets/js/module/medicine/medicine.js');?>"></script>
+<script src="<?= base_url('assets/js/module/medicine/medicine.js'); ?>"></script>
 
 <script type="text/javascript">
-
-	const videoStreaming = 'https://vs.docango.com/';
+	const videoStreaming = 'https://vs.ecovisrkca.com/';
 	let cameraCapture = null;
 	var base_url = "<?php echo base_url(); ?>";
 	$(document).ready(function () {
 		get_forms(101, 0, 'ipd').then(r => {
 			dynamicFilter('#datatable_button_89', 0, ``, 3, 1, 102);
 		});
-
 		[].slice.call(document.querySelectorAll('.tabs')).forEach(function (el) {
 			new CBPFWTabs(el);
 		});
 	});
 
-	function getMedicVitals(section_id,patient_id) {
+	function getMedicVitals(section_id, patient_id) {
 		$('#vitals').html('');
 		$('#currentDoesTableBox').html('');
 		$('#notes').html('');
@@ -648,8 +636,7 @@ if (is_null($user_permission_array)) {
 		$('#mt').removeClass('tab-current');
 	}
 
-	function notestab()
-	{
+	function notestab() {
 		$('#notesTab').addClass('content-current');
 		$('#schedule_table').removeClass('content-current');
 		$('#vitalsTab').removeClass('content-current');
@@ -658,8 +645,7 @@ if (is_null($user_permission_array)) {
 		$('#mt').removeClass('tab-current');
 	}
 
-	function vitaltab()
-	{
+	function vitaltab() {
 		$('#notesTab').removeClass('content-current');
 		$('#schedule_table').removeClass('content-current');
 		$('#vitalsTab').addClass('content-current');
@@ -668,8 +654,7 @@ if (is_null($user_permission_array)) {
 		$('#mt').removeClass('tab-current');
 	}
 
-	function medictab()
-	{
+	function medictab() {
 		$('#notesTab').removeClass('content-current');
 		$('#schedule_table').addClass('content-current');
 		$('#vitalsTab').removeClass('content-current');
@@ -806,15 +791,9 @@ if (is_null($user_permission_array)) {
 		})
 	}
 
-	function daycareOperation() {
-		get_forms(161, 0, 'daycare').then(r => {
-			dynamicFilter('#datatable_button_58', 0, ``, 3, 1, 161);
-		})
-	}
-
 	function get_dataICU() {
 		get_roomdetailstable();
-		get_icuPatientList();
+
 		$('#largeVideo').on('show.bs.modal', function (e) {
 			let camera = parseInt($(e.relatedTarget).data('camera'));
 			largeVideoPanel(-1);
@@ -871,8 +850,7 @@ if (is_null($user_permission_array)) {
 	});
 	onclick = 'deleteMedicineHome(" . $doesObject->id . ",".$p_id.");'
 
-	function addMedicineComment(p_id,m_id,iteration,dosedate)
-	{
+	function addMedicineComment(p_id, m_id, iteration, dosedate) {
 		$("#commentMedicineModalBtn").click();
 		$("#m_patient_id").val(p_id);
 		$("#c_medicine_id").val(m_id);
@@ -880,11 +858,9 @@ if (is_null($user_permission_array)) {
 		$("#m_dose_date").val(dosedate);
 	}
 
-	function addMecidineCommentData()
-	{
-		var comment=$("#medicine_comment").val();
-		if(comment!="")
-		{
+	function addMecidineCommentData() {
+		var comment = $("#medicine_comment").val();
+		if (comment != "") {
 			// var form=$('#medicineCommentForm').serialize();
 			let form = document.getElementById("medicineCommentForm");
 			let formData = new FormData(form);
@@ -898,9 +874,7 @@ if (is_null($user_permission_array)) {
 			}).catch(error => {
 				console.log(error);
 			})
-		}
-		else
-		{
+		} else {
 			app.errorToast('Enter comment');
 		}
 
