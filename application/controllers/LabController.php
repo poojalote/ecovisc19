@@ -174,4 +174,26 @@ class LabController extends HexaController
 		}
 		echo json_encode($response);
 	}
+	public function RemoveChildTestData()
+	{
+		if(!is_null($this->input->post('id')) && $this->input->post('id')!="")
+		{
+			$child_id=$this->input->post('id');
+			$updateData=$this->MasterModel->_update('lab_child_test',array('status'=>0),array('id'=>$child_id));
+			if($updateData->status==TRUE)
+			{
+				$response['status']=200;
+				$response['body']='Data Deleted Successfully';
+			}
+			else{
+				$response['status']=201;
+				$response['body']='Changes Not Saved';
+			}
+		}
+		else{
+			$response['status']=201;
+			$response['body']='Changes Not Saved';
+		}
+		echo json_encode($response);
+	}
 }

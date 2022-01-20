@@ -52,7 +52,7 @@ $this->load->view('_partials/header');
 												<li class="">
 													<a href="#subgroupMasterPanel" class="icon" id="tabSubgroupMaster"
 													><i class="fas fa-vial mr-1 fa_class"></i>
-														<span>Subgroup Master</span></a></li>
+														<span>Child Test Group</span></a></li>
                                             </ul>
                                         </nav>
                                         <div class="content-wrap" id="lab_master_panel">
@@ -256,6 +256,17 @@ $this->load->view('_partials/header');
 			manualColumnResize: true,
 			manualRowResize: true,
 			columns: columnTypes,
+			beforeRemoveRow :(index) => {
+
+				var data = hotDiv.getDataAtRow(index);
+				if(data.length !== 0)
+				{
+					if(data[0]!=null && data[0]!="")
+					{
+						RemoveRowData(data[0],1);
+					}
+				}
+			},
 			minSpareRows:1,
 			stretchH: 'all',
 			colWidths: '100%',
@@ -273,12 +284,13 @@ $this->load->view('_partials/header');
 		hotDiv.validateCells();
 	}
 	function saveSubgroupBtn() {
-		$.LoadingOverlay("show");
+
 		let data=hotDiv.getData();
 		let formData = new FormData();
 		formData.set("arrayData", JSON.stringify(data));
 		formData.set("master_id", $("#masterTestId").val());
 		if (confirm("Are You Sure You want to upload?")) {
+			$.LoadingOverlay("show");
 			$.ajax({
 				url: "<?= base_url();?>" + "saveSubGroupChildData",
 				type: "POST",
@@ -296,6 +308,34 @@ $this->load->view('_partials/header');
 				},
 				error: function (error) {
 
+					$.LoadingOverlay("hide");
+					console.log(error);
+					// $.LoadingOverlay("hide");
+				}
+			});
+		}
+	}
+	function RemoveRowData(id,type) {
+		let formData = new FormData();
+		formData.set("id", id);
+		if (confirm("Are You Sure You want to Remove Data?")) {
+			$.LoadingOverlay("show");
+			$.ajax({
+				url: "<?= base_url();?>" + "RemoveChildTestData",
+				type: "POST",
+				dataType: "json",
+				data:formData,
+				contentType:false,
+				processData:false,
+				success: function (result) {
+					$.LoadingOverlay("hide");
+					if (result.status == 200) {
+						app.successToast(result.body);
+					} else {
+						app.errorToast(result.body);
+					}
+				},
+				error: function (error) {
 					$.LoadingOverlay("hide");
 					console.log(error);
 					// $.LoadingOverlay("hide");

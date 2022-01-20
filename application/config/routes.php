@@ -934,4 +934,5 @@ $route["get_patient_history_data"]="PatientController/get_patient_history_data";
 $route["getMasterTestData"]="LabController/getMasterTestData";
 $route["getLabMasterChildEntryExcelData"]="LabController/getLabMasterChildEntryExcelData";
 $route["saveSubGroupChildData"]="LabController/saveSubGroupChildData";
+$route["RemoveChildTestData"]="LabController/RemoveChildTestData";
 
