@@ -154,8 +154,7 @@ function getUsersTableData(type = 1, companyId = null, branch_id = null) {
 						
                          <a class="btn btn-danger btn-action"
                            data-toggle="tooltip" title=""
-                           data-confirm="Are You Sure?|This action can not be undone. Do you want to continue?"
-                           data-confirm-yes="deleteUser(${aData[4]})"
+                           onclick="deleteUser(${aData[4]})"
                             data-original-title="Delete">
                         <i class="fas fa-trash"></i></a>
                             `);
@@ -167,22 +166,28 @@ function getUsersTableData(type = 1, companyId = null, branch_id = null) {
 }
 
 function deleteUser(userId) {
-	$.LoadingOverlay("show");
-	let formData = new FormData();
-	formData.set("userId", userId);
-	app.request(baseURL + "deleteUser", formData).then(result => {
-		$.LoadingOverlay("hide");
-		if (result.status === 200) {
-			app.successToast(result.body);
-		} else {
-			app.errorToast(result.body);
-		}
-		if (role == 2) {
-			getUsersTableData(1, company_id, branch_id);
-		} else {
-			getUsersTableData();
-		}
-	}).catch(error => console.log(error));
+
+	if(confirm("Are you sure you want to delete?")){
+		$.LoadingOverlay("show");
+		let formData = new FormData();
+		formData.set("userId", userId);
+		app.request(baseURL + "deleteUser", formData).then(result => {
+			$.LoadingOverlay("hide");
+			if (result.status === 200) {
+				app.successToast(result.body);
+			} else {
+				app.errorToast(result.body);
+			}
+			if (role == 2) {
+				getUsersTableData(1, company_id, branch_id);
+			} else {
+				getUsersTableData();
+			}
+		}).catch(error => console.log(error));
+	}else{
+
+	}
+
 }
 
 function saveUser(form) {

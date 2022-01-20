@@ -486,7 +486,7 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$no2_patient=0;
 		$bedactive_cases=0;
 		$patient_table = $this->session->user_session->patient_table;
-		$resulObject=$this->DashboardModel->_rawQuery('select sum(case when status=1 and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL  then 1 else 0 end ) as active_cases,sum(case when date(discharge_date)=CURRENT_DATE() and event =\'mortality\' then 1 else 0 end) as death_today,
+		$resulObject=$this->DashboardModel->_rawQuery('select sum(case when status=1 and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL and branch_id='.$branch_id.'  then 1 else 0 end ) as active_cases,sum(case when date(discharge_date)=CURRENT_DATE() and event =\'mortality\' then 1 else 0 end) as death_today,
   														sum(case when date(admission_date)=CURRENT_DATE() then 1 else 0 end) as admitted_today,
   														sum(case when date(discharge_date)=CURRENT_DATE() and (is_transfered=0 or is_transfered is null) then 1 else 0 end) as discharge_today,sum(case when date(discharge_date)=CURRENT_DATE() and is_transfered =1 then 1 else 0 end) as transfer_today,
   														sum(case when (select cd.id from com_1_dep_2 cd where cd.branch_id=cp.branch_id and cd.patient_id=cp.id and cd.sec_2_f_347!=1565 and cd.sec_2_f_347!="" and cd.sec_2_f_347 is not null order by cd.id desc limit 1 ) and admission_mode=2 and admission_date!=\'0000-00-00 00:00:00\' and discharge_date IS NULL then 1 else 0 end) as o2_patient,
@@ -518,7 +518,7 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 			{
 				$bedactive_cases=$resuldata->bedactive_cases;
 			}
-			$no2_patient = ($bedactive_cases)-($o2_patient);
+			$no2_patient = ($active_cases)-($o2_patient);
 
 		}
 		$result.='<div class="col-lg-3 col-md-3 col-sm-12">
@@ -718,30 +718,35 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$second_dose=0;
 		$commordities=0;
 		$patient_table = $this->session->user_session->patient_table;
-		$resulObject=$this->DashboardModel->_rawQuery('select sum(case when sec_1_f_16 = 970 or sec_1_f_16 is null or sec_1_f_16 = "" then 1 else 0 end ) as non_vaccinated,
-sum(case when sec_1_f_16 in (971,972) and sec_1_f_16 is not null or sec_1_f_16 != "" then 1 else 0 end ) as vaccinated,
-sum(case when sec_1_f_16 = 971 and (sec_1_f_258 is null or sec_1_f_258 = "") and sec_1_f_16 is not null  then 1 else 0 end) as first_dose,
-sum(case when sec_1_f_16 in (971,972) and (sec_1_f_258 is not null or sec_1_f_258 != "") and (sec_1_f_17 is not null or sec_1_f_17 != "") and sec_1_f_16 is not null  then 1 else 0 end) as second_dose,
-sum(case when sec_1_f_8 is not null and sec_1_f_8 != "" then 1 else 0 end) as commordities
-from com_1_dep_1 where branch_id= '.$branch_id.' and patient_id in (select id from '.$patient_table.' where discharge_date is NULL or discharge_date = "0000-00-00 00:00:00") ');
-
+		$resulObject=$this->DashboardModel->_rawQuery('SELECT patient_name ,(select sec_1_f_16 from com_1_dep_1 c1 where c1.patient_id=cp.id and c1.branch_id=cp.branch_id order by id desc limit 1) as vaccin_status,
+case when (select sec_1_f_8 from com_1_dep_1 c1 where c1.patient_id=cp.id and c1.branch_id=cp.branch_id order by id desc limit 1) != ""  then 1 else 0 end  as commordities
+FROM '.$patient_table.' cp
+WHERE `branch_id` = '.$branch_id.'
+AND `status` = \'1\'
+AND `admission_mode` = \'2\'
+AND `admission_date` != \'0000-00-00 00:00:00\'
+AND `discharge_date` IS NULL
+ORDER BY `admission_date` DESC');
 		if($resulObject->totalCount>0)
 		{
-			$resuldata=$resulObject->data[0];
-			if(!empty($resuldata->non_vaccinated) || $resuldata->non_vaccinated!=null) {
-				$non_vaccinated = $resuldata->non_vaccinated;
-			}
-			if(!empty($resuldata->vaccinated) || $resuldata->vaccinated!=null) {
-				$vaccinated=$resuldata->vaccinated;
-			}
-			if(!empty($resuldata->first_dose) || $resuldata->first_dose!=null) {
-				$first_dose=$resuldata->first_dose;
-			}
-			if(!empty($resuldata->second_dose) || $resuldata->second_dose!=null) {
-				$second_dose=$resuldata->second_dose;
-			}
-			if(!empty($resuldata->commordities) || $resuldata->commordities!=null) {
-				$commordities=$resuldata->commordities;
+			$resuldata=$resulObject->data;
+
+			foreach ($resuldata as $row){
+				if($row->vaccin_status == 970 || is_null($row->vaccin_status) || empty($row->vaccin_status)){
+					$non_vaccinated++;
+				}
+				if($row->vaccin_status == 971){
+					$first_dose++;
+				}
+				if($row->vaccin_status == 972){
+					$second_dose++;
+				}
+				if($row->vaccin_status == 972 || $row->vaccin_status == 971){
+					$vaccinated++;
+				}
+				if($row->commordities == 1){
+					$commordities++;
+				}
 			}
 
 		}
