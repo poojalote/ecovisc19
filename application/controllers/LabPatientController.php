@@ -1463,7 +1463,7 @@ function barcode($filepath = "", $text = "0", $size = "20", $orientation = "hori
                 }
                 else{
                     $response["status"]=201;
-                    $response["body"]="No Data Found";
+                    $response["body"]=array('');
                 }
                 
             }else{
