@@ -738,8 +738,8 @@ $this->load->view('_partials/header');
 				(month < 10 ? '0' : '') + month + '-' +
 				(day < 10 ? '0' : '') + day;
 		var date = output;
-		document.getElementById("Start_Date_new").min = date;
-		document.getElementById("End_Date_new").min = date;
+	//	document.getElementById("Start_Date_new").min = date;
+	//	document.getElementById("End_Date_new").min = date;
 		document.getElementById("start_date_schedule_prescription").min = date;
 
 		var sdt = new Date();
