@@ -1025,6 +1025,7 @@ function SavePathologyProgress2(formData) {
 </script>
 <script>
 	function loadEditableTable(sectionId) {
+		$("#saveLabExcelDataEntry").hide();
         // console.log("p id = == "+localStorage.getItem("patient_id"));
 		let formData = new FormData();
 		formData.set("section_id", sectionId);
@@ -1043,6 +1044,7 @@ function SavePathologyProgress2(formData) {
 				if(result.status==200)
 				{
 					userType=result.data;
+					$("#saveLabExcelDataEntry").show();
 				}
                 data = result.body;
 				var rows = data;

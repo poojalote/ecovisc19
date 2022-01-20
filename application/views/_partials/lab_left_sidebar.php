@@ -135,13 +135,13 @@ $branchpermission_array = $this->session->Branch_permission;
             ?>" class="" style="text-decoration: none;">
                 <li class="menu-header mt-2 menu-header_section1">Setup Package</li>
             </a> -->
-            <a href="<?php echo base_url(); ?>Dashboard" class=""  style="<?php echo $this->uri->segment(1) == 'Dashboard' ? 'color: white;text-decoration: none;' : 'color: black;text-decoration: none;'; ?>">
-                <li class="menu-header mt-2 <?php echo $this->uri->segment(1) == 'Dashboard' ? 'menu-header_section active' : 'menu-header_section1'; ?>">Dashboard</li>
-
-            </a>
-            <a href="<?php echo base_url(); ?>admin/chnage_password" class="" style="text-decoration: none;">
-                <li class="menu-header mt-2 menu-header_section1">Password Change</li>
-            </a>
+<!--            <a href="--><?php //echo base_url(); ?><!--Dashboard" class=""  style="--><?php //echo $this->uri->segment(1) == 'Dashboard' ? 'color: white;text-decoration: none;' : 'color: black;text-decoration: none;'; ?><!--">-->
+<!--                <li class="menu-header mt-2 --><?php //echo $this->uri->segment(1) == 'Dashboard' ? 'menu-header_section active' : 'menu-header_section1'; ?><!--">Dashboard</li>-->
+<!---->
+<!--            </a>-->
+<!--            <a href="--><?php //echo base_url(); ?><!--admin/chnage_password" class="" style="text-decoration: none;">-->
+<!--                <li class="menu-header mt-2 menu-header_section1">Password Change</li>-->
+<!--            </a>-->
 
 
         </ul>
