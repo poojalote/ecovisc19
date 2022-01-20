@@ -123,9 +123,9 @@ class loginModel extends MasterModel
         return $this->_rawQuery($sql);
     }
 
-    public function fetchAllUserDepartments($user_id)
+    public function fetchAllUserDepartments($user_id,$branch_id)
     {
-        return $this->_select("role_master r", array("r.user_id" => $user_id, "r.activity_status" => 1),
+        return $this->_select("role_master r", array("r.user_id" => $user_id, "r.activity_status" => 1,'find_in_set("'.$branch_id.'", branch_level_access) <> 0'),
             array("GROUP_CONCAT(r.id,'|||',r.department_id,'|||',(select group_concat(dm.name,'|||',dm.sequance,'|||',dm.is_admin,'|||',dm.branch_level_access) from departments_master dm where dm.id=r.department_id and dm.status=1 and dm.is_admin!=2) SEPARATOR '@') as departments"));
     }
 

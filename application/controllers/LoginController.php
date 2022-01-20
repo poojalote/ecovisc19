@@ -284,6 +284,7 @@ class LoginController extends HexaController
                         }
                         $userData->group_id = $local_group_id;
                         $resultDepartment = $this->loginModel->fetchAllUserDepartments($userData->id,$branch_id);
+
                         $response['dep'] = $resultDepartment;
                         if ($resultDepartment->totalCount > 0) {
                             $userData->departments = $resultDepartment->data->departments;
