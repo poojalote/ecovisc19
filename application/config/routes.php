@@ -930,3 +930,8 @@ $route["getserviceOrderBillingInfo2"]="ServiceOrderController/getserviceOrderBil
 
 $route["updateDynamicLabData"]="LabPatientController/updateDynamicLabData";
 $route["get_patient_history_data"]="PatientController/get_patient_history_data";
+
+$route["getMasterTestData"]="LabController/getMasterTestData";
+$route["getLabMasterChildEntryExcelData"]="LabController/getLabMasterChildEntryExcelData";
+$route["saveSubGroupChildData"]="LabController/saveSubGroupChildData";
+
