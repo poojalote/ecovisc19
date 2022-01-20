@@ -212,6 +212,7 @@ if (isset($this->session->user_session)) {
 							<?php
 							if ($dep !== 0) {
 								$departments = explode(',', $dep);
+
 								$depArray = array();
 								foreach ($departments as $department) {
 									$departmentId = explode('|||', $department);

@@ -658,7 +658,7 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 				$no2_beds = $resuldata->no2_beds;
 			}
 		}
-		$result.='<div class="col-lg-3 col-md-3 col-sm-12">
+		/*<div class="col-lg-3 col-md-3 col-sm-12">
 						<div class="card card-statistic-2">
 							<div class="card-icon shadow-primary bg-primary">
 								<i class="fas fa-bed"></i>
@@ -668,11 +668,12 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 									<h4>Occupied Beds</h4>
 								</div>
 								<div class="card-body">
-									'.$occupied_beds.'
+	'.$occupied_beds.'
 								</div>
 							</div>
 						</div>
-					</div>
+					</div>*/
+		$result.='
 					<div class="col-lg-3 col-md-3 col-sm-12">
 						<div class="card card-statistic-2">
 							<div class="card-icon shadow-primary bg-primary">
@@ -714,11 +715,13 @@ where pt.branch_id='" . $branch_id . "'" . $where);
 		$non_vaccinated=0;
 		$vaccinated = 0;
 		$first_dose=0;
+		$second_dose=0;
 		$commordities=0;
 		$patient_table = $this->session->user_session->patient_table;
 		$resulObject=$this->DashboardModel->_rawQuery('select sum(case when sec_1_f_16 = 970 or sec_1_f_16 is null or sec_1_f_16 = "" then 1 else 0 end ) as non_vaccinated,
 sum(case when sec_1_f_16 in (971,972) and sec_1_f_16 is not null and sec_1_f_16 != "" then 1 else 0 end ) as vaccinated,
 sum(case when sec_1_f_16 = 971 and (sec_1_f_258 is null or sec_1_f_258 = "") and sec_1_f_16 is not null  then 1 else 0 end) as first_dose,
+sum(case when sec_1_f_16 in (971,972) and (sec_1_f_258 is not null or sec_1_f_258 != "") and (sec_1_f_17 is not null or sec_1_f_17 != "") and sec_1_f_16 is not null  then 1 else 0 end) as second_dose,
 sum(case when sec_1_f_8 is not null and sec_1_f_8 != "" then 1 else 0 end) as commordities
 from com_1_dep_1 where branch_id='.$branch_id.' ');
 
@@ -733,6 +736,9 @@ from com_1_dep_1 where branch_id='.$branch_id.' ');
 			}
 			if(!empty($resuldata->first_dose) || $resuldata->first_dose!=null) {
 				$first_dose=$resuldata->first_dose;
+			}
+			if(!empty($resuldata->second_dose) || $resuldata->second_dose!=null) {
+				$second_dose=$resuldata->second_dose;
 			}
 			if(!empty($resuldata->commordities) || $resuldata->commordities!=null) {
 				$commordities=$resuldata->commordities;
@@ -780,6 +786,21 @@ from com_1_dep_1 where branch_id='.$branch_id.' ');
 								</div>
 								<div class="card-body">
 									'.$first_dose.'
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-12">
+						<div class="card card-statistic-2">
+							<div class="card-icon shadow-primary bg-primary">
+								<i class="fas fa-notes-medical"></i>
+							</div>
+							<div class="card-wrap">
+								<div class="card-header">
+									<h4>Patient with Second Dose</h4>
+								</div>
+								<div class="card-body">
+									'.$second_dose.'
 								</div>
 							</div>
 						</div>
