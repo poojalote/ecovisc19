@@ -302,11 +302,24 @@ class AccessManagementController extends CI_Controller
 						$newArray = array();
 						$user_type = "";
 						foreach ($arrData as $item) {
-							if ($item[0] != "" && $item[1] != "" && $item[2] != "") {
+							if ($item[0] != "" && $item[1] != "" && $item[2] != "" && $item[3] != "") {
 								$user_type = 1;
 								if ($item[4] != "") {
 									if (array_search($item[4], $userTyepData)) {
 										$user_type = array_search('' . $item[4] . '', $userTyepData);
+									}
+								}
+								$roleU=0;
+								if($item[3]!="")
+								{
+									if (strcasecmp($item[3], 'Doctor') == 0) {
+										$roleU=2;
+									}
+									if (strcasecmp($item[3], 'Nurse') == 0) {
+										$roleU=3;
+									}
+									if (strcasecmp($item[3], 'Other') == 0) {
+										$roleU=4;
 									}
 								}
 								$data = array(
@@ -316,7 +329,7 @@ class AccessManagementController extends CI_Controller
 									"status" => 1,
 									"create_on" => date('Y-m-d H:i:s'),
 									"create_by" => $user_id,
-									"roles" => $item[3],
+									"roles" => $roleU,
 									"company_id" => $company,
 									"branch_id" => $branch,
 									"user_type" => $user_type,
