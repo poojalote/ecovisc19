@@ -251,12 +251,9 @@ class ServiceOrderController extends HexaController
 
     public function placeServiceOrder()
     {
-        // $itemArray = $this->input->post_get('itemArray');
-        //  print_r($itemArray);exit();
         $ValidationObject = $this->is_parameter(array("patientId"));
         if ($ValidationObject->status) {
             $param = $ValidationObject->param;
-            // print_r($param->patientId);exit();
             $user_id = $this->session->user_session->id;
             $company_id = $this->session->user_session->company_id;
             $branch_id = $this->session->user_session->branch_id;
@@ -266,17 +263,11 @@ class ServiceOrderController extends HexaController
             $time = $this->input->post_get('time');
             $randomNo = mt_rand(100000, 999999);
             $order_number = "o_" . $patientId . '_' . $randomNo;
-            // print_r($order_number);exit();
             $tableName = 'service_order';
             $patientId = $param->patientId;
 
             $itemArray = array();
-
             $itemArray[] = $this->input->post_get('itemArray');
-            // $timeArray[] = $this->input->post_get('timeArray');
-
-            // $prescriptionArray["create_by"]=$user_id;
-            // var_dump($timeArray);exit();
             $tableServiceOrder = "service_order";
             $billingTable = "service_order";
             $dataArray1 = array();
@@ -381,23 +372,13 @@ class ServiceOrderController extends HexaController
                             'entry_type' => $entry_type,
                             'final_amount' => $total);
                         $billing_array1[$key] = $billing_array;
-                        // if($s_category_coll=="PATHOLOGY" || $s_category_coll=="RADIOLOGY")
-                        // {
-                        // 	// $billing_array=array();
-                        // }
-                        // else
-                        // {
 
-                        // }
-                        // }
-                        // }
                     }
 
 
                 }
 
             }
-            // print_r($dataArray1);exit();
 
             if (!empty($dataArray1)) {
                 $billing_transaction = $this->session->user_session->billing_transaction;
@@ -460,21 +441,7 @@ class ServiceOrderController extends HexaController
         $date = $standardLabDate;
         if ($admissionDate != "" && $admissionDate != "0000-00-00 00:00:00") {
             $Date = $admissionDate;
-//			if ($labDay == 1) {
-//				$date = $admissionDate;
-//			} else if ($labDay == 5) {
-//
-//				$date = date('Y-m-d', strtotime($Date . ' + 5 days'));
-//			} else if ($labDay == 11) {
-//
-//				$date = date('Y-m-d', strtotime($Date . ' + 11 days'));
-//			} else if ($labDay == 14) {
-//
-//				$date = date('Y-m-d', strtotime($Date . ' + 14 days'));
-//			} else if ($labDay == 0) {
-//
-//				$date = date('Y-m-d', strtotime($standardLabDate));
-//			}
+
 
 
             $tableServiceOrder = "service_order";
@@ -556,14 +523,6 @@ class ServiceOrderController extends HexaController
                             'branch_id' => $branch_id,
                             'final_amount' => $total);
                         $billing_array1[$i] = $billing_array;
-                        // if($s_category_coll=="PATHOLOGY" || $s_category_coll=="RADIOLOGY")
-                        // {
-                        // 	// $billing_array=array();
-                        // }
-                        // else
-                        // {
-                        // 	$billing_array1[]=$billing_array;
-                        // }
 
                     }
                 }
@@ -1561,7 +1520,7 @@ class ServiceOrderController extends HexaController
                 $lpsData = array(
                     "confirm_service_given"=>"1"
                 );
-                
+
                 $this->db->where(array("id"=>$PSid));
                 if ($this->db->set(array("confirm_service_given"=>1))->update('lab_patient_serviceorder')) {
                     // $this->db->trans_rollback();
