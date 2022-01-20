@@ -420,8 +420,8 @@ $("#patientForm").validate({
 			contentType: false,
 			processData: false,
 			success: function (result) {
-				console.log('byeeee');
-				app.successToast(result);
+				// console.log('byeeee');
+				// app.successToast(result);
 				$.LoadingOverlay("hide");
 				if (result.status === 200) {
 
