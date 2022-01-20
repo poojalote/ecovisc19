@@ -259,6 +259,8 @@ class AccessManagementController extends CI_Controller
 			$branch = $this->input->post('branches');
 			$arrData = json_decode($Data1);
 			$userTyepData = array();
+			$users = "";
+			$user_type_array = "";
 			if (!empty($arrData)) {
 				$userObject = $this->ReportMakerModel->getAllUserTypes();
 				if ($userObject->totalCount > 0) {
@@ -273,6 +275,15 @@ class AccessManagementController extends CI_Controller
 						array_push($user_name_list, $item[1]);
 					}
 				}
+
+				$user_type_list = array();
+				foreach ($arrData as $item) {
+					if ($item[4] != "") {
+						array_push($user_type_list, $item[4]);
+					}
+				}
+				$user_type_array = implode(",", $user_type_list);
+
 //				print_r(implode(",",$user_name_list));exit();
 				if (count($user_name_list) > 0) {
 					$users = implode(",", $user_name_list);
@@ -284,11 +295,12 @@ class AccessManagementController extends CI_Controller
 						}
 						$response['error_data'] = implode(', ', $listExistUser);
 						$response['status'] = 202;
-						$response['data'] = "Dublicate Value Encounter";
+						$response['data'] = "Duplicate Value Encounter";
 						echo json_encode($response);
 						exit();
 					} else {
 						$newArray = array();
+						$user_type = "";
 						foreach ($arrData as $item) {
 							if ($item[0] != "" && $item[1] != "" && $item[2] != "") {
 								$user_type = 1;
@@ -313,9 +325,50 @@ class AccessManagementController extends CI_Controller
 								array_push($newArray, $data);
 							}
 						}
+						$this->load->model('UserModel');
 						if (!empty($newArray)) {
 							$insert_batch = $this->db->insert_batch("users_master", $newArray);
 							if ($insert_batch == true) {
+
+								$user_id_array = $this->UserModel->_rawQuery('select id,user_name,user_type from users_master where find_in_set(user_name,"' . $users . '")');
+								if ($user_id_array->totalCount > 0) {
+									$userIDdata = $user_id_array->data;
+									foreach ($userIDdata as $row) {
+										$user = "";
+										$get_column_name = $this->db->query("select column_name from profile_management_table where id='" . $row->user_type . "' ");
+										if ($this->db->affected_rows() > 0) {
+											$res = $get_column_name->row();
+											$user = $res->column_name;
+
+											$roles = $this->db->query("select " . $res->column_name . ",permission_name from group_permission_table where type =2 and " . $res->column_name . " = 1")->result();
+											if (count($roles) > 0) {
+												foreach ($roles as $role) {
+													$chkdepartmentData = array(
+														'department_id' => $role->permission_name,
+														'activity_status' => 1,
+														'user_id' => $row->id,
+														'create_on' => date('Y-m-d'),
+														'create_by' => $user_id
+													);
+													$this->db->insert('role_master',$chkdepartmentData);
+												}
+												
+											}
+										}
+
+										$get_permission_data = $this->UserModel->get_permission_data($user);
+										if ($get_permission_data != false) {
+											foreach ($get_permission_data as $r1) {
+												$data_per = array(
+													"permission_name" => $r1->permission_name,
+													"user_id" => $row->id,
+													"status" => 1
+												);
+												$this->db->insert("user_permission_table", $data_per);
+											}
+										}
+									}
+								}
 								$response['status'] = 200;
 								$response['data'] = "Data uploaded Successfully";
 							} else {
