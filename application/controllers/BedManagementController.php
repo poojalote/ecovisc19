@@ -1964,5 +1964,38 @@ from " . $patient_table . "  pt where pt.bed_id in (select cb.id from com_1_bed 
         echo json_encode($response);
     }
 
+    function refreshBed(){
+		$patient_table = $this->session->user_session->patient_table;//hospital_bed_table
+		$branch_id = $this->session->user_session->branch_id;
+		$query=$this->db->query("select id,(select discharge_date from ".$patient_table." where id=(select (patient_id)  from com_1_bed_history where bed_id=cb.id order by id desc limit 1)) as discharge_date
+from com_1_bed cb where status=0 and active=0 and  branch_id=".$branch_id);
+		if($this->db->affected_rows() > 0){
+			$result=$query->result();
+			$count=0;
+			foreach ($result as $row){
+				$bed_id=$row->id;
+				$discharge_date=$row->discharge_date;
+				if(!is_null($discharge_date)){
+					$where=array("id"=>$bed_id);
+					$set=array("status"=>1);
+					$update=$this->db->update("com_1_bed",$set,$where);
+					if($update == true){
+						$count++;
+					}
+				}
+			}
+			if($count > 0){
+				$response['status']=200;
+				$response['body']="Beds Refresh Successfully.";
+			}else{
+				$response['status']=201;
+				$response['body']="No beds available for refresh";
+			}
+		}else{
+			$response['status']=201;
+			$response['body']="Something went wrong.";
+		}echo json_encode($response);
+	}
+
 
 }
