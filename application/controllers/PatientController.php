@@ -819,6 +819,7 @@ class PatientController extends HexaController
 
         if (!is_null($this->input->post('patientId'))) {
             $patientId = $this->input->post('patientId');
+
             $session_data = $this->session->user_session;
 
 //			$company_id = $session_data->company_id;
@@ -827,6 +828,7 @@ class PatientController extends HexaController
             //$where=array("id"=>$patientId);
             $where = "where dm.id='" . $patientId . "'";
             $resultObject = $this->Patient_Model->getTableData($tableName, $where);
+            
             if ($resultObject->totalCount > 0) {
                 $response["status"] = 200;
                 $response["body"] = $resultObject->data;

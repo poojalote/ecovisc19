@@ -44,7 +44,8 @@ function getDischargeDetails(patientId) {
 
 	let formData = new FormData();
 	formData.set("patientId",patientId);
-	app.request("https://c19.docango.com/new_patients/getPatientData", formData).then(response => {
+	//app.request("https://c19.ecovisrkca.com/new_patients/getPatientData", formData).then(response => {
+	app.request("http://localhost/ecovisc19/new_patients/getPatientData", formData).then(response => {
 		if (response.status === 200) {
 			var user_data = response.body;
 			if (user_data[0]['discharge_date'] != null && user_data[0]['discharge_date'] != '') {
