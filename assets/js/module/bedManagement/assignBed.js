@@ -247,6 +247,7 @@ function update_user(id) {
 				if(data.discharge_date!=null && data.discharge_date!="0000-00-00 00:00:00" && data.discharge_date!="")
 				{
 					$("#assign_bed_btn").hide();
+					$("#check_order_btn").hide();
 				}
 			} else {
 
