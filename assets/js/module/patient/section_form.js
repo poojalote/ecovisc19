@@ -96,6 +96,21 @@ function getDischargeDetails(patientId) {
 			if (user_data[0]['is_transfered'] != null && user_data[0]['is_transfered'] != '') {
 				let is_transfered = user_data[0]['is_transfered'];
 				$('input[name="is_transfer"][value="' + is_transfered + '"]').prop('checked', true);
+				if(is_transfered==1)
+				{
+					$("#transfer_section").show();
+					if (user_data[0]['transfer_to'] != null && user_data[0]['transfer_to'] != '') {
+						let trasfer_to = user_data[0]['transfer_to'];
+						$("#trasfer_to").val(trasfer_to);
+					}
+					if (user_data[0]['transfer_reason'] != null && user_data[0]['transfer_reason'] != '') {
+						let trans_reason = user_data[0]['transfer_reason'];
+						$("#trans_reason").val(trans_reason);
+					}
+				}
+				else {
+					$("#transfer_section").hide();
+				}
 			}
 		} else {
 			app.errorToast('data not found ');
