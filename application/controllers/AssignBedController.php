@@ -139,7 +139,7 @@ class AssignBedController extends HexaController
 			$bedStatus = $validObject->param->bedStatus;
 			$table_name = $this->session->user_session->hospital_bed_table;
 
-			$resultObject = $this->Assignbed_model->_update($table_name, array("active" => $status, "status" => $bedStatus), array("id" => $bed_id));
+			$resultObject = $this->Assignbed_model->_update($table_name, array("active" => $status, "status" => $bedStatus,'modify_on'=>date('Y-m-d H:i:s'),'modify_by'=>$this->session->user_session->id), array("id" => $bed_id));
 
 			if ($resultObject->status) {
 				$response["status"] = 200;

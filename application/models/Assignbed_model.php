@@ -125,11 +125,11 @@ class Assignbed_model extends MasterModel
             $result->roomDetails = $roomDetails;
             if ($roomDetails != NULL) {
                 if (array_key_exists('bed_id', $master_patient)) {
-                    $free_bed = array("status" => 1);
+                    $free_bed = array("status" => 1,'modify_on'=>date('Y-m-d H:i:s'),'modify_by'=>$this->session->user_session->id);
                     $freed_bed_where = array("Id" => $roomDetails->bed_id);
                     $this->db->set($free_bed)->where($freed_bed_where)->update($hospital_bed_table);
 
-                    $occupied_bed = array("status" => 0);
+                    $occupied_bed = array("status" => 0,'modify_on'=>date('Y-m-d H:i:s'),'modify_by'=>$this->session->user_session->id);
                     $occupied_bed_where = array("Id" => $master_patient['bed_id']);
                     $this->db->set($occupied_bed)->where($occupied_bed_where)->update($hospital_bed_table);
                 }
