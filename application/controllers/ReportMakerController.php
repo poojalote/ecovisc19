@@ -2491,8 +2491,18 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
                 exit();
             }
             //print_r($patient_data->result());exit();
+			if (!is_null($this->session->branch_logo)) {
+				if(!is_null($this->session->branch_logo->branch_logo)){
+					$logo = $this->session->branch_logo->branch_logo;
+				}else{
+					$logo = "dist/img/credit/healthstart.png";
+				}
+			} else {
+				$logo = "dist/img/credit/healthstart.png";
 
-			$path = base_url(). "assets/healthlogo.png";
+			}
+
+			$path = base_url(). $logo;
 			$type = pathinfo($path, PATHINFO_EXTENSION);
 			$imagedata = file_get_contents($path);
 			$base64 = "data:image/" . $type . ";base64," . base64_encode($imagedata);
@@ -2613,7 +2623,7 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
         <body>
             <header style="background-color:#019fa8;height: 8%">
                 <div class="row" style="height: 50px;width: 50px" >
-                <img src ="'.$path.'"  id="site-logo">
+                <img src ="'.$path.'"  id="site-logo" style="height: 80px;width: 80px">
                 </div>
 
 

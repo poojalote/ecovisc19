@@ -225,8 +225,12 @@ $this->load->view('_partials/header');
 													<div id="tabmasterTestPanel0"></div>
 												</section>
                                                 <section id="labEntryHandsonPanel">
+													<div class="col-md-12 mb-2 text-right">
+														<button class="btn btn-primary" type="button" id="saveLabExcelDataEntry" onclick="saveExcelData();">Save</button>
+													</div>
+
                                                     <div id="tabentryhandsondata"></div>
-                                                    <button class="btn btn-primary" type="button" id="saveLabExcelDataEntry" onclick="saveExcelData();">Save</button>
+
                                                 </section>
                                                 <section id="pathologyCollectionPanel">
                                                     <table class="table table-bordered table-stripped" id="pathologyTable">
@@ -250,21 +254,47 @@ $this->load->view('_partials/header');
 
                                     </section>
                                     <section id="childTestPanel0">
-                                        <div id="tabchildTestPanel0">
-                                            <table class="table" id="patientServiceLabReportTable" style="width: 100%!important;">
-                                                <thead>
-                                                <tr>
-                                                    <th>Service Order</th>
-                                                    <th>Amount</th>
-                                                    <th>Service Order Date</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
+										<div class="tabs tabs-style-underline">
+											<nav>
+												<ul id="lab_report_top_nav">
+													<li class="tab-current" id="LabTabLab">
+														<a href="#labReportNormalPanel" class="icon" id="labDataNormal">
+															<i class="fas fa-file-medical-alt  mr-1 fa_class"></i>
+															<span>Lab Reports</span>
+														</a>
+													</li>
+													<li class="" id="LabTabPath">
+														<a href="#labReportPathologyPanel" class="icon" id="labDataPathology">
+															<i class="fas fa-notes-medical  mr-1 fa_class"></i>
+															<span>Pathology Reports</span>
+														</a>
+													</li>
+												</ul>
+											</nav>
+											<div class="content-wrap content-wrap3" id="lab_reportPath_panel">
+												<section id="labReportNormalPanel" class="content-current">
+													<div id="tabchildTestPanel0">
+														<table class="table" id="patientServiceLabReportTable" style="width: 100%!important;">
+															<thead>
+															<tr>
+																<th>Service Order</th>
+																<th>Amount</th>
+																<th>Service Order Date</th>
+																<th>Action</th>
+															</tr>
+															</thead>
+															<tbody>
 
-                                                </tbody>
-                                            </table>
-                                        </div>
+															</tbody>
+														</table>
+													</div>
+												</section>
+												<section id="labReportPathologyPanel">
+													<div id="tabchildTestPanelPath0"></div>
+												</section>
+											</div>
+										</div>
+
                                     </section>
                                     <section id="unitMasterPanel0">
 										<div class="row mb-2"><button class="btn btn-primary odpsction" type="button"
@@ -424,6 +454,8 @@ $this->load->view('_partials/header');
             showPanel(2);
             getPatientLabReportList();
 			$("#excelhiddenelement").val('');
+			$('#LabTabLab').addClass('tab-current');
+			$('#LabTabPath').removeClass('tab-current');
         })
 
         $("#tabUnitMaster0").on('click',function (event) {
@@ -452,6 +484,24 @@ $this->load->view('_partials/header');
             showPanel1('labPathologyCollection',143);
 
         })
+		$("#labDataNormal").on('click',function (event) {
+			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+
+			document.getElementById("hiddenDivName").value= 'tabchildTestPanel0';
+			// get_forms(132, 0, queryParam, departmentId, null, 'tabchildTestPanel0');
+			showPanel(2);
+			getPatientLabReportList();
+			$("#excelhiddenelement").val('');
+			$('#LabTabLab').addClass('tab-current');
+			$('#LabTabPath').removeClass('tab-current');
+
+		})
+		$("#labDataPathology").on('click',function (event) {
+			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+
+			showPanel2('labDataPathology',143);
+
+		})
     });
 
 
@@ -611,6 +661,7 @@ function SavePathologyProgress2(formData) {
         if(panel ===2){
             $("#lab_master_top_nav li:nth-child(3)").addClass("tab-current")
             $("#childTestPanel0").addClass("content-current");
+			$("#labReportNormalPanel").addClass("content-current")
         }
         if(panel ===144){
             $("#lab_master_top_nav li:nth-child(4)").addClass("tab-current")
@@ -640,6 +691,17 @@ function SavePathologyProgress2(formData) {
             // loadEditableTable(sectionId);
             getCollectionTable('PATHOLOGY', 'pathologyTable');
         }
+	}
+	function showPanel2(id,sectionId) {
+		$(".content-wrap3 section").removeClass("content-current");
+		$("#lab_report_top_nav li").removeClass("tab-current")
+
+		if(id=='labDataPathology')
+		{
+			$("#lab_report_top_nav li:nth-child(2)").addClass("tab-current")
+			$("#labReportPathologyPanel").addClass("content-current");
+			getPathologyReports();
+		}
 	}
     function loadPackageData(section_id, divId) {
         if (section_id == 136) {
@@ -1057,7 +1119,7 @@ function SavePathologyProgress2(formData) {
                     {type: 'text'},
                     {type: 'text'},
 				];
-				var hideArra = [0,5,6];
+				var hideArra = [0,4,5,6];
 				var columns = ["Master Id",'Test Name(A)', 'Value(B)', 'Unit(C)', 'Bio Ref Interval(D)',"Child Test Id","Id"];
 				hideColumn = {
 					// specify columns hidden by default
@@ -1150,4 +1212,53 @@ function SavePathologyProgress2(formData) {
         }
 
     }
+    function getPathologyReports() {
+		$.LoadingOverlay("show");
+		$("#tabchildTestPanelPath0").html('');
+		$.ajax({
+			url: "<?= base_url();?>" + "getLabPathologyTableData",
+			type: "POST",
+			dataType: "json",
+			data: {p_id:localStorage.getItem("patient_id")},
+			success: function (result) {
+				$.LoadingOverlay("hide");
+				if (result.status == 200) {
+					$("#tabchildTestPanelPath0").html(result.data);
+				} else {
+					toastr.error(result.body);
+
+				}
+			},
+			error: function (error) {
+
+				$.LoadingOverlay("hide");
+				console.log(error);
+				// $.LoadingOverlay("hide");
+			}
+		});
+	}
+
+	function radiologyDownloadButtons(download_data) {
+		let samples = download_data.split(',');
+		var filedata=[];
+		var interval=samples.length;
+		if(samples.length>0)
+		{
+			for (var i =0; samples.length > 0; i++) {
+				// filedata.push(samples[i]);
+				if (i >= samples.length) {
+					break;
+				}
+				var a = document.createElement("a");
+				a.setAttribute('href', "<?= base_url();?>"+samples[i]);
+				a.setAttribute('download', '');
+				a.setAttribute('target', '_blank');
+				a.click();
+
+			}
+
+			// console.log(filedata);
+		}
+
+	}
 </script>

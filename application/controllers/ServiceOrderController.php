@@ -1562,12 +1562,13 @@ class ServiceOrderController extends HexaController
                         $input_data = "";
                     }
                     $dataNewTable=array(
-                        "service_ids"=>$this->input->post('PserviceIDS'),
-                        "patient_id"=>$Pext_pid,
+                        "service_ids"=>$this->input->post('Pservice_id'),
+                        "patient_id"=>$PSid,
                         "branch_id"=>$branch_id,
                         "file_uploaded"=>$input_data,
                         "created_by"=>$user_id,
-                        "lab_patient_ext_id"=>$Ppatient_id
+                        "lab_patient_ext_id"=>$Ppatient_id,
+						"type"=>2
                     );
                     $this->db->insert("pathology_service_transaction_table", $dataNewTable);
                 }
@@ -1661,7 +1662,7 @@ class ServiceOrderController extends HexaController
                 $where = array('id' => $billing_id, 'patient_id' => $patient_id,
                     'branch_id' => $branch_id,
                     'type' => 3);
-                $data = array('is_deleted' => 0);
+                $data = array('is_deleted' => 0,'modify_by'=>$user_id,'modify_on'=>date('Y-m-d H:i:s'));
                 $this->db->where($where);
                 $update = $this->db->update($billing_transaction, $data);
                 if ($this->db->trans_status() === FALSE) {
@@ -1951,7 +1952,7 @@ class ServiceOrderController extends HexaController
                         $where1 = array('id' => $serviceBillingIds,
                             'patient_id' => $patient_id,
                             'reference_id' => $radioServiceIds);
-                        $data1 = array('confirm' => 1);
+                        $data1 = array('confirm' => 1,'modify_by'=>$user_id,'modify_on'=>date('Y-m-d H:i:s'));
                         $this->db->where($where1);
                         $update_billing = $this->db->update($billing_transaction, $data1);
                     }
