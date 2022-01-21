@@ -30,24 +30,34 @@ function loadPatient(id, name, adhar_number, contract, profile, admissionDate, m
 }
 
 function deactiveBed(id, status) {
-	let newStatus;
-	if (status === 1) {
-		newStatus = 0;
-	} else {
-		newStatus = 1;
+	if(status == 0){
+		var msg="Do you want to de-active this bed?";
+	}else{
+		var msg="Do you want to active this bed?";
 	}
-	let formData = new FormData();
-	formData.set("id", id);
-	formData.set("status", newStatus);
-	formData.set("bedStatus", status);
-	app.request(baseURL + "updateBedActiveStatus", formData).then(res => {
-		if (res.status === 200) {
-			app.successToast(res.body);
-			get_roomdetailstable();
+	if(confirm(msg)){
+		let newStatus;
+		if (status === 1) {
+			newStatus = 0;
 		} else {
-			app.errorToast(res.body);
+			newStatus = 1;
 		}
-	});
+		let formData = new FormData();
+		formData.set("id", id);
+		formData.set("status", newStatus);
+		formData.set("bedStatus", status);
+		app.request(baseURL + "updateBedActiveStatus", formData).then(res => {
+			if (res.status === 200) {
+				app.successToast(res.body);
+				get_roomdetailstable();
+			} else {
+				app.errorToast(res.body);
+			}
+		});
+	}else{
+
+	}
+
 
 }
 
