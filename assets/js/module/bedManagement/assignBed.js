@@ -244,6 +244,10 @@ function update_user(id) {
 				$('#u_Id').rules('remove', 'uniqueUserID');
 				$('#u_Id').rules('add', 'uniqueUserIDUpdate');
 				// $('#u_Id').attr('readonly',true);
+				if(data.discharge_date!=null && data.discharge_date!="0000-00-00 00:00:00" && data.discharge_date!="")
+				{
+					$("#assign_bed_btn").hide();
+				}
 			} else {
 
 			}
