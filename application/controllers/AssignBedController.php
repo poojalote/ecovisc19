@@ -85,9 +85,36 @@ class AssignBedController extends HexaController
 
 
 			if ($pid != '' || $pid != null) {
-
+                $checkBedTransfer = $this->Assignbed_model->_select('com_1_bed_history',array('patient_id'=>$pid,'branch_id'=>$branch_id),'*',false)->totalCount;
 				$resultObject = $this->Assignbed_model->updateMasterPatient($data, $pid, $branch_id, $patient_table, $patient_bed_history_table, $hospital_bed_table);
 				if ($resultObject->status) {
+                    $checkSmsStatus = $this->Assignbed_model->_select('branch_master',array('id'=>$branch_id,'isSMS'=>1),'*',true);
+                    if($checkSmsStatus->totalCount > 0)
+                    {
+                        $branchData = $checkSmsStatus->data;
+
+                        $this->load->model("SmsModel");
+                        if($checkBedTransfer > 0 )
+                        {
+                            $template = "1107162869101849104";
+                            $patientDetails = $this->Assignbed_model->_rawQuery('select contact,(select bed_name from '.$hospital_bed_table.' where id = "'.$bed.'" ) as bed, (select group_concat(room_no,"-",ward_no) from '.$hospital_room_table.' where id = "'.$hroom.'" ) as room from '.$patient_table.' where id = "'.$pid.'"')->data;
+                            $PD = $patientDetails[0];
+                            if($PD != null)
+                            {
+                                $this->SmsModel->sendSMS($PD->contact, array("name"=>$name,'center'=>$branchData->name." Center",'bed'=>"Bed no:".$PD->bed,'room'=>"Room no:".$PD->room), $template, $template_id = 2);
+                            }
+                        }
+                        else
+                        {
+                            $template = "1107162869085979911";
+                            $patientDetails = $this->Assignbed_model->_rawQuery('select contact,(select bed_name from '.$hospital_bed_table.' where id = "'.$bed.'" ) as bed, (select group_concat(room_no,"-",ward_no) from '.$hospital_room_table.' where id = "'.$hroom.'" ) as room from '.$patient_table.' where id = "'.$pid.'"')->data;
+                            $PD = $patientDetails[0];
+                            if($PD != null)
+                            {
+                                $this->SmsModel->sendSMS($PD->contact,array("name"=>$name,'center'=>$branchData->name." Center",'bed'=>"Bed no:".$PD->bed,'room'=>"Room no:".$PD->room),$template);
+                            }
+                        }
+                    }
 					$response["id"] = $resultObject;
 					$response["status"] = 200;
 					$response["body"] = 'Update Successfully';
@@ -556,10 +583,10 @@ class AssignBedController extends HexaController
 
 	public function assignBedCalculation()
 	{
-		
-		$p_id = $this->input->post('p_id');	
-		
-		
+
+		$p_id = $this->input->post('p_id');
+
+
 		if (!is_null($p_id)) {
 			try {
 				$billing_transaction = $this->session->user_session->billing_transaction;
@@ -2090,11 +2117,11 @@ class AssignBedController extends HexaController
 //		var_dump($dates);
 		return $dates;
 	}
-	
+
 	function UploadAllPatientBill(){
 		$branch_id = $this->session->user_session->branch_id;
 		$tableName = $this->session->user_session->patient_table;
-		
+
 		$query=$this->db->query("select id from ".$tableName." where branch_id=".$branch_id."
 		AND discharge_date is not null AND discharge_date != '0000-00-00 00:00:00'");
 		$res=array();
@@ -2113,11 +2140,11 @@ class AssignBedController extends HexaController
 		log_message("error",json_encode($res));
 		echo json_encode($res);
 	}
-	
+
 	public function assignBedCalculationAll($p_id)
 	{
-		
-		
+
+
 		if (!is_null($p_id)) {
 			try {
 				$billing_transaction = $this->session->user_session->billing_transaction;
