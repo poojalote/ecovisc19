@@ -45,7 +45,7 @@ function getDischargeDetails(patientId) {
 	let formData = new FormData();
 	formData.set("patientId",patientId);
 	//app.request("https://c19.ecovisrkca.com/new_patients/getPatientData", formData).then(response => {
-	app.request("http://localhost/ecovisc19/new_patients/getPatientData", formData).then(response => {
+	app.request("http://localhost/c19/new_patients/getPatientData", formData).then(response => {
 		if (response.status === 200) {
 			var user_data = response.body;
 			if (user_data[0]['discharge_date'] != null && user_data[0]['discharge_date'] != '') {
@@ -62,12 +62,40 @@ function getDischargeDetails(patientId) {
 				$("#patient_course_hospital").val(user_data[0]['course_hospital']);
 			}
 			if (user_data[0]['followup_date'] != null && user_data[0]['followup_date'] != '') {
-				let date = app.getDate(user_data[0]['followup_date']);
-				$("#patient_follow_up").val(date);
+				let followup_date = user_data[0]['followup_date'];
+				$("#patient_follow_up").val(followup_date);
 			}
 			if (user_data[0]['swab_report'] != null && user_data[0]['swab_report'] != '') {
 				let blood = user_data[0]['swab_report'];
 				$("#patient_swab_report option[value='" + blood + "']").prop("selected", true);
+			}
+			if (user_data[0]['event'] != null && user_data[0]['event'] != '') {
+				let event = user_data[0]['event'];
+				$("#event option[value='" + event + "']").prop("selected", true);
+			}
+			if (user_data[0]['significant_event'] != null && user_data[0]['significant_event'] != '') {
+				let significant_event = user_data[0]['significant_event'];
+				$("#sign_event").val(significant_event);
+			}
+			if (user_data[0]['discharge_condition'] != null && user_data[0]['discharge_condition'] != '') {
+				let discharge_condition = user_data[0]['discharge_condition'];
+				$("#cndn_discharge_time").val(discharge_condition);
+			}
+			if (user_data[0]['medication'] != null && user_data[0]['medication'] != '') {
+				let medication = user_data[0]['medication'];
+				$("#medication").val(medication);
+			}
+			if (user_data[0]['physical_activity'] != null && user_data[0]['physical_activity'] != '') {
+				let physical_activity = user_data[0]['physical_activity'];
+				$("#physical_activity").val(physical_activity);
+			}
+			if (user_data[0]['urgent_care'] != null && user_data[0]['urgent_care'] != '') {
+				let urgent_care = user_data[0]['urgent_care'];
+				$("#urgent_care").val(urgent_care);
+			}
+			if (user_data[0]['is_transfered'] != null && user_data[0]['is_transfered'] != '') {
+				let is_transfered = user_data[0]['is_transfered'];
+				$('input[name="is_transfer"][value="' + is_transfered + '"]').prop('checked', true);
 			}
 		} else {
 			app.errorToast('data not found ');

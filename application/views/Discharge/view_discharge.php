@@ -83,7 +83,7 @@ $this->load->view('_partials/header');
 												<label class="font-weight-bold">Medication used during hospital
 													stay</label>
 												<input type="text" class="form-control" id="medication_auto"
-													   name="medication_auto">
+													   name="medication_auto" readonly>
 											</div>
 										</div>
 										<div class="form-group row mb-3">
