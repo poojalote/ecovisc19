@@ -1120,9 +1120,11 @@ function SavePathologyProgress2(formData) {
                     {type: 'text',readOnly:true},
                     {type: 'text'},
                     {type: 'text'},
+					{type: 'text'},
+					{type: 'text'},
 				];
-				var hideArra = [0,4,5,6];
-				var columns = ["Master Id",'Test Name(A)', 'Value(B)', 'Unit(C)', 'Bio Ref Interval(D)',"Child Test Id","Id"];
+				var hideArra = [0,4,5,6,7,8];
+				var columns = ["Master Id",'Test Name(A)', 'Value(B)', 'Unit(C)', 'Bio Ref Interval(D)',"Child Test Id","Id","OrderId","Master Name"];
 				hideColumn = {
 					// specify columns hidden by default
 					columns: hideArra,
@@ -1171,13 +1173,18 @@ function SavePathologyProgress2(formData) {
         $.LoadingOverlay("show");
         // $("#newErrorDiv").html('');
         var array=hotDiv.getData();
-        console.log(array);
+		var Form_data = new FormData();
+		Form_data.set('patient_id',localStorage.getItem("patient_id"));
+		Form_data.set('value',JSON.stringify(array));
+		Form_data.set('patient_name',localStorage.getItem("patient_name"));
         if (confirm("Are You Sure You want to upload?")) {
             $.ajax({
                 url: "<?= base_url();?>" + "updateDynamicLabData",
                 type: "POST",
                 dataType: "json",
-                data: {value: array,patient_id:localStorage.getItem("patient_id")},
+                data: Form_data,
+				contentType: false,
+				processData: false,
                 success: function (result) {
                     $.LoadingOverlay("hide");
                     if (result.status == 200) {

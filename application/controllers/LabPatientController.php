@@ -34,7 +34,7 @@ class LabPatientController extends HexaController
 
 		// load model
 		$this->load->model('Patient_Model');
-
+		$this->load->model('MasterModel');
 		// load base_url
 		$this->load->helper('url');
 
@@ -1404,6 +1404,7 @@ class LabPatientController extends HexaController
 			$sql = "select master_id,table_name,operation,header,type,configuration,column_name,operation_column,where_condition,fetch_query_columns,where_condition from dynamic_form_table_master m join dynamic_form_column_master c
             on m.id=c.master_id where m.has_key ='" . $header->param->haskey . "' and m.section_id = " . $header->param->section_id . " and m.dep_id = " . $header->param->dep_id . " and m.status=1 and c.status=1";
 			$resultObject = $this->db->query($sql)->result();
+
 			$qParam = (array)json_decode(base64_decode($header->param->queryParam));
 			if (count($resultObject) > 0) {
 				$select = array();
@@ -1457,7 +1458,7 @@ class LabPatientController extends HexaController
 					$data = $this->db->get($tableName)->result();
 					if ($data != null) {
 						foreach ($data as $row) {
-							$data = array($row->master_id, $row->child_test_name, $row->value, $row->unit, $row->refe_value, $row->child_test_id, $row->id);
+							$data = array($row->master_id, $row->child_test_name, $row->value, $row->unit, $row->refe_value, $row->child_test_id, $row->id,$row->order_id,$row->master_name);
 							array_push($datanew, $data);
 						}
 					}
@@ -1489,42 +1490,93 @@ class LabPatientController extends HexaController
 	public function updateDynamicLabData()
 	{
 		$value = $this->input->post('value');
+		$data=json_decode($value);
 		$session_data = $this->session->user_session;
 		$branch_id = $session_data->branch_id;
 		$user_id = $this->session->user_session->id;
-		$patient_id = $this->input->post('patient_id');
-		$updateArray = array();
-		$insertArray = array();
-		$insert_batch = "";
+		$patientId = $this->input->post('patient_id');
+		$patient_name = $this->input->post('patient_name');
+		$lab_patient_table = $this->session->user_session->lab_patient_table;
 		$update_batch = "";
-		// $where = array("branch_id" => $branch_id);
-		$indexArray = array();
-		$i = 1;
+
+
 		$lab_test_data = array();
-		$order_det = $this->db->where('patient_id', $patient_id)->get('lab_patient_serviceorder')->row();
-		foreach ($value as $item) {
-			$ltde_data = array(
-				"id" => $item[6],
-				"value" => $item[2],
-				"unit " => $item[3]
-			);
-			array_push($lab_test_data, $ltde_data);
+		$excelStructureDataArray=array();
+		$patient_location = '';
+		$patient_age = '';
+		$resultstatus = TRUE;
+		try {
+			$this->db->trans_start();
+		$patientObject = $this->MasterModel->_rawQuery('select (select location from  branch_master b where b.id=l.branch_id) as branch_loc,TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age from ' . $lab_patient_table . ' l where l.id=' . $patientId . '');
+		if ($patientObject->totalCount > 0) {
+			$pdata = $patientObject->data[0];
+			$patient_location = $pdata->branch_loc;
+			$patient_age = $pdata->age;
 		}
+		$patientIdA = 'N' . str_pad($patientId, '9', '0', STR_PAD_LEFT);
+		foreach ($data as $item) {
+			if($item[0]!="" && $item[1]!="") {
+				$ltde_data = array(
+					"id" => $item[6],
+					"value" => $item[2],
+					"unit " => $item[3]
+				);
+				array_push($lab_test_data, $ltde_data);
+				$orderIdA = 'AA' . str_pad($item[7], '6', '0', STR_PAD_LEFT);
+				$excelStructureData = array('VisitDate' => date('M d Y H:i A'),
+					'Orgname' => 'Covidcare',
+					'Location' => $patient_location,
+					'Patient_number' => $patientIdA,
+					'Patient_Name' => $patient_name,
+					'Patient_Age' => $patient_age,
+					'OrderTest' => $item[8],
+					'ParameterId' => $item[5], //child_test_id
+					'ParameterName' => $item[1], //child_test_name
+					'result' => $item[2], //value
+					'unit' => $item[3], //unit
+					'ref_range' => $item[4], //ref_range
+					'orderId' => $orderIdA,
+					'branch_id' => $branch_id,
+					'order_number' => $item[7],
+					'external_patient_id' => $patientId,
+					'patient_type' => 2);
+				array_push($excelStructureDataArray, $excelStructureData);
+			}
+		}
+//		print_r($excelStructureDataArray);exit();
 		if (!empty($lab_test_data)) {
 			$update_batch = $this->db->update_batch('lab_test_data_entry', $lab_test_data, 'id');
 		}
-		if ($update_batch == true) {
+		if (count($excelStructureDataArray) > 0) {
+			$whereExcel = array('external_patient_id' => $patientId, 'patient_type' => 2, 'branch_id' => $branch_id);
+			$delete = $this->db->where($whereExcel)->delete('excel_structure_data');
+			if ($delete) {
+				$result = $this->db->insert_batch('excel_structure_data', $excelStructureDataArray);
+			}
+		}
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$resultstatus = FALSE;
+			} else {
+				$this->db->trans_commit();
+				$resultstatus = TRUE;
+			}
+			$this->db->trans_complete();
+			$response["last_query"] = $this->db->last_query();
+		} catch (Exception $ex) {
+			$resultstatus = FALSE;
+			$this->db->trans_rollback();
+		}
+
+		if ($resultstatus == true) {
 			$response['status'] = 200;
 			$response['body'] = "Data inserted Successfully";
 		} else {
 			$response['status'] = 201;
 			$response['body'] = "Failed To update";
 			$response['last_q'] = $lab_test_data;
-
 		}
-
 		echo json_encode($response);
-
 	}
 
 	public function updateDynamicLabData__()
@@ -1621,8 +1673,8 @@ class LabPatientController extends HexaController
 									'external_patient_id' => $patientId,
 									'patient_type' => 2);
 								array_push($excelStructureDataArray, $excelStructureData);
-								print_r($excelStructureDataArray);
-								exit();
+//								print_r($excelStructureDataArray);
+//								exit();
 
 							}
 
