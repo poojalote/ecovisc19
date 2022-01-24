@@ -1496,9 +1496,10 @@ class LabPatientController extends HexaController
 		$user_id = $this->session->user_session->id;
 		$patientId = $this->input->post('patient_id');
 		$patient_name = $this->input->post('patient_name');
+		$patient_adhar = $this->input->post('patient_adhar');
 		$lab_patient_table = $this->session->user_session->lab_patient_table;
+		$patient_table = $this->session->user_session->patient_table;
 		$update_batch = "";
-
 
 		$lab_test_data = array();
 		$excelStructureDataArray=array();
@@ -1513,7 +1514,18 @@ class LabPatientController extends HexaController
 			$patient_location = $pdata->branch_loc;
 			$patient_age = $pdata->age;
 		}
+		$mainPatientId='';
+		$checkifPatientExistsinMain = $this->MasterModel->_select($patient_table, array('adhar_no' => $patient_adhar,'branch_id'=>$branch_id), 'id', true);
+		if ($checkifPatientExistsinMain->totalCount > 0) {
+			$MainPatientDetails = $checkifPatientExistsinMain->data;
+			$mainPatientId = $MainPatientDetails->id;
+		}
+
 		$patientIdA = 'N' . str_pad($patientId, '9', '0', STR_PAD_LEFT);
+		if($mainPatientId!="")
+		{
+			$patientIdA = 'N' . str_pad($mainPatientId, '9', '0', STR_PAD_LEFT);
+		}
 		foreach ($data as $item) {
 			if($item[0]!="" && $item[1]!="") {
 				$ltde_data = array(
@@ -1539,6 +1551,7 @@ class LabPatientController extends HexaController
 					'branch_id' => $branch_id,
 					'order_number' => $item[7],
 					'external_patient_id' => $patientId,
+					'patient_id'=>$mainPatientId,
 					'patient_type' => 2);
 				array_push($excelStructureDataArray, $excelStructureData);
 			}

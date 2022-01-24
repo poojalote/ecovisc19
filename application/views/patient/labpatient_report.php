@@ -1177,6 +1177,7 @@ function SavePathologyProgress2(formData) {
 		Form_data.set('patient_id',localStorage.getItem("patient_id"));
 		Form_data.set('value',JSON.stringify(array));
 		Form_data.set('patient_name',localStorage.getItem("patient_name"));
+		Form_data.set('patient_adhar',localStorage.getItem("patient_adharnumber"));
         if (confirm("Are You Sure You want to upload?")) {
             $.ajax({
                 url: "<?= base_url();?>" + "updateDynamicLabData",

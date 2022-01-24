@@ -1,6 +1,6 @@
 <?php
 require_once 'HexaController.php';
-require_once '/var/www/html/vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;

@@ -108,7 +108,7 @@ class DatatableFormInputController extends HexaController
         if ($header->status) {
 
 			$patientId=$this->input->post('patientId');
-			$patientIdA='N'.str_pad($patientId,'9','0',STR_PAD_LEFT);
+
 			$patient_admission=$this->input->post('patient_admission');
 			$patient_name=$this->input->post('patient_name');
             $tableName = $header->param->tableName;
@@ -119,6 +119,7 @@ class DatatableFormInputController extends HexaController
             $dept_id = $header->param->dep_id;
             $branch_id = $this->session->user_session->branch_id;
 			$lab_patient_table = $this->session->user_session->lab_patient_table;
+			$patient_table = $this->session->user_session->patient_table;
             $getConfiguartiondataResult=$this->getConfiguartiondata($section_id,$hash_key,$dept_id);
 //            print_r($getConfiguartiondataResult);exit();
             if($getConfiguartiondataResult == false){
@@ -129,12 +130,25 @@ class DatatableFormInputController extends HexaController
             }
             $patient_location='';
 			$patient_age='';
-            $patientObject=$this->MasterModel->_rawQuery('select (select location from  branch_master b where b.id=l.branch_id) as branch_loc,TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age from '.$lab_patient_table.' l where l.id='.$patientId.'');
+			$patient_adhar='';
+            $patientObject=$this->MasterModel->_rawQuery('select adhar_no,(select location from  branch_master b where b.id=l.branch_id) as branch_loc,TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) as age from '.$lab_patient_table.' l where l.id='.$patientId.'');
 			if($patientObject->totalCount>0)
 			{
 				$pdata=$patientObject->data[0];
 				$patient_location=$pdata->branch_loc;
 				$patient_age=$pdata->age;
+				$patient_adhar=$pdata->adhar_no;
+			}
+			$mainPatientId='';
+			$checkifPatientExistsinMain = $this->MasterModel->_select($patient_table, array('adhar_no' => $patient_adhar,'branch_id'=>$branch_id), 'id', true);
+			if ($checkifPatientExistsinMain->totalCount > 0) {
+				$MainPatientDetails = $checkifPatientExistsinMain->data;
+				$mainPatientId = $MainPatientDetails->id;
+			}
+			$patientIdA='N'.str_pad($patientId,'9','0',STR_PAD_LEFT);
+			if($mainPatientId!="")
+			{
+				$patientIdA='N'.str_pad($mainPatientId,'9','0',STR_PAD_LEFT);
 			}
             $getConfiguartiondata=$getConfiguartiondataResult[0];
 			$excelStructureDataArray=array();
@@ -194,9 +208,9 @@ class DatatableFormInputController extends HexaController
 								'branch_id'=>$branch_id,
 								'order_number'=>$object->order_id,
 								'external_patient_id'=>$patientId,
+								'patient_id'=>$mainPatientId,
 								'patient_type'=>2);
 							array_push($excelStructureDataArray,$excelStructureData);
-							print_r($excelStructureDataArray);exit();
 
 						}
 
@@ -235,6 +249,7 @@ class DatatableFormInputController extends HexaController
 								'branch_id'=>$branch_id,
 								'order_number'=>$object->order_id,
 								'external_patient_id'=>$patientId,
+								'patient_id'=>$mainPatientId,
 								'patient_type'=>2);
 							array_push($excelStructureDataArray,$excelStructureData);
 
