@@ -1697,5 +1697,40 @@ class LabPatientController extends HexaController
 		echo json_encode($response);
 
 	}
+	public function deletePathologyServiceOrder()
+	{
+		if (!is_null($this->input->post('service_order_id')) && !is_null($this->input->post('patient_id'))) {
+			$service_order_id = $this->input->post('service_order_id');
+			$patient_id = $this->input->post('patient_id');
+			$user_id = $this->session->user_session->id;
+			$branch_id = $this->session->user_session->branch_id;
+			$company_id = $this->session->user_session->company_id;
+			try {
+				$this->db->trans_start();
+				$tableName = "lab_patient_serviceorder";
+				$where = array('id' => $service_order_id, 'patient_id' => $patient_id,
+					'branch_id' => $branch_id);
+				$this->db->set(array('service_status'=>0))->where($where)->update($tableName);
+				if ($this->db->trans_status() === FALSE) {
+					$this->db->trans_rollback();
+					$response['status'] = 201;
+					$response['body'] = "Changes Not Save";
+				} else {
+					$this->db->trans_commit();
+					$response['status'] = 200;
+					$response['body'] = "Save Changes";
+				}
+				$this->db->trans_complete();
+			} catch (Exception $exception) {
+				$this->db->trans_rollback();
+				$response['status'] = 201;
+				$response['body'] = "Changes Not Save";
+			}
 
+		} else {
+			$response['status'] = 201;
+			$response['body'] = "service order not deleted";
+		}
+		echo json_encode($response);
+	}
 }

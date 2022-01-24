@@ -239,10 +239,10 @@ $this->load->view('_partials/header');
                                                                 <th>Patient Name</th>
                                                                 <th>Service Code</th>
                                                                 <th style="width: 165px;">Service Name</th>
-                                                                <th>Confirm Service Given</th>
+
                                                                 <th>Delete Service</th>
                                                                 <th>Date and Time</th>
-                                                                <th>Action</th>
+                                                                <th>Confirm Service Given</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -532,11 +532,13 @@ function getCollectionTable(category, tableID) {
             {
                 data: 2
             },
+
             {
-                data: 7
-            },
-            {
-                data: 3
+                data: 3,
+				render: (d, t, r, m) => {
+					return `<button type="button" class="btn btn-link"
+						onclick="deleteServiceOrder('${d}','${tableID}','${category}','${r[4]}')" ><i class="fa fa-times"></i></button>`;
+				}
             },
             {
                 data: 6
@@ -1260,5 +1262,28 @@ function SavePathologyProgress2(formData) {
 			// console.log(filedata);
 		}
 
+	}
+	function deleteServiceOrder(service_id,table_id,category,patient_id) {
+		let confirmAction = confirm("Are you sure to you want confirm service");
+		if (confirmAction) {
+			$.ajax({
+				url: "<?= base_url();?>" + "deletePathologyServiceOrder",
+				type: "POST",
+				dataType: "json",
+				data: {service_order_id: service_id, patient_id: patient_id},
+				success: function (response) {
+					if (response.status == 200) {
+						app.successToast(response.body);
+						getCollectionTable(category, table_id);
+					} else {
+						app.errorToast(response.body);
+					}
+				},
+				error: function (error) {
+
+					console.log(error);
+				}
+			});
+		}
 	}
 </script>
