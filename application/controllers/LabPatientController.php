@@ -1769,7 +1769,14 @@ class LabPatientController extends HexaController
 				$tableName = "lab_patient_serviceorder";
 				$where = array('id' => $service_order_id, 'patient_id' => $patient_id,
 					'branch_id' => $branch_id);
-				$this->db->set(array('service_status'=>0))->where($where)->update($tableName);
+				$update=$this->db->set(array('status'=>0))->where($where)->update($tableName);
+				if($update==true)
+				{
+					$where1 = array('order_id' => $service_order_id, 'branch_id' => $branch_id,'patient_id'=>$patient_id);
+					$set1 = array("status" => 0);
+					$this->db->where($where1);
+					$updateChild = $this->db->update('lab_test_data_entry', $set1);
+				}
 				if ($this->db->trans_status() === FALSE) {
 					$this->db->trans_rollback();
 					$response['status'] = 201;

@@ -1112,9 +1112,9 @@ class ServiceOrderController extends HexaController
 
         // print_r($zone);exit();
         // 
-        $where = array('branch_id' => $branch_id,"confirm_service_given"=>0,"service_status"=>1);
+        $where = array('branch_id' => $branch_id,"confirm_service_given"=>0,"status"=>1);
         if ($patient_id != null && $patient_id != '') {
-            $where = array('branch_id' => $branch_id,  'patient_id' => $patient_id,"confirm_service_given"=>0,"service_status"=>1);
+            $where = array('branch_id' => $branch_id,  'patient_id' => $patient_id,"confirm_service_given"=>0,"status"=>1);
         }
 
         // $tableName = "service_order so";
