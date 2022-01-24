@@ -486,6 +486,7 @@ a:hover{
 				}else{
 					$("#OtherDashboard").html(result.data);
 				}
+				$("#ViewTable").show();
 
 			}, error: function (error) {
 				app.errorToast('Something went wrong please try again');
