@@ -1112,9 +1112,9 @@ class ServiceOrderController extends HexaController
 
         // print_r($zone);exit();
         // 
-        $where = array('branch_id' => $branch_id,"confirm_service_given"=>0);
+        $where = array('branch_id' => $branch_id,"confirm_service_given"=>0,"service_status"=>1);
         if ($patient_id != null && $patient_id != '') {
-            $where = array('branch_id' => $branch_id,  'patient_id' => $patient_id,"confirm_service_given"=>0);
+            $where = array('branch_id' => $branch_id,  'patient_id' => $patient_id,"confirm_service_given"=>0,"service_status"=>1);
         }
 
         // $tableName = "service_order so";
@@ -1125,7 +1125,11 @@ class ServiceOrderController extends HexaController
         $column_search = array();
         $select = array("so.*,(Select patient_name from ".$lab_branch_table." where id = so.patient_id) as patient_name",
             "concat('AA',lpad(id,6,'0')) as order_id",
-            "(select lmt.name from lab_master_test lmt where id=service_id) as service_name ");
+            "(case when service_type=1 then 
+			 (case when cast(so.service_id As UNSIGNED)=0 then (select sm.service_description from service_master sm where sm.service_id=so.service_id and sm.branch_id=so.branch_id) else (select lmt.name from lab_master_test lmt where id=so.service_id and lmt.branch_id=so.branch_id) end)
+			 else
+			 (select mp.package_name from master_package mp where mp.id=so.service_id and mp.branch_id=so.branch_id)
+			 end) as service_name ");
 
         $this->db->select($select)->where($where);
 
@@ -1136,7 +1140,6 @@ class ServiceOrderController extends HexaController
         }
         $memData = $this->db->get($tableName)->result();
          $results_last_query = $this->db->last_query();
-
         if (count($memData) > 0) {
             $tableRows = array();
             foreach ($memData as $row) {
@@ -1562,12 +1565,13 @@ class ServiceOrderController extends HexaController
                         $input_data = "";
                     }
                     $dataNewTable=array(
-                        "service_ids"=>$this->input->post('PserviceIDS'),
-                        "patient_id"=>$Pext_pid,
+                        "service_ids"=>$this->input->post('Pservice_id'),
+                        "patient_id"=>$PSid,
                         "branch_id"=>$branch_id,
                         "file_uploaded"=>$input_data,
                         "created_by"=>$user_id,
-                        "lab_patient_ext_id"=>$Ppatient_id
+                        "lab_patient_ext_id"=>$Ppatient_id,
+						"type"=>2
                     );
                     $this->db->insert("pathology_service_transaction_table", $dataNewTable);
                 }
@@ -1661,7 +1665,7 @@ class ServiceOrderController extends HexaController
                 $where = array('id' => $billing_id, 'patient_id' => $patient_id,
                     'branch_id' => $branch_id,
                     'type' => 3);
-                $data = array('is_deleted' => 0);
+                $data = array('is_deleted' => 0,'modify_by'=>$user_id,'modify_on'=>date('Y-m-d H:i:s'));
                 $this->db->where($where);
                 $update = $this->db->update($billing_transaction, $data);
                 if ($this->db->trans_status() === FALSE) {
@@ -1951,7 +1955,7 @@ class ServiceOrderController extends HexaController
                         $where1 = array('id' => $serviceBillingIds,
                             'patient_id' => $patient_id,
                             'reference_id' => $radioServiceIds);
-                        $data1 = array('confirm' => 1);
+                        $data1 = array('confirm' => 1,'modify_by'=>$user_id,'modify_on'=>date('Y-m-d H:i:s'));
                         $this->db->where($where1);
                         $update_billing = $this->db->update($billing_transaction, $data1);
                     }

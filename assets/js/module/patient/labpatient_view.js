@@ -295,7 +295,7 @@ function loadPatients(type = 1, companyId = null) {
 
 		onclick="loadPatient(${r[4]},'${r[1]}','${r[0]}','${r[2]}','${r[7]}','${r[9]}','${r[8]}','${r[13]}','${r[5]}')"
 >
-	<img src="${baseURL + 'assets/img/sleeping.svg'}" style="width: 24px;height: 24px">
+	<i class="fas fa-vial text-primary"></i>
 </button>${del_btn}</div> 
 <a class="btn btn-link"  href="${baseURL + 'get_labpatient_data/' + r[4]}" target="_blank" ><i class="fa fa-download"></i></a>
 ${del_btn}
@@ -345,7 +345,7 @@ ${del_btn}
 
 		onclick="loadPatient(${aData[4]},'${aData[1]}','${aData[0]}','${aData[2]}','${aData[7]}','${aData[9]}','${aData[8]}','${aData[13]}','${aData[5]}')"
 >
-	<img src="${baseURL + 'assets/img/sleeping.svg'}" style="width: 24px;height: 24px">
+	<i class="fas fa-vial text-primary"></i>
 </button>
 <a class="btn btn-link"  href="${baseURL + 'get_labpatient_data/' + aData[4]}" target="_blank" ><i class="fa fa-download"></i></a>
 ${del_btn}

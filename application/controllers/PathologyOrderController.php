@@ -225,8 +225,8 @@ class PathologyOrderController extends HexaController
 		$branch_id=$this->session->user_session->branch_id;
 //		SELECT ps.*,(select GROUP_CONCAT(so.service_detail) as service_detail from service_order so where FIND_IN_SET(so.id, ps.service_ids)) as service_names FROM pathology_service_transaction_table ps where ps.patient_id = "1";
 //		$query=$this->db->query("SELECT ps.*, GROUP_CONCAT(so.service_detail) as service_detail FROM pathology_service_transaction_table ps, service_order so WHERE FIND_IN_SET(so.id, ps.service_ids) AND ps.patient_id = ".$p_id);
-		$query=$this->db->query("SELECT ps.*,(select GROUP_CONCAT(so.service_detail) from service_order so where FIND_IN_SET(so.id, ps.service_ids)) as service_names FROM pathology_service_transaction_table ps where ps.patient_id = ".$p_id);
-		// print_r($this->db->last_query());
+		$query=$this->db->query("SELECT ps.*,(select GROUP_CONCAT(so.service_detail) from service_order so where FIND_IN_SET(so.id, ps.service_ids)) as service_names FROM pathology_service_transaction_table ps where ps.patient_id = ".$p_id." and branch_id=".$branch_id);
+		 print_r($this->db->last_query());
 		$data="";
 
 		$data .="<table class='table table-bordered' id='path_table'><thead>
@@ -235,40 +235,38 @@ class PathologyOrderController extends HexaController
 		<th>File</th>
 		</tr>
 		</thead><tbody>";
-		if($this->db->affected_rows() > 0){
-			$result=$query->result();
-			foreach($result as $row){
+		if($this->db->affected_rows() > 0) {
+			$result = $query->result();
+			foreach ($result as $row) {
 				$btn = "";
-				$cnt=count($result);
+				$cnt = count($result);
 
-				$data .="
+				$data .= "
 
 			<tr>
-			<td>".$row->service_names."</td>";
-				if($row->file_uploaded!=null && $row->file_uploaded!="")
-				{
+			<td>" . $row->service_names . "</td>";
+				if ($row->file_uploaded != null && $row->file_uploaded != "") {
 					$btnArr = explode(',', $row->file_uploaded);
 //					foreach ($btnArr as $btnRow){
-					$btn.='
-						 <button type="button" class="btn btn-link" onclick="radiologyDownloadButtons(\''.$row->file_uploaded.'\')"><i class="fa fa-download"></i></button>
+					$btn .= '
+						 <button type="button" class="btn btn-link" onclick="radiologyDownloadButtons(\'' . $row->file_uploaded . '\')"><i class="fa fa-download"></i></button>
 						';
 //					}
-				}else{
-					$btn.="-";
+				} else {
+					$btn .= "-";
 				}
-				$data .="<td>".$btn."</td>
+				$data .= "<td>" . $btn . "</td>
 			</tr>
 			";
 			}
+		}
 			$data .="
 		</tbody>
 		</table>";
 			$response['status']=200;
 			$response['data']=$data;
-		}else{
-			$response['status']=201;
-			$response['data']=$data;
-		}echo json_encode($response);
+
+		echo json_encode($response);
 	}
 	public function getOtherServiceTableData(){
 		$p_id=$this->input->post_get('p_id');
@@ -466,5 +464,58 @@ class PathologyOrderController extends HexaController
 
 		echo json_encode($response);
 
+	}
+	public function getLabPathologyTableData(){
+//
+		$p_id=$this->input->post_get('p_id');
+		$branch_id=$this->session->user_session->branch_id;
+//		SELECT ps.*,(select GROUP_CONCAT(so.service_detail) as service_detail from service_order so where FIND_IN_SET(so.id, ps.service_ids)) as service_names FROM pathology_service_transaction_table ps where ps.patient_id = "1";
+//		$query=$this->db->query("SELECT ps.*, GROUP_CONCAT(so.service_detail) as service_detail FROM pathology_service_transaction_table ps, service_order so WHERE FIND_IN_SET(so.id, ps.service_ids) AND ps.patient_id = ".$p_id);
+		$query=$this->db->query("SELECT ps.*,(case when ps.type=2 then (case when cast(ps.service_ids As UNSIGNED)=0 then
+ (select sm.service_description from service_master sm where sm.service_id=ps.service_ids and sm.branch_id=ps.branch_id) else 
+ (select lmt.name from lab_master_test lmt where lmt.id=ps.service_ids and lmt.branch_id=ps.branch_id) end) else
+ (select GROUP_CONCAT(so.service_detail) from service_order so where so.branch_id=ps.branch_id and FIND_IN_SET(so.id, ps.service_ids)) end) as service_names FROM pathology_service_transaction_table ps where ps.lab_patient_ext_id = ".$p_id." and branch_id=".$branch_id);
+
+//		print_r($this->db->last_query());exit();
+		$data="";
+
+		$data .="<table class='table table-bordered' id='path_table' style='font-size:15px;'><thead>
+		<tr>
+		<th>Service detail</th>
+		<th>File</th>
+		</tr>
+		</thead><tbody>";
+		if($this->db->affected_rows() > 0) {
+			$result = $query->result();
+			foreach ($result as $row) {
+				$btn = "";
+				$cnt = count($result);
+
+				$data .= "
+
+			<tr>
+			<td>" . $row->service_names . "</td>";
+				if ($row->file_uploaded != null && $row->file_uploaded != "") {
+					$btnArr = explode(',', $row->file_uploaded);
+//					foreach ($btnArr as $btnRow){
+					$btn .= '
+						 <button type="button" class="btn btn-link" onclick="radiologyDownloadButtons(\'' . $row->file_uploaded . '\')"><i class="fa fa-download"></i></button>
+						';
+//					}
+				} else {
+					$btn .= "-";
+				}
+				$data .= "<td>" . $btn . "</td>
+			</tr>
+			";
+			}
+		}
+		$data .="
+		</tbody>
+		</table>";
+		$response['status']=200;
+		$response['data']=$data;
+
+		echo json_encode($response);
 	}
 }

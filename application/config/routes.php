@@ -936,3 +936,5 @@ $route["getLabMasterChildEntryExcelData"]="LabController/getLabMasterChildEntryE
 $route["saveSubGroupChildData"]="LabController/saveSubGroupChildData";
 $route["RemoveChildTestData"]="LabController/RemoveChildTestData";
 
+$route["getLabPathologyTableData"]="PathologyOrderController/getLabPathologyTableData";
+$route["deletePathologyServiceOrder"]="LabPatientController/deletePathologyServiceOrder";

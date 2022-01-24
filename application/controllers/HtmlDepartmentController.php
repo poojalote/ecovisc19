@@ -177,7 +177,9 @@ class HtmlDepartmentController extends CI_Controller
 					'is_admin'=>$ck_admin_template,
 					'description' => $de_description,
 					'create_on' => date('Y-m-d'),
-					'create_by' => $user_id);
+					'create_by' => $user_id,
+					'modify_by'=>$user_id,
+					'modify_on'=>date('Y-m-d H:i:s'));
 				$where = array('id' => $department_id);
 				$result = $this->HtmlDepartmentModel->updateForm($table_name, $departmentData, $where);
 				if ($result == TRUE) {
@@ -241,7 +243,7 @@ class HtmlDepartmentController extends CI_Controller
 			$depId = $this->input->post('depId');
 
 			$table_name = 'html_departments_master';
-			$departmentData = array('status' => 0);
+			$departmentData = array('status' => 0,'modify_by'=>$this->session->user_session->id,'modify_on'=>date('Y-m-d H:i:s'));
 			$where = array('id' => $depId);
 			$result = $this->HtmlDepartmentModel->updateForm($table_name, $departmentData, $where);
 			if ($result == TRUE) {
@@ -265,7 +267,7 @@ class HtmlDepartmentController extends CI_Controller
 			$depId = $this->input->post('depId');
 			$status = $this->input->post('status');
 			$table_name = 'html_departments_master';
-			$departmentData = array('status' => $status);
+			$departmentData = array('status' => $status,'modify_by'=>$this->session->user_session->id,'modify_on'=>date('Y-m-d H:i:s'));
 			$where = array('id' => $depId);
 			$result = $this->HtmlDepartmentModel->updateForm($table_name, $departmentData, $where);
 			if ($result == TRUE) {

@@ -984,9 +984,9 @@ class BillingManagementController extends HexaController
 				$this->db->trans_start();
 				$tableName = $billing_transaction;
 				if ($confirm_service_given == 1) {
-					$data = array('confirm' => 1);
+					$data = array('confirm' => 1,'modify_by'=>$user_id,'modify_on'=>date('Y-m-d H:i:s'));
 				} else {
-					$data = array('confirm' => 0);
+					$data = array('confirm' => 0,'modify_by'=>$user_id,'modify_on'=>date('Y-m-d H:i:s'));
 				}
 
 				foreach ($service_order_id as $service_id) {
@@ -1764,7 +1764,7 @@ class BillingManagementController extends HexaController
 			}
 
 			$where = array("id" => $id);
-			$set = array("final_amount" => $final_amount, "discount_percent" => $discount, "discount_type" => $type);
+			$set = array("final_amount" => $final_amount, "discount_percent" => $discount, "discount_type" => $type,'modify_by'=>$this->session->user_session->id,'modify_on'=>date('Y-m-d H:i:s'));
 			$this->db->where($where);
 			$update = $this->db->update($billing_transaction, $set);
 			if ($update == true) {

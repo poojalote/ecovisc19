@@ -158,7 +158,7 @@ class Assignbed_model extends MasterModel
             $this->db->trans_start();
             $roomDetails = $this->db->select(array('roomid', 'bed_id'))->where('id', $pid)->get($patient_table)->row();
             if ($roomDetails != NULL) {
-                $free_bed = array("status" => 1);
+                $free_bed = array("status" => 1,'modify_on'=>date('Y-m-d H:i:s'),'modify_by'=>$this->session->user_session->id);
                 $freed_bed_where = array("Id" => $roomDetails->bed_id);
                 $this->db->set($free_bed)->where($freed_bed_where)->update($hospital_bed_table);
             }

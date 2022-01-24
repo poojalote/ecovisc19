@@ -1346,30 +1346,37 @@ class LabPatientController extends HexaController
 		$session_data = $this->session->user_session;
 		$branch_id = $session_data->branch_id;
 		// $branch_id=2;
-		$select = array(" id", "service_id", "service_rate", "service_date", "service_type", '(case when service_type=1 then (select sm.name from lab_master_test sm where sm.id=t1.service_id) else (select mp.package_name from master_package mp where mp.id=t1.service_id) end) as service_name', '(select count(1) from lab_test_data_entry lb where lb.order_id = t1.id and (lb.value != 0 AND lb.value is not NULL and lb.value != "")) as value_count', '(select count(lb.id) from lab_test_data_entry lb where lb.order_id = t1.id) as child_count');
+		$select = array(" id", "service_id", "service_rate", "service_date", "service_type", '(case when service_type=1 then 
+			 (case when cast(t1.service_id As UNSIGNED)=0 then (select sm.service_description from service_master sm where sm.service_id=t1.service_id and sm.branch_id=t1.branch_id) else (select lmt.name from lab_master_test lmt where id=t1.service_id and lmt.branch_id=t1.branch_id) end)
+			 else
+			 (select mp.package_name from master_package mp where mp.id=t1.service_id and mp.branch_id=t1.branch_id)
+			 end)  as service_name', '(select count(1) from lab_test_data_entry lb where lb.order_id = t1.id and (lb.value != 0 AND lb.value is not NULL and lb.value != "")) as value_count', '(select count(lb.id) from lab_test_data_entry lb where lb.order_id = t1.id) as child_count');
 		$order = array('created_on' => 'desc');
 		$column_order = array('',);
 		$column_search = array("", "");
 		$where = array("status" => 1, "branch_id" => $branch_id, "patient_id" => $patient_id);
 
 		$memData = $this->Patient_Model->getRows($_POST, $where, $select, $tableName . " t1", $column_search, $column_order, $order);
-		// print_r($this->db->last_query());exit();
+//		 print_r($this->db->last_query());exit();
 		$filterCount = $this->Patient_Model->countFiltered($_POST, $tableName, $where, $column_search, $column_order, $order);
 		$totalCount = $this->Patient_Model->countAll($tableName, $where);
 
 		if (count($memData) > 0) {
 			$tableRows = array();
 			foreach ($memData as $row) {
-				$tableRows[] = array(
-					$row->service_name,
-					$row->service_rate,
-					$row->service_date,
-					$row->id,
-					$row->service_id,
-					$row->service_type .
-					$row->value_count,
-					$row->child_count
-				);
+				if($row->child_count>0)
+				{
+					$tableRows[] = array(
+						$row->service_name,
+						$row->service_rate,
+						$row->service_date,
+						$row->id,
+						$row->service_id,
+						$row->service_type .
+						$row->value_count,
+						$row->child_count
+					);
+				}
 			}
 			$results = array(
 				"draw" => (int)$_POST['draw'],
@@ -1697,5 +1704,40 @@ class LabPatientController extends HexaController
 		echo json_encode($response);
 
 	}
+	public function deletePathologyServiceOrder()
+	{
+		if (!is_null($this->input->post('service_order_id')) && !is_null($this->input->post('patient_id'))) {
+			$service_order_id = $this->input->post('service_order_id');
+			$patient_id = $this->input->post('patient_id');
+			$user_id = $this->session->user_session->id;
+			$branch_id = $this->session->user_session->branch_id;
+			$company_id = $this->session->user_session->company_id;
+			try {
+				$this->db->trans_start();
+				$tableName = "lab_patient_serviceorder";
+				$where = array('id' => $service_order_id, 'patient_id' => $patient_id,
+					'branch_id' => $branch_id);
+				$this->db->set(array('service_status'=>0))->where($where)->update($tableName);
+				if ($this->db->trans_status() === FALSE) {
+					$this->db->trans_rollback();
+					$response['status'] = 201;
+					$response['body'] = "Changes Not Save";
+				} else {
+					$this->db->trans_commit();
+					$response['status'] = 200;
+					$response['body'] = "Save Changes";
+				}
+				$this->db->trans_complete();
+			} catch (Exception $exception) {
+				$this->db->trans_rollback();
+				$response['status'] = 201;
+				$response['body'] = "Changes Not Save";
+			}
 
+		} else {
+			$response['status'] = 201;
+			$response['body'] = "service order not deleted";
+		}
+		echo json_encode($response);
+	}
 }
