@@ -1515,9 +1515,9 @@ class LabPatientController extends HexaController
 			$patient_age = $pdata->age;
 		}
 		$mainPatientId='';
-		$checkifPatientExistsinMain = $this->MasterModel->_select($patient_table, array('adhar_no' => $patient_adhar,'branch_id'=>$branch_id), 'id', true);
+			$checkifPatientExistsinMain = $this->MasterModel->_rawQuery('select id from '.$patient_table.' where adhar_no="'.$patient_adhar.'" and branch_id='.$branch_id.' order by id desc limit 1');
 		if ($checkifPatientExistsinMain->totalCount > 0) {
-			$MainPatientDetails = $checkifPatientExistsinMain->data;
+			$MainPatientDetails = $checkifPatientExistsinMain->data[0];
 			$mainPatientId = $MainPatientDetails->id;
 		}
 
