@@ -224,10 +224,10 @@ $this->load->view('_partials/header');
 					{type: 'text'},
 					{type: 'text'},
 					// {type: 'text'},
-					{type: 'dropdown',source:source},
+					{type: 'dropdown',source:source,isRequired:false},
 					{type: 'text'},
 				];
-				var hideArra = [0];
+				var hideArra = [0,2];
 				var columns = ["Id",'Test Name(A)', 'Method(B)', 'Unit(C)', 'Bio Ref Interval(D)'];
 				hideColumn = {
 					// specify columns hidden by default
@@ -281,7 +281,7 @@ $this->load->view('_partials/header');
 			licenseKey: 'non-commercial-and-evaluation'
 		});
 
-		hotDiv.validateCells();
+		// hotDiv.validateCells();
 	}
 	function saveSubgroupBtn() {
 

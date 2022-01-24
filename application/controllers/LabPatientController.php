@@ -1130,6 +1130,7 @@ class LabPatientController extends HexaController
 	{
 		$service_id = $this->input->post('service_id');
 		$service_type = $this->input->post('service_type');
+		$patient_id = $this->input->post('patient_id');
 
 		$session_data = $this->session->user_session;
 		$branch_id = $session_data->branch_id;
@@ -1139,17 +1140,21 @@ class LabPatientController extends HexaController
 		$this->db->where($where);
 		$update = $this->db->update('lab_patient_serviceorder', $set);
 		if ($update == true) {
-			$where1 = array('order_id' => $service_id, 'branch_id' => $branch_id);
+			$where1 = array('order_id' => $service_id, 'branch_id' => $branch_id,'patient_id'=>$patient_id);
 			$set1 = array("status" => 0);
 			$this->db->where($where1);
 			$update = $this->db->update('lab_test_data_entry', $set);
+
+			$where2 = array('order_number' => $service_id, 'branch_id' => $branch_id,'external_patient_id'=>$patient_id);
+			$set2 = array("status" => 0);
+			$this->db->where($where2);
+			$update = $this->db->update('excel_structure_data', $set2);
 			$response['status'] = 200;
 			$response['body'] = "Updated Successfully";
 		} else {
 			$response['status'] = 201;
 			$response['body'] = "Somethimg Went Wrong";
 		}
-
 		echo json_encode($response);
 	}
 
@@ -1789,6 +1794,13 @@ class LabPatientController extends HexaController
 					$set1 = array("status" => 0);
 					$this->db->where($where1);
 					$updateChild = $this->db->update('lab_test_data_entry', $set1);
+					if($updateChild==true)
+					{
+						$where2 = array('order_number' => $service_order_id, 'branch_id' => $branch_id,'external_patient_id'=>$patient_id);
+						$set2 = array("status" => 0);
+						$this->db->where($where2);
+						$updateExcelStructure = $this->db->update('excel_structure_data', $set2);
+					}
 				}
 				if ($this->db->trans_status() === FALSE) {
 					$this->db->trans_rollback();

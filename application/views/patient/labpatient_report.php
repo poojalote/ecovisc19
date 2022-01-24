@@ -860,6 +860,7 @@ function SavePathologyProgress2(formData) {
         let formData = new FormData();
         formData.set("service_id", order_id);
         formData.set("service_type", service_type);
+		formData.set("patient_id", localStorage.getItem("patient_id"));
         app.request(base_url + "getlabServiceCancelOrder", formData).then(response => {
             $("#service_data").html("");
             if (response.status == 200) {

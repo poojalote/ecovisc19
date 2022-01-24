@@ -191,27 +191,29 @@ class DatatableFormInputController extends HexaController
                         }
 						if ($isAll) {
 							array_push($InsertBatchData, (array)$insert_object);
-							$orderIdA='AA'.str_pad($object->order_id,'6','0',STR_PAD_LEFT);
-							$excelStructureData=array('VisitDate'=>date('M d Y H:i A'),
-								'Orgname'=>'Covidcare',
-								'Location'=>$patient_location,
-								'Patient_number'=>$patientIdA,
-								'Patient_Name'=>$patient_name,
-								'Patient_Age'=>$patient_age,
-								'OrderTest'=>$object->master_name,
-								'ParameterId'=>$object->child_test_id,
-								'ParameterName'=>'',
-								'result'=>$object->value,
-								'unit'=>$object->unit,
-								'ref_range'=>$object->refe_value,
-								'orderId'=>$orderIdA,
-								'branch_id'=>$branch_id,
-								'order_number'=>$object->order_id,
-								'external_patient_id'=>$patientId,
-								'patient_id'=>$mainPatientId,
-								'patient_type'=>2);
-							array_push($excelStructureDataArray,$excelStructureData);
-
+							if($section_id==143)
+							{
+								$orderIdA='AA'.str_pad($object->order_id,'6','0',STR_PAD_LEFT);
+								$excelStructureData=array('VisitDate'=>date('M d Y H:i A'),
+									'Orgname'=>'Covidcare',
+									'Location'=>$patient_location,
+									'Patient_number'=>$patientIdA,
+									'Patient_Name'=>$patient_name,
+									'Patient_Age'=>$patient_age,
+									'OrderTest'=>$object->master_name,
+									'ParameterId'=>$object->child_test_id,
+									'ParameterName'=>'',
+									'result'=>$object->value,
+									'unit'=>$object->unit,
+									'ref_range'=>$object->refe_value,
+									'orderId'=>$orderIdA,
+									'branch_id'=>$branch_id,
+									'order_number'=>$object->order_id,
+									'external_patient_id'=>$patientId,
+									'patient_id'=>$mainPatientId,
+									'patient_type'=>2);
+								array_push($excelStructureDataArray,$excelStructureData);
+							}
 						}
 
                     }
@@ -232,26 +234,28 @@ class DatatableFormInputController extends HexaController
                     if (!is_null($object))
                     {
                         array_push($updateBatchData, (array)$object);
-							$orderIdA='AA'.str_pad($object->order_id,'6','0',STR_PAD_LEFT);
-							$excelStructureData=array('VisitDate'=>date('M d Y H:i A'),
-								'Orgname'=>'Covidcare',
-								'Location'=>$patient_location,
-								'Patient_number'=>$patientIdA,
-								'Patient_Name'=>$patient_name,
-								'Patient_Age'=>$patient_age,
-								'OrderTest'=>$object->master_name,
-								'ParameterId'=>$object->child_test_id,
-								'ParameterName'=>'',
-								'result'=>$object->value,
-								'unit'=>$object->unit,
-								'ref_range'=>$object->refe_value,
-								'orderId'=>$orderIdA,
-								'branch_id'=>$branch_id,
-								'order_number'=>$object->order_id,
-								'external_patient_id'=>$patientId,
-								'patient_id'=>$mainPatientId,
-								'patient_type'=>2);
-							array_push($excelStructureDataArray,$excelStructureData);
+						if($section_id==143) {
+							$orderIdA = 'AA' . str_pad($object->order_id, '6', '0', STR_PAD_LEFT);
+							$excelStructureData = array('VisitDate' => date('M d Y H:i A'),
+								'Orgname' => 'Covidcare',
+								'Location' => $patient_location,
+								'Patient_number' => $patientIdA,
+								'Patient_Name' => $patient_name,
+								'Patient_Age' => $patient_age,
+								'OrderTest' => $object->master_name,
+								'ParameterId' => $object->child_test_id,
+								'ParameterName' => '',
+								'result' => $object->value,
+								'unit' => $object->unit,
+								'ref_range' => $object->refe_value,
+								'orderId' => $orderIdA,
+								'branch_id' => $branch_id,
+								'order_number' => $object->order_id,
+								'external_patient_id' => $patientId,
+								'patient_id' => $mainPatientId,
+								'patient_type' => 2);
+							array_push($excelStructureDataArray, $excelStructureData);
+						}
 
                     }
 
