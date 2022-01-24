@@ -275,7 +275,7 @@ class DischargeManagementController extends HexaController
 		return $get_vital_sign;
 	}
 
-	public function getpatientdatadis(){
+	public function getpatientdatadis1(){
 		$p_id=$this->input->post('p_id');
 		$q2=$this->db->query("select tb_name,field_name from template_master where name='Current Medication' AND department_id='1'");
 		$medication="";
@@ -293,6 +293,40 @@ class DischargeManagementController extends HexaController
 		}
 		$response['medication'] = $medication;
 		$response["branch_id"]=$this->session->user_session->branch_id;
+		$response["patient"]=$this->session->user_session->patient_table;
+		$query = $this->Patient_Model->getpatientdata($p_id,$this->session->user_session->patient_table,$this->session->user_session->branch_id);
+		$response["query"]=$this->db->last_query();
+		if($this->db->affected_rows() >0){
+			$admission_date=$query->admission_date;
+			$response['status'] = 200;
+			$response['data'] = $admission_date;
+		}else{
+			$admission_date="";
+			$response['status'] = 201;
+			$response['data'] = $admission_date;
+		}echo json_encode($response);
+	}
+	public function getpatientdatadis(){
+		$p_id=$this->input->post('p_id');
+		$patient_table=$this->session->user_session->patient_table;
+		$q2=$this->db->query('SELECT (select name from medicine_master m where m.id=c.name ) as med_name,total_iteration,
+(case when (DATEDIFF(end_date,start_date)+1) is null then "Everyday"  else (DATEDIFF(end_date,start_date)+1) end) as itr FROM com_1_medicine c where active=1 and p_id='.$p_id.' and branch_id= '.$this->session->user_session->branch_id);
+		$medication="";
+		if($this->db->affected_rows()>0){
+			$res=$q2->result();
+			foreach ($res as $row){
+				$str=$row->med_name."-".$row->total_iteration."/".$row->itr;
+				$medication .=  $str.",";
+
+			}
+		}
+		$q3=$this->db->query('select hospital_medication from '.$patient_table.' p where p.id='.$p_id)->row();
+		if($this->db->affected_rows()>0){
+			$patient_details=$q3->hospital_medication;
+		}
+		$response['medication'] = rtrim($medication,",");
+		$response["branch_id"]=$this->session->user_session->branch_id;
+		$response["patient_details"]=$patient_details;
 		$response["patient"]=$this->session->user_session->patient_table;
 		$query = $this->Patient_Model->getpatientdata($p_id,$this->session->user_session->patient_table,$this->session->user_session->branch_id);
 		$response["query"]=$this->db->last_query();

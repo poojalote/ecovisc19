@@ -44,8 +44,7 @@ function getDischargeDetails(patientId) {
 
 	let formData = new FormData();
 	formData.set("patientId",patientId);
-	//app.request("https://c19.ecovisrkca.com/new_patients/getPatientData", formData).then(response => {
-	app.request("http://localhost/c19/new_patients/getPatientData", formData).then(response => {
+	app.request("https://c19.ecovisrkca.com/new_patients/getPatientData", formData).then(response => {
 		if (response.status === 200) {
 			var user_data = response.body;
 			if (user_data[0]['discharge_date'] != null && user_data[0]['discharge_date'] != '') {
@@ -131,7 +130,10 @@ function get_patient_details(){
 
 				$("#admission_date").val( date.split(' ')[0]);
 				$("#atime").val(date.split(' ')[1]);
-				$("#medication_auto").val(success.medication);
+				var patientData=success.patient_details;
+				$("#medication_auto").val(patientData);
+				$("#medicineDetails").html(success.medication);
+				$("#medication_event").html(success.medication + patientData);
 
 
 			} else {

@@ -157,6 +157,9 @@ $this->load->view('_partials/header');
                         <div class="m-2" align="center"><h5>Discharge Report(3/3)</h5></div>
                         <div class="m-2"><h5> Course during hospital stay</h5></div>
                         <span id="significant_event" class="ml-2"></span>
+						<div class="m-2"><h5> Medication used during hospital
+									stay</h5></div>
+                        <span id="medication_event" class="ml-2"></span>
                         <div class="m-2"><h5>Condition at the Time of Discharge</h5></div>
                         <span id="discharge_condition" class="ml-2"></span>
                         <hr>
@@ -191,8 +194,44 @@ $this->load->view('_partials/header');
 
         get_patient_data();
         getprint_DeathReport();
+		get_patient_details();
     });
+	function get_patient_details(){
+		var patient_id=localStorage.getItem("patient_id");
+		$.ajax({
+			type: 'POST',
+			url: baseURL + "getpatientdatadis",
+			data: {p_id: patient_id},
+			success: function (success) {
+				success = JSON.parse(success);
+				if (success.status == 200) {
+					var patientData=success.patient_details;
+					if(patientData == null){
+						patientData="";
+					}
 
+					if(success.medication == "" || success.medication === null|| success.medication === true|| success.medication === false){
+						var medication="";
+					}else{
+
+						var medication=success.medication
+					}
+					if(medication =="" && patientData ==""){
+						$("#medication_event").html("");
+					}else{
+						$("#medication_event").html(medication +" - "+ patientData);
+					}
+
+
+
+				} else {
+
+				}
+
+			}
+
+		});
+	}
     function get_patient_data() {
         p_id = $("#patient_id").val();
         $.ajax({

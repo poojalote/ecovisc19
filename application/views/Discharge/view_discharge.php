@@ -82,8 +82,12 @@ $this->load->view('_partials/header');
 											<div class="col-sm-12">
 												<label class="font-weight-bold">Medication used during hospital
 													stay</label>
-												<input type="text" class="form-control" id="medication_auto"
-													   name="medication_auto" readonly>
+												<br><span id="medicineDetails" style="font-size: 11px;"></span>
+												<div class="d-flex">
+												<textarea type="text" class="form-control" id="medication_auto"
+														  name="medication_auto" placeholder="Other Comment..." ></textarea>
+
+												</div>
 											</div>
 										</div>
 										<div class="form-group row mb-3">
@@ -295,4 +299,6 @@ var output = dt.getFullYear() + '-' +
 		$("#hiddenDivName").val('deathDetails');
 		get_forms(149,0,string,25,null,'deathDetails');
 	}
+	
+
 </script>

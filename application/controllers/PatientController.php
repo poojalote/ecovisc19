@@ -1058,6 +1058,8 @@ on p.id= t.id")->result();
             $physical_activity = $this->input->post("physical_activity");
             $urgent_care = $this->input->post("urgent_care");
             $is_transfer = $this->input->post("is_transfer");
+             $medication_auto = $this->input->post("medication_auto");
+
             $event = $this->input->post("event");
             $trasfer_to = "";
             $trans_reason = "";
@@ -1078,6 +1080,7 @@ on p.id= t.id")->result();
                 "transfer_to" => $trasfer_to,
                 "transfer_reason" => $trans_reason,
                 "event" => $event,
+                "hospital_medication" => $medication_auto,
                 /* "diagnostic" => $patient_diagnostic,
                 "treated_hospital" => $patient_treated_hospital,
                 "course_hospital" => $patient_course_hospital,
