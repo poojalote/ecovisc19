@@ -471,9 +471,12 @@ class PathologyOrderController extends HexaController
 		$branch_id=$this->session->user_session->branch_id;
 //		SELECT ps.*,(select GROUP_CONCAT(so.service_detail) as service_detail from service_order so where FIND_IN_SET(so.id, ps.service_ids)) as service_names FROM pathology_service_transaction_table ps where ps.patient_id = "1";
 //		$query=$this->db->query("SELECT ps.*, GROUP_CONCAT(so.service_detail) as service_detail FROM pathology_service_transaction_table ps, service_order so WHERE FIND_IN_SET(so.id, ps.service_ids) AND ps.patient_id = ".$p_id);
-		$query=$this->db->query("SELECT ps.*,(case when ps.type=2 then (select sm.name from lab_master_test sm where sm.id=ps.service_ids) else (select GROUP_CONCAT(so.service_detail) from service_order so where FIND_IN_SET(so.id, ps.service_ids)) end) as service_names FROM pathology_service_transaction_table ps where ps.lab_patient_ext_id = ".$p_id." and branch_id=".$branch_id);
+		$query=$this->db->query("SELECT ps.*,(case when ps.type=2 then (case when cast(ps.service_ids As UNSIGNED)=0 then
+ (select sm.service_description from service_master sm where sm.service_id=ps.service_ids and sm.branch_id=ps.branch_id) else 
+ (select lmt.name from lab_master_test lmt where lmt.id=ps.service_ids and lmt.branch_id=ps.branch_id) end) else
+ (select GROUP_CONCAT(so.service_detail) from service_order so where so.branch_id=ps.branch_id and FIND_IN_SET(so.id, ps.service_ids)) end) as service_names FROM pathology_service_transaction_table ps where ps.lab_patient_ext_id = ".$p_id." and branch_id=".$branch_id);
 
-//		print_r($this->db->last_query());
+//		print_r($this->db->last_query());exit();
 		$data="";
 
 		$data .="<table class='table table-bordered' id='path_table' style='font-size:15px;'><thead>

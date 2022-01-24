@@ -1125,7 +1125,11 @@ class ServiceOrderController extends HexaController
         $column_search = array();
         $select = array("so.*,(Select patient_name from ".$lab_branch_table." where id = so.patient_id) as patient_name",
             "concat('AA',lpad(id,6,'0')) as order_id",
-            "(select lmt.name from lab_master_test lmt where id=service_id) as service_name ");
+            "(case when service_type=1 then 
+			 (case when cast(so.service_id As UNSIGNED)=0 then (select sm.service_description from service_master sm where sm.service_id=so.service_id and sm.branch_id=so.branch_id) else (select lmt.name from lab_master_test lmt where id=so.service_id and lmt.branch_id=so.branch_id) end)
+			 else
+			 (select mp.package_name from master_package mp where mp.id=so.service_id and mp.branch_id=so.branch_id)
+			 end) as service_name ");
 
         $this->db->select($select)->where($where);
 
@@ -1136,7 +1140,6 @@ class ServiceOrderController extends HexaController
         }
         $memData = $this->db->get($tableName)->result();
          $results_last_query = $this->db->last_query();
-
         if (count($memData) > 0) {
             $tableRows = array();
             foreach ($memData as $row) {

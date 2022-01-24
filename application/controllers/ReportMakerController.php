@@ -2477,8 +2477,13 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
             // exit;
             $sample_type='';
             $sample_collect_on='';
-            $order_data=$this->db->query('select t1.*,(case when service_type=1 then (select sm.service_name from setup_lab_service_master sm where sm.service_id=t1.service_id and sm.branch_id="'.$branch_id.'") else (select mp.package_name from master_package mp where mp.id=t1.service_id) end) as service_name from lab_patient_serviceorder t1 where t1.patient_id="'.$patient_id.'" and t1.id="'.$order_id.'"');
-            //echo $this->db->last_query();
+            $order_data=$this->db->query('select t1.*,(case when t1.service_type=1 then 
+			 (case when cast(t1.service_id As UNSIGNED)=0 then (select sm.service_description from service_master sm where sm.service_id=t1.service_id and sm.branch_id=t1.branch_id)
+			 else (select lmt.name from lab_master_test lmt where id=t1.service_id and lmt.branch_id=t1.branch_id) end)
+			 else
+			 (select mp.package_name from master_package mp where mp.id=t1.service_id and mp.branch_id=t1.branch_id)
+			 end) as service_name from lab_patient_serviceorder t1 where t1.patient_id="'.$patient_id.'" and t1.id="'.$order_id.'"');
+//            echo $this->db->last_query();exit();
             if($this->db->affected_rows()>0)
             {
                 $order_data=$order_data->row();
@@ -2687,7 +2692,7 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
                      (select smp.child_test_id from set_master_package smp where smp.id=t1.id)))) end) as department_name,
                      (select method from lab_child_test lct where id = (select smp.child_test_id from set_master_package smp where smp.id=t1.id)) as method,
                      (SELECT lmt.description FROM lab_master_test lmt where lmt.id = (select master_id from lab_child_test lct where lct.id = (select smp.child_test_id from set_master_package smp where smp.id=t1.id))) as description')->where(array('patient_id'=>$patient_id,'order_id'=>$order_id))->get('lab_test_data_entry t1');
-            //print_r($this->db->last_query());exit();
+//            print_r($this->db->last_query());exit();
 
 
             $department_array=array();
@@ -2729,7 +2734,10 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
                     foreach ($m_value as $key => $c_value) {
                         // $descriptionvalue = array('description' => $c_value->description);
                         // $this->session->set_userdata($descriptionvalue);
-
+						if($c_value->refe_value==null || $c_value->refe_value=='null')
+						{
+							$c_value->refe_value="";
+						}
                         $html.='<tr>
                                 <td class="child_test2">'.$c_value->child_name.' <br/>Method: HPLC</td>
                                 <td class="child_test">'.$c_value->value.'</td>
