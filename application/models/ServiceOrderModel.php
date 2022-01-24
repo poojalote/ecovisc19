@@ -208,22 +208,24 @@ class ServiceOrderModel extends MasterModel
 						$labPatientId = $insertLabPatient->inserted_id;
 					}
 					foreach ($formData as $index1 => $value) {
-						$labServiceData = array(
-							'patient_id' => $labPatientId,
-							'ext_pid' => $value['patient_id'],
-							'branch_id' => $branch_id,
-							'service_id' => $value['service_id'],
-							'service_date' => $value['order_date'],
-							'service_status' => 1,
-							'created_by' => $userid,
-							'created_on' => date('Y-m-d H:i:s'),
-							'user_id' => $userid,
-							'transaction_date' => date('Y-m-d H:i:s'),
-							'service_rate' => $value['price'],
-							'status' => 1,
-							'service_type' => 1
-						);
-						$insert = $this->db->insert('lab_patient_serviceorder', $labServiceData);
+						if ($value['service_category'] == 'PATHOLOGY') {
+							$labServiceData = array(
+								'patient_id' => $labPatientId,
+								'ext_pid' => $value['patient_id'],
+								'branch_id' => $branch_id,
+								'service_id' => $value['service_id'],
+								'service_date' => $value['order_date'],
+								'service_status' => 1,
+								'created_by' => $userid,
+								'created_on' => date('Y-m-d H:i:s'),
+								'user_id' => $userid,
+								'transaction_date' => date('Y-m-d H:i:s'),
+								'service_rate' => $value['price'],
+								'status' => 1,
+								'service_type' => 1
+							);
+							$insert = $this->db->insert('lab_patient_serviceorder', $labServiceData);
+						}
 					}
 				}
 			}
