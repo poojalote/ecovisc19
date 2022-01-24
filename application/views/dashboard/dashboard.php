@@ -113,7 +113,7 @@ a:hover{
 		
 		
 		<div id="DropDownDiv"></div>
-			<button class="btn btn-link" type="button" style="margin-left: auto;color:#891635;font-weight:900" id="dis_btn1"
+			<button class="btn btn-link" type="button" style="margin-left: auto;color:#891635;font-weight:900;display:none" id="dis_btn1"
 			onclick="go_toDashboard()">Go to Dashboard
 					</button>
 		</div>
@@ -444,6 +444,8 @@ a:hover{
 	function go_toDashboard(){
 		$("#mainDashboard").show();
 		$("#OtherDashboard").hide();
+		$("#ViewTable").hide();
+		$("#dis_btn1").hide();
 	}
 	
 	function getDropdown(){
@@ -470,6 +472,7 @@ a:hover{
 	function getDataHTML(id){
 		$("#mainDashboard").hide();
 		$("#OtherDashboard").show();
+		$("#dis_btn1").show();
 		$.ajax({
 			type: "POST",
 			url: "<?= base_url("Report/getReportFormData") ?>",
