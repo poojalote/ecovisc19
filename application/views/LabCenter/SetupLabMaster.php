@@ -184,7 +184,7 @@ $this->load->view('_partials/header');
 														<button type="button" class="btn btn-sm btn-primary mt-5" id="saveSubgroupBtn" onclick="saveSubgroupBtn()">Save</button>
 													</div>
 												</div>
-
+												<div id="ErrorDiv" class="mt-2"></div>
 												<div id="tabSubgroupMasterPanel" class="col-md-12 mt-2"></div>
                                             </section>
                                             <section id="childTestPanel">
@@ -455,7 +455,7 @@ $this->load->view('_partials/header');
 					{type: 'text'},
 					{type: 'text'},
 					// {type: 'text'},
-					{type: 'autocomplete',source:source,allowInvalid:true},
+					{type: 'dropdown',source:source,allowInvalid:true},
 					{type: 'text'},
 				];
 				var hideArra = [0,2];
@@ -513,7 +513,7 @@ $this->load->view('_partials/header');
 		// hotDiv.validateCells();
 	}
 	function saveSubgroupBtn() {
-
+		$("#ErrorDiv").html('');
 		let data=hotDiv.getData();
 		let formData = new FormData();
 		formData.set("arrayData", JSON.stringify(data));
@@ -532,7 +532,18 @@ $this->load->view('_partials/header');
 					if (result.status == 200) {
 						app.successToast(result.body);
 						loadEditableTable($("#masterTestId").val());
-					} else {
+					}else if(result.status==202)
+					{
+						$("#ErrorDiv").append(`<div style="font-size: 14px;"><div class="alert alert-light alert-has-icon">
+                  <div class="alert-icon"><i class="fa fa-edit"></i></div>
+                     <div class="alert-body">
+                     <div class="alert-title">At this Position Data will be <b>Mandatory</b> </div>
+                        ${result.error}
+                     </div>
+                 </div></div>`);
+					}
+					else
+					{
 						app.errorToast(result.body);
 					}
 				},
