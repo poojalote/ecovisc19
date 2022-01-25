@@ -482,6 +482,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
     <?php } ?>
+     <?php if ($this->uri->segment(1) == "labMasterData" || $this->uri->segment(1) == "labMasterData_child" ) { ?>
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
+    <?php } ?>
+
     <?php
     if ($this->uri->segment(1) == "access_management" || $this->uri->segment(1) == "branch_access_management") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">

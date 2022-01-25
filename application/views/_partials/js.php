@@ -675,7 +675,7 @@ if ($this->uri->segment(2) == "Reports_query") { ?>
     <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
 <?php } ?>
 <?php
-if ($this->uri->segment(1) == "access_management" || $this->uri->segment(1) == "branch_access_management") { ?>
+if ($this->uri->segment(1) == "access_management" || $this->uri->segment(1) == "branch_access_management" || $this->uri->segment(1) == "labMasterData"  || $this->uri->segment(1) == "labMasterData_child") { ?>
     <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
 <?php } ?>
 <?php
