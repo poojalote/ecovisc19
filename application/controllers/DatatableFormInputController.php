@@ -302,7 +302,7 @@ class DatatableFormInputController extends HexaController
 
     public function getConfiguartiondata($section_id,$hash_key,$dept_id){
         $query=$this->db->query("select master_id,table_name,operation,header,type,configuration,column_name,operation_column,update_where_columns,operation_table from dynamic_form_table_master m join dynamic_form_column_master c
- on m.id=c.master_id where section_id=".$section_id." AND has_key='".$hash_key."' AND dep_id=".$dept_id);
+ on m.id=c.master_id where m.status=1 AND section_id=".$section_id." AND has_key='".$hash_key."' AND dep_id=".$dept_id);
         if($this->db->affected_rows() > 0){
             $result=$query->result();
             return $result;

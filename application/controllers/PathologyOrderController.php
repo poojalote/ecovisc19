@@ -225,7 +225,7 @@ class PathologyOrderController extends HexaController
 		$branch_id=$this->session->user_session->branch_id;
 //		SELECT ps.*,(select GROUP_CONCAT(so.service_detail) as service_detail from service_order so where FIND_IN_SET(so.id, ps.service_ids)) as service_names FROM pathology_service_transaction_table ps where ps.patient_id = "1";
 //		$query=$this->db->query("SELECT ps.*, GROUP_CONCAT(so.service_detail) as service_detail FROM pathology_service_transaction_table ps, service_order so WHERE FIND_IN_SET(so.id, ps.service_ids) AND ps.patient_id = ".$p_id);
-		$query=$this->db->query("SELECT ps.*,(select GROUP_CONCAT(so.service_detail) from service_order so where FIND_IN_SET(so.id, ps.service_ids)) as service_names FROM pathology_service_transaction_table ps where ps.patient_id = ".$p_id." and branch_id=".$branch_id);
+		$query=$this->db->query("SELECT ps.*,(case when ps.type=2 then (select lt.name from lab_master_test lt where lt.id=ps.service_ids and lt.branch_id=ps.branch_id order by id desc limit 1) else (select GROUP_CONCAT(so.service_detail) from service_order so where FIND_IN_SET(so.id, ps.service_ids)) end) as service_names FROM pathology_service_transaction_table ps where ps.patient_id = ".$p_id." and branch_id=".$branch_id);
 		// print_r($this->db->last_query());
 		$data="";
 

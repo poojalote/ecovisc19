@@ -228,7 +228,9 @@ $this->load->view('_partials/header');
 													<div class="col-md-12 mb-2 text-right">
 														<button class="btn btn-primary" type="button" id="saveLabExcelDataEntry" onclick="saveExcelData();">Save</button>
 													</div>
-
+													<div class="col-md-3">
+														<select name="selectServiceOrder" id="selectServiceOrder" class="form-control" style="font-size: 15px!important;" onchange="getServiceOrderChildList(this.value)"></select>
+													</div>
                                                     <div id="tabentryhandsondata"></div>
 
                                                 </section>
@@ -684,7 +686,8 @@ function SavePathologyProgress2(formData) {
         {
             $("#lab_entry_top_nav li:nth-child(2)").addClass("tab-current")
             $("#labEntryHandsonPanel").addClass("content-current");
-            loadEditableTable(sectionId);
+			getServiceOrderList(sectionId);
+
         }
         if(id=='labPathologyCollection')
         {
@@ -841,7 +844,7 @@ function SavePathologyProgress2(formData) {
 
                     return `<button class="btn btn-primary btn-action mr-1" type="button" onclick="cancelOrder('${r[3]}','${r[5]}')" data-serv_id="${r[3]}"> <i class="fas fa-times"></i> </button>
 						<button class="btn btn-primary btn-action mr-1" data-toggle="modal"
-						data-target="#lab-service-modal" data-id="${r[3]}" onclick="open_edit_modal('${r[3]}','${r[5]}')" type="button"> <i class="fa fa-eye"></i> </button>`;
+						data-target="#lab-service-modal" data-id="${r[3]}" onclick="open_edit_modal('${r[4]}','${r[5]}')" type="button"> <i class="fa fa-eye"></i> </button>`;
 
 
                 }
@@ -849,7 +852,7 @@ function SavePathologyProgress2(formData) {
 
         ], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
 
-            $('td:eq(3)', nRow).html(`<button class="btn btn-primary btn-action mr-1" type="button" onclick="cancelOrder('${aData[3]}','${aData[5]}')" data-pres_id="${aData[3]}"> <i class="fas fa-times"></i> </button><button class="btn btn-primary btn-action mr-1"  data-toggle="modal" data-target="#lab-service-modal" data-id="${aData[3]}"onclick="open_edit_modal('${aData[3]}','${aData[5]}')" type="button" > <i class="fa fa-eye"></i> </button>`);
+            $('td:eq(3)', nRow).html(`<button class="btn btn-primary btn-action mr-1" type="button" onclick="cancelOrder('${aData[3]}','${aData[5]}')" data-pres_id="${aData[3]}"> <i class="fas fa-times"></i> </button><button class="btn btn-primary btn-action mr-1"  data-toggle="modal" data-target="#lab-service-modal" data-id="${aData[3]}"onclick="open_edit_modal('${aData[4]}','${aData[5]}')" type="button" > <i class="fa fa-eye"></i> </button>`);
 
 
         })
@@ -872,11 +875,11 @@ function SavePathologyProgress2(formData) {
         });
     }
 
-    function open_edit_modal(order_id, service_type) {
+    function open_edit_modal(service_id, service_type) {
         var patient_id = localStorage.getItem("patient_id");
         app.dataTable('serviceLabOrderChild', {
             url: base_url + "getlabServiceChildOrder",
-            data: {patient_id: patient_id, order_id: order_id, service_type: service_type},
+            data: {patient_id: patient_id, service_id: service_id, service_type: service_type},
         }, [
             {
                 data: 0
@@ -1089,7 +1092,7 @@ function SavePathologyProgress2(formData) {
 
 </script>
 <script>
-	function loadEditableTable(sectionId) {
+	function loadEditableTable(sectionId,service_order_id) {
 		$("#saveLabExcelDataEntry").hide();
         // console.log("p id = == "+localStorage.getItem("patient_id"));
 		let formData = new FormData();
@@ -1097,6 +1100,7 @@ function SavePathologyProgress2(formData) {
 		formData.set("dep_id", $("#department_id").val());
 		formData.set("haskey", $("#excelhiddenelement").val());
         formData.set('queryParam',$('#queryparameter_hidden').val());
+		formData.set('order_id',service_order_id);
 		$.ajax({
 			type: "POST",
 			url: "<?= base_url("getLabDataEntryExcelData") ?>",
@@ -1190,24 +1194,13 @@ function SavePathologyProgress2(formData) {
                 success: function (result) {
                     $.LoadingOverlay("hide");
                     if (result.status == 200) {
-                        toastr.success(result.body);
-                        location.reload();
-                        // getDataMain();
+                        app.successToast(result.body);
+						loadEditableTable(143,$("#selectServiceOrder").val());
+
                     } else {
-                        // if(result.type==1)
-                        // {
-                        //     $("#newErrorDiv").html(`<div><div class="alert alert-light alert-has-icon">
-                        //                       <div class="alert-icon"><i class="fa fa-exclamation-circle"></i></div>
-                        //                       <div class="alert-body">
-                        //                         <div class="alert-title">At this Position Data will be <b>Mandatory</b> </div>
-                        //                          ${result.body}
-                        //                       </div>
-                        //                     </div></div>`);
-                        // }
-                        // else
-                        // {
-                            toastr.error(result.body);
-                        // }
+
+                            app.errorToast(result.body);
+
                         
                     }
 
@@ -1294,5 +1287,31 @@ function SavePathologyProgress2(formData) {
 				}
 			});
 		}
+	}
+	function getServiceOrderList(sectionId) {
+		$("#selectServiceOrder").html("");
+		let patient_id=localStorage.getItem("patient_id");
+		$.ajax({
+			url: "<?= base_url();?>" + "getServiceOrderList",
+			type: "POST",
+			dataType: "json",
+			data: {patient_id: patient_id},
+			success: function (response) {
+				if (response.status == 200) {
+					$("#selectServiceOrder").append(response.data);
+					$("#selectServiceOrder").select2({});
+				} else {
+					// app.errorToast(response.body);
+				}
+			},
+			error: function (error) {
+				console.log(error);
+			}
+		});
+	}
+	function getServiceOrderChildList(service_id) {
+		let sectionId=143;
+		loadEditableTable(sectionId,service_id);
+
 	}
 </script>

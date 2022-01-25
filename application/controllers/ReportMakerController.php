@@ -17,6 +17,7 @@ class ReportMakerController extends HexaController
 		parent::__construct();
 		$this->load->model('ReportMakerModel');
 		$this->load->model('Global_model');
+		$this->load->model('MasterModel');
 		date_default_timezone_set('Asia/Kolkata');
 
 	}
@@ -2512,7 +2513,17 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
 			$imagedata = file_get_contents($path);
 			$base64 = "data:image/" . $type . ";base64," . base64_encode($imagedata);
 			//$base64image = " <img src =' ".$path." '  id='site-logo'>";
-
+			$hospital_name='';
+			$branch_name='';
+			$branch_location='';
+			$branchObject=$this->MasterModel->_rawQuery('select * from branch_master where id='.$branch_id);
+			if($branchObject->totalCount>0)
+			{
+				$b_data=$branchObject->data[0];
+				$hospital_name=$b_data->hospital_name;
+				$branch_name=$b_data->name;
+				$branch_location=$b_data->location;
+			}
 			$html .= '<!DOCTYPE html>
                 <html>
     <head>
@@ -2627,10 +2638,11 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
         </head>
         <body>
             <header style="background-color:#019fa8;height: 8%">
-                <div class="row" style="height: 50px;width: 50px" >
-                <img src ="'.$path.'"  id="site-logo" style="height: 80px;width: 80px">
+                <div class="row" >
+                	<div class="" style="height: 50px;width: 50%"><img src ="'.$path.'"  id="site-logo" style="height: 80px;width: 80px"> </div>
+                	<div class="" style="margin-left: 100px;margin-top: -40px;color: white;"><h2>'.$hospital_name.'</h2></div>
                 </div>
-
+				
 
 
                 <hr style="margin-top:40px;">
@@ -2668,8 +2680,7 @@ transaction_date as Consultation_date from doctor_consult where patient_id=" . $
             
             <footer>
             <div class="footer_address">
-            <p>The Test was Performed by Healthians Lab - Ground Floor Unit No. 16/C, Dattani Plaza, Unit No. 716 C wing, Safedpool,
-            opposite Saki Naka, Telephone exchange, Andheri (East), Mumbai 400059, signed by Lab Pathologist.</p>
+            <p>The Test was Performed by '.$branch_name.' Lab - '.$branch_location.', signed by Lab Pathologist.</p>
             </div>
             <div style="background-color:#019fa8;width:100%;height: 40px;">
             </div>

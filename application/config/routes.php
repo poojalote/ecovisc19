@@ -938,3 +938,4 @@ $route["RemoveChildTestData"]="LabController/RemoveChildTestData";
 
 $route["getLabPathologyTableData"]="PathologyOrderController/getLabPathologyTableData";
 $route["deletePathologyServiceOrder"]="LabPatientController/deletePathologyServiceOrder";
+$route["getServiceOrderList"]="LabPatientController/getServiceOrderList";
