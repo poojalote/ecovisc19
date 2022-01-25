@@ -147,6 +147,12 @@ if (isset($this->session->user_session)) {
                         <span>Branch Level Access</span>
                     </a>
                 </li>
+                <li class="<?php echo $this->uri->segment(1) == 'branch_access_management' ? 'active' : ''; ?>">
+                    <a class="nav-link" href="<?php echo base_url(); ?>labMasterData">
+                        <i class="fas fa-keyboard"></i>
+                        <span>Lab Master Data</span>
+                    </a>
+                </li>
 			<?php } else if ($role == 2 && $this->uri->segment(1) !== "company") { ?>
 				<style type="text/css">
 					.main-sidebar {
