@@ -714,6 +714,8 @@ if ($this->uri->segment(1) == "setup_lab_master" || $this->uri->segment(1) == "s
     <script src="<?php echo base_url(); ?>assets/modules/jquery-ui/jquery-ui.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/select2/dist/js/select2.full.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/page/modules-toastr.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/module/HtmlTemplate/html_form.js"></script>
     <?php
 }

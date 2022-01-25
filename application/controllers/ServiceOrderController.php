@@ -14,6 +14,7 @@ class ServiceOrderController extends HexaController
         parent::__construct();
         $this->load->model('ServiceOrderModel');
         $this->load->model('Global_model');
+		$this->load->model('MasterModel');
     }
 
     /*
@@ -1129,7 +1130,7 @@ class ServiceOrderController extends HexaController
 			 (case when cast(so.service_id As UNSIGNED)=0 then (select sm.service_description from service_master sm where sm.service_id=so.service_id and sm.branch_id=so.branch_id) else (select lmt.name from lab_master_test lmt where id=so.service_id and lmt.branch_id=so.branch_id) end)
 			 else
 			 (select mp.package_name from master_package mp where mp.id=so.service_id and mp.branch_id=so.branch_id)
-			 end) as service_name ");
+			 end) as service_name ","(select count(ltd.id) from lab_test_data_entry ltd where ltd.order_id=so.id) as entry_count");
 
         $this->db->select($select)->where($where);
 
@@ -1139,12 +1140,12 @@ class ServiceOrderController extends HexaController
             }
         }
         $memData = $this->db->get($tableName)->result();
-         $results_last_query = $this->db->last_query();
+          $results_last_query = $this->db->last_query();
         if (count($memData) > 0) {
             $tableRows = array();
             foreach ($memData as $row) {
                 $today = date('Y-m-d H:i:s');
-//                if (date('Y-m-d', strtotime($row->service_date)) <= $today) {
+                if ($row->entry_count==0) {
                     $tableRows[] = array(
                         $row->patient_name,
                         $row->service_id,
@@ -1158,7 +1159,7 @@ class ServiceOrderController extends HexaController
                         $row->ext_pid, 
                         $row->id, 
                     );
-//                }
+                }
             }
 
             $results = array(
@@ -1484,6 +1485,7 @@ class ServiceOrderController extends HexaController
 
     public function getserviceOrderBillingInfo2()
     {
+//    	print_r($this->input->post());exit();
         // if (!is_null($this->input->post('Pservice_id')) && !is_null($this->input->post("Ppatient_id")) && !is_null($this->input->post("Pbranch_id"))) {
             $service_order_id = $this->input->post('Pservice_order_id');
             $confirm_service_given = $this->input->post('confirm_service_given');
@@ -1500,6 +1502,7 @@ class ServiceOrderController extends HexaController
             $PSid = $this->input->post('PSid');
 
             $billing_transaction = $this->session->user_session->billing_transaction;
+			$patient_table = $this->session->user_session->patient_table;
             $user_id = $this->session->user_session->id;
             $branch_id = $this->session->user_session->branch_id;
             $company_id = $this->session->user_session->company_id;
@@ -1524,7 +1527,7 @@ class ServiceOrderController extends HexaController
                     "confirm_service_given"=>"1"
                 );
 
-                $this->db->where(array("id"=>$PSid));
+                $this->db->where(array("id"=>$PSid,"branch_id"=>$branch_id));
                 if ($this->db->set(array("confirm_service_given"=>1))->update('lab_patient_serviceorder')) {
                     // $this->db->trans_rollback();
                     $response['status'] = 200;
@@ -1564,9 +1567,22 @@ class ServiceOrderController extends HexaController
                     } else {
                         $input_data = "";
                     }
+					$mainPatientId='';
+
+					$checkifPatientExistsinMain = $this->MasterModel->_rawQuery('select id from com_2_patient where adhar_no=(select lb.adhar_no from lab_branch_patient_1 lb where lb.id="'.$Ppatient_id.'" and branch_id="'.$branch_id.'" order by id desc limit 1) and branch_id="'.$branch_id.'" order by id desc limit 1');
+					if ($checkifPatientExistsinMain->totalCount > 0) {
+						$MainPatientDetails = $checkifPatientExistsinMain->data[0];
+						$mainPatientId = $MainPatientDetails->id;
+					}
+					$service_id=$this->input->post('Pservice_id');
+					$serviceMasterId = $this->MasterModel->_rawQuery('select id from lab_master_test where master_service_id="'.$service_id.'"');
+					if ($serviceMasterId->totalCount > 0) {
+						$masterPrimaryKey = $serviceMasterId->data[0];
+						$service_id = $masterPrimaryKey->id;
+					}
                     $dataNewTable=array(
-                        "service_ids"=>$this->input->post('Pservice_id'),
-                        "patient_id"=>$PSid,
+                        "service_ids"=>$service_id,
+                        "patient_id"=>$mainPatientId,
                         "branch_id"=>$branch_id,
                         "file_uploaded"=>$input_data,
                         "created_by"=>$user_id,

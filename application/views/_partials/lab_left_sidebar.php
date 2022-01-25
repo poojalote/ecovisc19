@@ -111,12 +111,12 @@ $branchpermission_array = $this->session->Branch_permission;
                     </li>
                 </a>
             <?php }?>
-            <a href="<?php
-            $qparam = base64_encode(json_encode(array("branch_id"=>$this->session->user_session->branch_id)));
-            echo base_url("labMaster/22/127/".$qparam);
-            ?>" class="" style="text-decoration: none;">
-                <li class="menu-header mt-2 menu-header_section1">Master Set Up</li>
-            </a>
+<!--            <a href="--><?php
+//            $qparam = base64_encode(json_encode(array("branch_id"=>$this->session->user_session->branch_id)));
+//            echo base_url("labMaster/22/127/".$qparam);
+//            ?><!--" class="" style="text-decoration: none;">-->
+<!--                <li class="menu-header mt-2 menu-header_section1">Master Set Up</li>-->
+<!--            </a>-->
             <a href="<?php
             $qparam = base64_encode(json_encode(array("branch_id"=>$this->session->user_session->branch_id)));
             echo base_url("setup_lab_master/22/137/".$qparam);

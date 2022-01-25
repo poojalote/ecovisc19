@@ -951,3 +951,4 @@ $route["saveLabMasterData"]="BranchController/saveLabMasterData";
 $route["getHtmlLabAdminChildTest"]="BranchController/getHtmlLabAdminChildTest";
 $route["saveLabChildData"]="BranchController/saveLabChildData";
 
+$route["getServiceOrderList"]="LabPatientController/getServiceOrderList";
