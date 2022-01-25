@@ -455,7 +455,7 @@ $this->load->view('_partials/header');
 					{type: 'text'},
 					{type: 'text'},
 					// {type: 'text'},
-					{type: 'dropdown',source:source,allowInvalid:true},
+					{type: 'dropdown',source:source,allowInvalid:true,filter: false,strict:false},
 					{type: 'text'},
 				];
 				var hideArra = [0,2];

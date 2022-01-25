@@ -476,8 +476,9 @@ $this->load->view('_partials/header');
 		})
         $("#labEntryTabHandson").on('click',function (event) {
             // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
-
+			$("#tabentryhandsondata").html('');
             showPanel1('handson',143);
+
 
         })
         $("#labPathologyCollection").on('click',function (event) {
