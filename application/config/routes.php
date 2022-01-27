@@ -940,7 +940,26 @@ $route["RemoveChildTestData"]="LabController/RemoveChildTestData";
 $route["getLabPathologyTableData"]="PathologyOrderController/getLabPathologyTableData";
 $route["deletePathologyServiceOrder"]="LabPatientController/deletePathologyServiceOrder";
 
-
 $route['admin/getPatients'] = 'Welcome/getPatients';
 $route['admin/DeletePatient'] = 'Welcome/DeletePatient';
 $route['admin/Readmit'] = 'Welcome/Readmit';
+
+//---------------------------- lab master setup ------------------------
+
+$route["labMasterData_child"]="BranchController/labMasterData_child";
+
+
+
+$route["saveLabMasterData"]="BranchController/saveLabMasterData";
+
+$route["getHtmlLabAdminChildTest"]="BranchController/getHtmlLabAdminChildTest";
+$route["saveLabChildData"]="BranchController/saveLabChildData";
+
+$route["getServiceOrderList"]="LabPatientController/getServiceOrderList";
+
+//---------------------------- lab master admin ------------------------
+$route["labMasterAdmin"]="LabMasterAdminController/index";
+$route["labMasterData"]="LabMasterAdminController/labMasterData";
+$route["getLabMasterData"]="LabMasterAdminController/getLabMasterData";
+$route["getLabMasterDataOption"]="LabMasterAdminController/getLabMasterDataOption";
+$route["labParentServices"]="LabMasterAdminController/labParentServices";

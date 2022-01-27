@@ -828,12 +828,12 @@ class LabPatientController extends HexaController
 			$where = array();
 			if ((int)$type != 1)
 				$where = array("service_name" => $type);
-			$userData = $this->db->select(array("service_id", "service_name"))->where($where)->like("service_name", $search)->limit(10, 0)->get("setup_lab_service_master")->result();
+			$userData = $this->db->select(array("master_service_id", "name"))->where($where)->like("name", $search)->limit(10, 0)->get("lab_master_test")->result();
 			$response["last_query"] = $this->db->last_query();
 			$data = array();
 			if (count($userData) > 0) {
 				foreach ($userData as $user) {
-					array_push($data, array("id" => $user->service_id, "text" => $user->service_name));
+					array_push($data, array("id" => $user->master_service_id, "text" => $user->name));
 				}
 			}
 			$response["body"] = $data;
@@ -875,16 +875,19 @@ class LabPatientController extends HexaController
 		$header = $this->is_parameter(array("service_id"));
 		$service_rate = '';
 		if ($header->status) {
-			$service_id = $header->param->service_id;
+			$service_code = $header->param->service_id;
 			$session_data = $this->session->user_session;
 			$branch_id = $session_data->branch_id;
 
-			$service_rate1 = $this->db->query('select rate from setup_lab_service_master where service_id="' . $service_id . '" and branch_id="' . $branch_id . '"');
+			$service_rate1 = $this->db->query('select master_rate as rate from lab_master_test where master_service_id="' . $service_code . '" and branch_id="' . $branch_id . '"');
 			if ($this->db->affected_rows() > 0) {
 				$service_rate1 = $service_rate1->row();
+
 				$service_rate = $service_rate1->rate;
 			}
-			$service_data = $this->db->query('select sc.*,(select lc.name from lab_child_test lc where lc.id=sc.test_id) as child_test,(select lm.name from lab_master_test lm where lm.id=sc.master_id) as master_test from setup_child_lab_test sc where sc.branch_id=' . $branch_id . ' and sc.status=1 and sc.master_id=' . $service_id . '');
+
+			$service_data = $this->db->query('select sc.name as child_test,(select lm.name from lab_master_test lm where lm.master_service_id=sc.service_code) as master_test from lab_child_test sc where sc.branch_id=' . $branch_id . ' and sc.status=1 and sc.service_code="' . $service_code . '"');
+
 			if ($this->db->affected_rows() > 0) {
 				$data = '';
 				$service_data = $service_data->result();
@@ -1006,11 +1009,11 @@ class LabPatientController extends HexaController
 			}
 			$childseviceIds = array();
 			if ($service_type == 1) {
-				$service_data = $this->db->query('select sc.* from setup_child_lab_test sc where sc.branch_id=' . $branch_id . ' and sc.master_id=' . $service_id . ' and sc.status=1');
+				$service_data = $this->db->query('select sc.* from lab_child_test sc where sc.branch_id=' . $branch_id . ' and sc.service_code="' . $service_id . '" and sc.status=1');
 				if ($this->db->affected_rows() > 0) {
 					$service_data = $service_data->result();
 					foreach ($service_data as $key => $value) {
-						array_push($childseviceIds, $value->test_id);
+						array_push($childseviceIds, $value->id);
 					}
 				}
 
@@ -1043,23 +1046,23 @@ class LabPatientController extends HexaController
 				);
 				$inse_data = $this->db->insert("lab_patient_serviceorder", $insert_data);
 				$insert_id = $this->db->insert_id();
-				foreach ($childseviceIds as $key => $value) {
-					$childinsert_data = array(
-						'patient_id' => $patient_id,
-						'branch_id' => $branch_id,
-						'order_id' => $insert_id,
-						'child_test_id' => $value,
-						'user_id' => $id,
-						'transaction_date' => date('Y-m-d H:i:s'),
-						'status' => 1,
-						'order_type' => $service_type,
-						'master_id' => $service_id
-					);
-					if ($this->db->insert("lab_test_data_entry", $childinsert_data)) {
-						$insert_count++;
-					}
-				}
-				if ($insert_count > 0) {
+//				foreach ($childseviceIds as $key => $value) {
+//					$childinsert_data = array(
+//						'patient_id' => $patient_id,
+//						'branch_id' => $branch_id,
+//						'order_id' => $insert_id,
+//						'child_test_id' => $value,
+//						'user_id' => $id,
+//						'transaction_date' => date('Y-m-d H:i:s'),
+//						'status' => 1,
+//						'order_type' => $service_type,
+//						'master_id' => $service_id
+//					);
+//					if ($this->db->insert("lab_test_data_entry", $childinsert_data)) {
+//						$insert_count++;
+//					}
+//				}
+				if ($inse_data) {
 					$response["status"] = 200;
 					$response["body"] = "Order Confirm";
 				} else {
@@ -1085,7 +1088,7 @@ class LabPatientController extends HexaController
 		$session_data = $this->session->user_session;
 		$branch_id = $session_data->branch_id;
 		// $branch_id=2;
-		$select = array(" id", "service_id", "service_rate", "service_date", "service_type", '(case when service_type=1 then (select sm.name from lab_master_test sm where (sm.id=t1.service_id or sm.master_service_id=t1.service_id)) else (select mp.package_name from master_package mp where mp.id=t1.service_id) end) as service_name');
+		$select = array(" id", "service_id", "service_rate", "service_date", "service_type", '(case when service_type=1 then (select sm.name from lab_master_test sm where sm.master_service_id=t1.service_id) else (select mp.package_name from master_package mp where mp.id=t1.service_id) end) as service_name');
 		$order = array('created_on' => 'desc');
 		$column_order = array('',);
 		$column_search = array("", "");
@@ -1160,18 +1163,30 @@ class LabPatientController extends HexaController
 
 	public function getlabServiceChildOrder()
 	{
-		$order_id = $this->input->post('order_id');
+		$service_id = $this->input->post('service_id');
 		$order_type = $this->input->post('service_type');
 		$patient_id = $this->input->post('patient_id');
 		$session_data = $this->session->user_session;
 		$branch_id = $session_data->branch_id;
 
-		$select = array("id", '(case when order_type=1 then (select sm.name from lab_child_test sm where sm.id=t1.child_test_id) else (select mp.child_test_name from set_master_package mp where mp.id=t1.child_test_id) end) as service_name');
-		$tableName = 'lab_test_data_entry';
-		$order = array('id' => 'desc');
-		$column_order = array('',);
-		$column_search = array("", "");
-		$where = array("status" => 1, "branch_id" => $branch_id, "patient_id" => $patient_id, 'order_id' => $order_id, 'order_type' => $order_type);
+		if($order_type==1)
+		{
+			$select = array("id", 'name as service_name');
+			$tableName = 'lab_child_test';
+			$order = array('id' => 'asc');
+			$column_order = array();
+			$column_search = array("", "");
+			$where = array("status" => 1, "branch_id" => $branch_id, 'service_code' => $service_id);
+		}
+		else{
+			$select = array("id", '(case when order_type=1 then (select sm.name from lab_child_test sm where sm.id=t1.child_test_id) else (select mp.child_test_name from set_master_package mp where mp.id=t1.child_test_id) end) as service_name');
+			$tableName = 'lab_test_data_entry';
+			$order = array('id' => 'desc');
+			$column_order = array();
+			$column_search = array("", "");
+			$where = array("status" => 1, "branch_id" => $branch_id, "patient_id" => $patient_id, 'service_id' => $service_id, 'order_type' => $order_type);
+		}
+
 
 		$memData = $this->Patient_Model->getRows($_POST, $where, $select, $tableName . " t1", $column_search, $column_order, $order);
 		$last_query = $this->db->last_query();
@@ -1400,10 +1415,53 @@ class LabPatientController extends HexaController
 		echo json_encode($results);
 
 	}
-
 	public function getLabDataEntryExcelData()
 	{
-		$header = $this->is_parameter(array("section_id", "dep_id", "haskey", "queryParam"));
+		$header = $this->is_parameter(array("section_id", "dep_id", "haskey", "queryParam","order_id"));
+
+		if ($header->status) {
+			$param=$header->param;
+			$session_data = $this->session->user_session;
+			$branch_id = $session_data->branch_id;
+			$resultObject = $this->MasterModel->_rawQuery('select lt.*,(select lc.name from lab_child_test lc where lc.id=lt.child_test_id) as child_test_name,(select lm.name from lab_master_test lm where lm.master_service_id=lt.master_id) as master_name from lab_test_data_entry lt where lt.order_id="'.$param->order_id.'" and lt.branch_id="'.$branch_id.'"');
+//			print_r($resultObject);exit();
+			$datanew=array();
+			if ($resultObject->totalCount > 0) {
+					foreach ($resultObject->data as $row) {
+						$data = array($row->master_id, $row->child_test_name, $row->value, $row->unit, $row->refe_value, $row->child_test_id, $row->id,$row->order_id,$row->master_name);
+						array_push($datanew, $data);
+					}
+				$response["query"] = $this->db->last_query();
+				$response["status"] = 200;
+				$response["body"] = $datanew;
+
+			} else {
+				$ChildResultObject = $this->MasterModel->_rawQuery('select lc.*,lc.name as child_test_name,(select lm.name from lab_master_test lm where lm.master_service_id=lc.service_code order by id limit 1) as master_test from lab_child_test lc where lc.status=1 and lc.service_code=(select lt.service_id from lab_patient_serviceorder lt where lt.id="'.$param->order_id.'" and lt.branch_id="'.$branch_id.'")');
+				if ($ChildResultObject->totalCount > 0) {
+					foreach ($ChildResultObject->data as $row) {
+						$data = array($row->service_code, $row->child_test_name, "", $row->unit, $row->referance_range, $row->id, "",$param->order_id,$row->master_test);
+						array_push($datanew, $data);
+					}
+					$response["query"] = $this->db->last_query();
+					$response["status"] = 200;
+					$response["body"] = $datanew;
+				}
+				else{
+					$response["status"] = 201;
+					$response["body"] = array();
+				}
+			}
+		} else {
+			$response["status"] = 201;
+			$response["body"] = "something went wrong";
+		}
+		echo json_encode($response);
+
+	}
+
+	public function getLabDataEntryExcelData_backup()
+	{
+		$header = $this->is_parameter(array("section_id", "dep_id", "haskey", "queryParam","order_id"));
 
 		if ($header->status) {
 			$sql = "select master_id,table_name,operation,header,type,configuration,column_name,operation_column,where_condition,fetch_query_columns,where_condition from dynamic_form_table_master m join dynamic_form_column_master c
@@ -1494,6 +1552,7 @@ class LabPatientController extends HexaController
 
 	public function updateDynamicLabData()
 	{
+//		print_r($this->input->post());exit();
 		$value = $this->input->post('value');
 		$data=json_decode($value);
 		$session_data = $this->session->user_session;
@@ -1502,11 +1561,13 @@ class LabPatientController extends HexaController
 		$patientId = $this->input->post('patient_id');
 		$patient_name = $this->input->post('patient_name');
 		$patient_adhar = $this->input->post('patient_adhar');
+		$service_order_id = $this->input->post('service_order_id');
 		$lab_patient_table = $this->session->user_session->lab_patient_table;
 		$patient_table = $this->session->user_session->patient_table;
 		$update_batch = "";
 
 		$lab_test_data = array();
+		$lab_insert_test_data=array();
 		$excelStructureDataArray=array();
 		$patient_location = '';
 		$patient_age = '';
@@ -1525,7 +1586,17 @@ class LabPatientController extends HexaController
 			$MainPatientDetails = $checkifPatientExistsinMain->data[0];
 			$mainPatientId = $MainPatientDetails->id;
 		}
-
+		$childDataArray=array();
+		$childData=$this->MasterModel->_rawQuery('select *,(select name from lab_master_test where master_service_id=service_code and branch_id=2 order by id desc limit 1) as master_name from lab_child_test where branch_id='.$branch_id.' and status=1 and service_code=(select service_id from lab_patient_serviceorder where id="'.$service_order_id.'")');
+		if($childData->totalCount>0)
+		{
+			foreach ($childData->data as $c_row)
+			{
+				$c_name=strtolower($c_row->name);
+				$childDataArray[$c_name]=$c_row;
+			}
+		}
+//		print_r($childDataArray);exit();
 		$patientIdA = 'N' . str_pad($patientId, '9', '0', STR_PAD_LEFT);
 		if($mainPatientId!="")
 		{
@@ -1533,37 +1604,70 @@ class LabPatientController extends HexaController
 		}
 		foreach ($data as $item) {
 			if($item[0]!="" && $item[1]!="") {
-				$ltde_data = array(
-					"id" => $item[6],
-					"value" => $item[2],
-					"unit " => $item[3]
-				);
-				array_push($lab_test_data, $ltde_data);
-				$orderIdA = 'AA' . str_pad($item[7], '6', '0', STR_PAD_LEFT);
-				$excelStructureData = array('VisitDate' => date('M d Y H:i A'),
-					'Orgname' => 'Covidcare',
-					'Location' => $patient_location,
-					'Patient_number' => $patientIdA,
-					'Patient_Name' => $patient_name,
-					'Patient_Age' => $patient_age,
-					'OrderTest' => $item[8],
-					'ParameterId' => $item[5], //child_test_id
-					'ParameterName' => $item[1], //child_test_name
-					'result' => $item[2], //value
-					'unit' => $item[3], //unit
-					'ref_range' => $item[4], //ref_range
-					'orderId' => $orderIdA,
-					'branch_id' => $branch_id,
-					'order_number' => $item[7],
-					'external_patient_id' => $patientId,
-					'patient_id'=>$mainPatientId,
-					'patient_type' => 2);
-				array_push($excelStructureDataArray, $excelStructureData);
+				if (array_key_exists(strtolower($item[1]), $childDataArray)) {
+					$cdataentry = $childDataArray[strtolower($item[1])];
+//					print_r($data);
+
+//					if ($item[6] != "")//test_data_entry_primary_key
+//					{
+//						$ltde_data = array(
+//							"id" => $item[6],
+//							"value" => $item[2],
+//							"unit " => $item[3]
+//						);
+//						array_push($lab_test_data, $ltde_data);
+//					} else {
+						$insert_test_data = array(
+							"branch_id" => $branch_id,
+							"patient_id" => $patientId,
+							"user_id " => $user_id,
+							"transaction_date" => date('Y-m-d H:i:s'),
+							"status" => 1,
+							"order_id" => $service_order_id,
+							"child_test_id" => $cdataentry->id,
+							"value" => $item[2],
+							"unit" => $item[3],
+							"refe_value" => $cdataentry->referance_range,
+							"order_type" => 1,
+							"master_id" => $cdataentry->service_code,
+							"master_name" => $cdataentry->master_name
+						);
+						array_push($lab_insert_test_data, $insert_test_data);
+
+//					}
+
+					$orderIdA = 'AA' . str_pad($service_order_id, '6', '0', STR_PAD_LEFT);
+					$excelStructureData = array('VisitDate' => date('M d Y H:i A'),
+						'Orgname' => 'Covidcare',
+						'Location' => $patient_location,
+						'Patient_number' => $patientIdA,
+						'Patient_Name' => $patient_name,
+						'Patient_Age' => $patient_age,
+						'OrderTest' => $cdataentry->master_name,
+						'ParameterId' => $cdataentry->id, //child_test_id
+						'ParameterName' => $cdataentry->name, //child_test_name
+						'result' => $item[2], //value
+						'unit' => $item[3], //unit
+						'ref_range' => $cdataentry->referance_range, //ref_range
+						'orderId' => $orderIdA,
+						'branch_id' => $branch_id,
+						'order_number' => $service_order_id,
+						'external_patient_id' => $patientId,
+						'patient_id' => $mainPatientId,
+						'patient_type' => 2);
+					array_push($excelStructureDataArray, $excelStructureData);
+				}
 			}
 		}
-//		print_r($excelStructureDataArray);exit();
-		if (!empty($lab_test_data)) {
-			$update_batch = $this->db->update_batch('lab_test_data_entry', $lab_test_data, 'id');
+
+//		if (count($lab_test_data)>0) {
+//			$update_batch = $this->db->update_batch('lab_test_data_entry', $lab_test_data, 'id');
+//		}
+		if(count($lab_insert_test_data)>0)
+		{
+			$whereExcel1 = array('patient_id' => $patientId,'branch_id' => $branch_id,'order_id'=>$service_order_id);
+			$delete1 = $this->db->where($whereExcel1)->delete('lab_test_data_entry');
+			$insert_b = $this->db->insert_batch('lab_test_data_entry', $lab_insert_test_data);
 		}
 		if (count($excelStructureDataArray) > 0) {
 			$whereExcel = array('external_patient_id' => $patientId, 'patient_type' => 2, 'branch_id' => $branch_id);
@@ -1821,6 +1925,31 @@ class LabPatientController extends HexaController
 		} else {
 			$response['status'] = 201;
 			$response['body'] = "service order not deleted";
+		}
+		echo json_encode($response);
+	}
+	public function getServiceOrderList()
+	{
+		if (!is_null($this->input->post('patient_id'))) {
+			$patient_id=$this->input->post('patient_id');
+		$serviceOrder = $this->Patient_Model->_select("lab_patient_serviceorder", array("status" => 1,"patient_id"=>$patient_id,"confirm_service_given"=>0), array("id", "service_id", "(select name from lab_master_test where master_service_id=service_id order by id desc limit 1) as service_name"), false);
+            $options = "<option selected disabled>Select Service Order</option>";
+            if($serviceOrder->totalCount>0){
+				foreach ($serviceOrder->data as $option){
+					$options .="<option value='".$option->id."'>".$option->id."-".$option->service_name."</option>";
+				}
+				$response['status'] = 200;
+				$response['data'] = $options;
+			}
+            else{
+				$options = "<option selected disabled>No Service Order Found</option>";
+				$response['status'] = 201;
+				$response['data'] = $options;
+			}
+
+		} else {
+			$response['status'] = 201;
+			$response['data'] = "Something Went Wrong";
 		}
 		echo json_encode($response);
 	}

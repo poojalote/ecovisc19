@@ -86,10 +86,10 @@ $this->load->view('_partials/header');
                                                         <span>Setup Lab Master Test</span>
                                                     </a>
                                                 </li>
-<!--                                                <li class="">-->
-<!--                                                    <a href="#masterTestPanel" class="icon" id="tabMasterTest">-->
-<!--                                                        <i class="fas fa-notes-medical  mr-1 fa_class"></i>-->
-<!--                                                        <span>Setup Lab Child Test</span></a></li>-->
+                                                <li class="">
+                                                    <a href="#masterTestPanel" class="icon" id="tabMasterTest">
+                                                        <i class="fas fa-notes-medical  mr-1 fa_class"></i>
+                                                        <span>Setup Lab Child Test</span></a></li>
                                                 <li class="">
                                                     <a href="#childTestPanel" class="icon" id="tabChildTest">
                                                         <i class="fas fa-capsules mr-1 fa_class"></i>
@@ -172,7 +172,20 @@ $this->load->view('_partials/header');
                                                 </div>
                                             </section>
                                             <section id="masterTestPanel">
-                                                <div id="tabMasterTestPanel"></div>
+<!--                                                <div id="tabMasterTestPanel"></div>-->
+												<div class="col-md-12 row">
+													<div class="col-md-4">
+														<label for="">
+															Select Master Test
+														</label>
+														<select name="masterTestId" id="masterTestId" class="col-md-3" onchange="loadEditableTable(this.value)"></select>
+													</div>
+													<div class="col-md-8 text-right">
+														<button type="button" class="btn btn-sm btn-primary mt-5" id="saveSubgroupBtn" onclick="saveSubgroupBtn()">Save</button>
+													</div>
+												</div>
+												<div id="ErrorDiv" class="mt-2"></div>
+												<div id="tabSubgroupMasterPanel" class="col-md-12 mt-2"></div>
                                             </section>
                                             <section id="childTestPanel">
                                                 <div id="tabChildTestPanel"></div>
@@ -218,8 +231,8 @@ $this->load->view('_partials/header');
 
         $("#tabMasterTest").on('click',function (event) {
             document.getElementById("hiddenDivName").value= 'tabMasterTestPanel';
-            get_forms(139, 0, queryParam, departmentId, null, 'tabMasterTestPanel');
-            showPanel(139);
+            // get_forms(139, 0, queryParam, departmentId, null, 'tabMasterTestPanel');
+            showPanel2('subgroup');
 
         })
 
@@ -318,7 +331,28 @@ $this->load->view('_partials/header');
             get_forms(137, 0, newqueryParam, departmentId, null, 'tabUnitMasterPanel5');
             showPanel1(8);
         })
-
+		$("#masterTestId").select2(
+				{
+					ajax: {
+						url: "<?php echo base_url() ?>getMasterTestData",
+						type: "post",
+						dataType: "json",
+						delay: 250,
+						data: function (params) {
+							return {
+								searchTerm: params.term // search term
+							};
+						},
+						processResults: function (response) {
+							return {
+								results: response
+							};
+						},
+						cache: true
+					},
+					minimumInputLength: 3
+				}
+		);
     });
 
     //  function loadPackageData(section_id,divId)
@@ -386,4 +420,168 @@ $this->load->view('_partials/header');
             $("#unitMasterPanel5").addClass("content-current");
         }
     }
+	function showPanel2(id) {
+		$(".content-wrap section").removeClass("content-current");
+		$("#lab_master_top_nav li").removeClass("tab-current")
+		if(id ==='subgroup'){
+		    $("#lab_master_top_nav li:nth-child(2)").addClass("tab-current")
+		    $("#masterTestPanel").addClass("content-current");
+		}
+	}
+</script>
+<script>
+
+	function loadEditableTable(masterId) {
+		// console.log(masterId);
+		// console.log("p id = == "+localStorage.getItem("patient_id"));
+		let formData = new FormData();
+		formData.set("masterId", masterId);
+		$.ajax({
+			type: "POST",
+			url: "<?= base_url("getLabMasterChildEntryExcelData") ?>",
+			dataType: "json",
+			data:formData,
+			contentType:false,
+			processData:false,
+			success: function (result) {
+				let rows=[['','','','','']];
+				if(result.status==200)
+				{
+					rows = result.rows;
+				}
+				let source=result.source;
+				var types = [
+					{type: 'text'},
+					{type: 'text'},
+					{type: 'text'},
+					{type: 'text'},
+					// {type: 'dropdown',source:source,allowInvalid:true,filter: false,strict:false},
+					{type: 'text'},
+				];
+				var hideArra = [0,2];
+				var columns = ["Id",'Test Name(A)', 'Method(B)', 'Unit(C)', 'Bio Ref Interval(D)'];
+				hideColumn = {
+					// specify columns hidden by default
+					columns: hideArra,
+					copyPasteEnabled: false,
+				};
+				// console.log(result.body);
+				createHandonTable(columns, rows, types, 'tabSubgroupMasterPanel', hideColumn);
+
+			}, error: function (error) {
+				app.errorToast('Something went wrong please try again');
+			}
+		});
+	}
+	let hotDiv;
+	function createHandonTable(columnsHeader, columnRows, columnTypes, divId, hideColumn = true) {
+
+		var element = document.getElementById(divId);
+		hotDiv != null ? hotDiv.destroy() : '';
+		hotDiv = new Handsontable(element, {
+			data: columnRows,
+			colHeaders: columnsHeader,
+			formulas: true,
+			manualColumnResize: true,
+			manualRowResize: true,
+			columns: columnTypes,
+			beforeRemoveRow :(index) => {
+
+				var data = hotDiv.getDataAtRow(index);
+				if(data.length !== 0)
+				{
+					if(data[0]!=null && data[0]!="")
+					{
+						RemoveRowData(data[0],1);
+					}
+				}
+			},
+			minSpareRows:1,
+			stretchH: 'all',
+			colWidths: '100%',
+			width: '100%',
+			height: 320,
+			rowHeights: 23,
+			rowHeaders: true,
+			// filters: true,
+			contextMenu: true,
+			hiddenColumns: hideColumn,
+			dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
+			licenseKey: 'non-commercial-and-evaluation'
+		});
+
+		// hotDiv.validateCells();
+	}
+	function saveSubgroupBtn() {
+		$("#ErrorDiv").html('');
+		let data=hotDiv.getData();
+		let formData = new FormData();
+		formData.set("arrayData", JSON.stringify(data));
+		formData.set("master_id", $("#masterTestId").val());
+		if (confirm("Are You Sure You want to upload?")) {
+			$.LoadingOverlay("show");
+			$.ajax({
+				url: "<?= base_url();?>" + "saveSubGroupChildData",
+				type: "POST",
+				dataType: "json",
+				data:formData,
+				contentType:false,
+				processData:false,
+				success: function (result) {
+					$.LoadingOverlay("hide");
+					if (result.status == 200) {
+						app.successToast(result.body);
+						loadEditableTable($("#masterTestId").val());
+					}else if(result.status==202)
+					{
+						$("#ErrorDiv").append(`<div style="font-size: 14px;"><div class="alert alert-light alert-has-icon">
+                  <div class="alert-icon"><i class="fa fa-edit"></i></div>
+                     <div class="alert-body">
+                     <div class="alert-title">At this Position Data will be <b>Mandatory</b> </div>
+                        ${result.error}
+                     </div>
+                 </div></div>`);
+					}
+					else
+					{
+						app.errorToast(result.body);
+					}
+				},
+				error: function (error) {
+
+					$.LoadingOverlay("hide");
+					console.log(error);
+					// $.LoadingOverlay("hide");
+				}
+			});
+		}
+	}
+	function RemoveRowData(id,type) {
+		let formData = new FormData();
+		formData.set("id", id);
+		if (confirm("Are You Sure You want to Remove Data?")) {
+			$.LoadingOverlay("show");
+			$.ajax({
+				url: "<?= base_url();?>" + "RemoveChildTestData",
+				type: "POST",
+				dataType: "json",
+				data:formData,
+				contentType:false,
+				processData:false,
+				success: function (result) {
+					$.LoadingOverlay("hide");
+					if (result.status == 200) {
+						app.successToast(result.body);
+					} else {
+						app.errorToast(result.body);
+					}
+				},
+				error: function (error) {
+					$.LoadingOverlay("hide");
+					console.log(error);
+					// $.LoadingOverlay("hide");
+				}
+			});
+		}
+	}
 </script>

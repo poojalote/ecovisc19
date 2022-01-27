@@ -414,6 +414,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabs.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/tabsStyle.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.css"/>
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
     <?php } ?>
     <?php if ($this->uri->segment(1) == "") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
@@ -479,6 +481,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
     <?php } ?>
+     <?php if ($this->uri->segment(1) == "labMasterData" || $this->uri->segment(1) == "labMasterData_child" ) { ?>
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet"
+              href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
+    <?php } ?>
+
     <?php
     if ($this->uri->segment(1) == "access_management" || $this->uri->segment(1) == "branch_access_management") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">

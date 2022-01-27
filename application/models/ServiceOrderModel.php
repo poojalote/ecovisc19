@@ -207,8 +207,10 @@ class ServiceOrderModel extends MasterModel
 						$insertLabPatient = $this->ServiceOrderModel->_insert($lab_patient_table, $data);
 						$labPatientId = $insertLabPatient->inserted_id;
 					}
+					$serviceCodes=array();//service code for entry lab child test in test_entry_data
 					foreach ($formData as $index1 => $value) {
 						if ($value['service_category'] == 'PATHOLOGY') {
+
 							$labServiceData = array(
 								'patient_id' => $labPatientId,
 								'ext_pid' => $value['patient_id'],

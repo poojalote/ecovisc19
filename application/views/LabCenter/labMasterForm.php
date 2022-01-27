@@ -49,10 +49,10 @@ $this->load->view('_partials/header');
 <!--                                                    <a href="#unitMasterPanel" class="icon" id="tabUnitMaster"-->
 <!--                                                    ><i class="fas fa-vial mr-1 fa_class"></i>-->
 <!--                                                        <span>Unit Master</span></a></li>-->
-												<li class="">
-													<a href="#subgroupMasterPanel" class="icon" id="tabSubgroupMaster"
-													><i class="fas fa-vial mr-1 fa_class"></i>
-														<span>Child Test Group</span></a></li>
+<!--												<li class="">-->
+<!--													<a href="#subgroupMasterPanel" class="icon" id="tabSubgroupMaster"-->
+<!--													><i class="fas fa-vial mr-1 fa_class"></i>-->
+<!--														<span>Child Test Group</span></a></li>-->
                                             </ul>
                                         </nav>
                                         <div class="content-wrap" id="lab_master_panel">
@@ -242,9 +242,7 @@ $this->load->view('_partials/header');
 			}
 		});
 	}
-
 	let hotDiv;
-
 	function createHandonTable(columnsHeader, columnRows, columnTypes, divId, hideColumn = true) {
 
 		var element = document.getElementById(divId);
