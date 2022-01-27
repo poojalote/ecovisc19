@@ -46,6 +46,11 @@ $this->load->view('_partials/header');
 			let sourceData = res.department;
 			let hiddenColumns = [];
 			let columnsRows = res.data;
+			if (res.data == "") {
+				columnsRows = [
+					['', '', '', '', ''],
+				];
+			}
 			let columnTypes = [
 				{type: 'text'},
 				{type: 'text'},
@@ -60,11 +65,7 @@ $this->load->view('_partials/header');
 	let hosController;
 
 	function handson(columnsHeader, columnsRows, columnTypes, divId, hiddenColumns) {
-		if (columnsRows.length === 0) {
-			columnsRows = [
-				['', '', '', '', ''],
-			];
-		}
+
 
 
 		const container = document.getElementById(divId);

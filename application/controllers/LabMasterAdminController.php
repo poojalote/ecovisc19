@@ -252,13 +252,12 @@ class LabMasterAdminController extends HexaController
 	{
 		$company_id = $this->session->userdata('company_id');
 		$group_data_array = $this->MasterModel->_rawQuery('select * from lab_admin_master_test where status=1');
-		$departments = $this->db->select('*')->from('lab_admin_department_master')->get()->result();
-
+		$departments = $this->MasterModel->_rawQuery('select * from lab_admin_department_master where status=1');
 		$depart  = array();
 		$departmentArray=array();
-		if(count($departments) > 0 )
+		if($departments->totalCount> 0 )
 		{
-			foreach($departments as $key=>$value)
+			foreach($departments->data as $key=>$value)
 			{
 				array_push($depart,$value->name);
 				$departmentArray[$value->id]=$value->name;
@@ -439,6 +438,7 @@ class LabMasterAdminController extends HexaController
 	}
 	public function saveMainChildServices()
 	{
+
 		if(!is_null($this->input->post('lab_master_test')) && $this->input->post('lab_master_test')!="" && $this->input->post('lab_master_test')!="null")
 		{
 			$service_code=$this->input->post('lab_master_test');

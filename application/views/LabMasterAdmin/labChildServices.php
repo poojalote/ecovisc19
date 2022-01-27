@@ -87,7 +87,13 @@ $this->load->view('_partials/header');
 					"id"
 				];
 				let hiddenColumns = [5];
+
 				let columnsRows = res.data;
+				if (res.data == "") {
+					columnsRows = [
+						['', '', '', '', '',''],
+					];
+				}
 				let columnTypes = [
 					{type: 'text'},
 					{type: 'text'},
@@ -105,11 +111,7 @@ $this->load->view('_partials/header');
 	let hosController;
 
 	function handson(columnsHeader, columnsRows, columnTypes, divId, hiddenColumns) {
-		if (columnsRows.length === 0) {
-			columnsRows = [
-				['', '', '', '', ''],
-			];
-		}
+
 
 		const container = document.getElementById(divId);
 		hosController != null ? hosController.destroy() : "";
@@ -138,20 +140,33 @@ $this->load->view('_partials/header');
 		hosController.validateCells();
 	}
 	function saveMainChildServices() {
-		var array = hosController.getData();
+		let array = hosController.getData();
+		console.log(array);
 		let formdata = new FormData();
 		formdata.set('data',JSON.stringify(array));
 		formdata.set('lab_master_test',$("#lab_master_test").val());
-		app.request(base_url + 'saveMainChildServices',formdata).then(res=>{
+		$.ajax({
+			type: "POST",
+			url: "<?= base_url("saveMainChildServices") ?>",
+			dataType: "json",
+			data:formdata,
+			contentType:false,
+			processData:false,
+			success: function (res) {
+
 			if(res.status === 200)
 			{
 				app.successToast(res.body);
-				getData();
+				// getData();
 			}
 			else
 			{
 				app.errorToast(res.body);
 			}
-		}).catch(error=>console.log(error));
+
+			}, error: function (error) {
+				app.errorToast('Something went wrong please try again');
+			}
+		});
 	}
 </script>
