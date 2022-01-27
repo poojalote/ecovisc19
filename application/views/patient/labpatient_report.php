@@ -183,6 +183,7 @@ $this->load->view('_partials/header');
                                                 <table class="table" id="serviceLabOrderTable" style="width: 100%!important;">
                                                     <thead>
                                                     <tr>
+														<th>Order Id</th>
                                                         <th>Service Order</th>
                                                         <th>Amount</th>
                                                         <th>Service Order Date</th>
@@ -829,6 +830,9 @@ function SavePathologyProgress2(formData) {
             url: base_url + "getLabServiceOrders",
             data: {patient_id: patient_id},
         }, [
+			{
+				data: 3
+			},
             {
                 data: 0
             },
@@ -852,7 +856,7 @@ function SavePathologyProgress2(formData) {
 
         ], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
 
-            $('td:eq(3)', nRow).html(`<button class="btn btn-primary btn-action mr-1" type="button" onclick="cancelOrder('${aData[3]}','${aData[5]}')" data-pres_id="${aData[3]}"> <i class="fas fa-times"></i> </button><button class="btn btn-primary btn-action mr-1"  data-toggle="modal" data-target="#lab-service-modal" data-id="${aData[3]}"onclick="open_edit_modal('${aData[4]}','${aData[5]}')" type="button" > <i class="fa fa-eye"></i> </button>`);
+            $('td:eq(4)', nRow).html(`<button class="btn btn-primary btn-action mr-1" type="button" onclick="cancelOrder('${aData[3]}','${aData[5]}')" data-pres_id="${aData[3]}"> <i class="fas fa-times"></i> </button><button class="btn btn-primary btn-action mr-1"  data-toggle="modal" data-target="#lab-service-modal" data-id="${aData[3]}"onclick="open_edit_modal('${aData[4]}','${aData[5]}')" type="button" > <i class="fa fa-eye"></i> </button>`);
 
 
         })
@@ -1119,9 +1123,9 @@ function SavePathologyProgress2(formData) {
 				var rows = data;
 				var types = [
                     {type: 'text'},
-					{type: 'text',readOnly:true},
 					{type: 'text'},
-                    {type: 'text',readOnly:true},
+					{type: 'text'},
+                    {type: 'text'},
                     {type: 'text',readOnly:true},
                     {type: 'text'},
                     {type: 'text'},
@@ -1183,6 +1187,7 @@ function SavePathologyProgress2(formData) {
 		Form_data.set('value',JSON.stringify(array));
 		Form_data.set('patient_name',localStorage.getItem("patient_name"));
 		Form_data.set('patient_adhar',localStorage.getItem("patient_adharnumber"));
+		Form_data.set('service_order_id',$("#selectServiceOrder").val());
         if (confirm("Are You Sure You want to upload?")) {
             $.ajax({
                 url: "<?= base_url();?>" + "updateDynamicLabData",

@@ -43,20 +43,21 @@ class LabController extends HexaController
 		{
 			$service_code=$this->input->post('masterId');
 			$branch_id = $this->session->user_session->branch_id;
-			$service_data = $this->MasterModel->_rawQuery('select sc.*,(select name from lab_unit_master where id=sc.unit) as unit_name from lab_child_test sc where sc.branch_id=' . $branch_id . ' and sc.status=1 and sc.service_code="' . $service_code . '"');
-//			print_r($service_data);exit();
+//			$service_data = $this->MasterModel->_rawQuery('select sc.*,(select name from lab_unit_master where id=sc.unit) as unit_name from lab_child_test sc where sc.branch_id=' . $branch_id . ' and sc.status=1 and sc.service_code="' . $service_code . '"');
+			$service_data = $this->MasterModel->_rawQuery('select sc.*,sc.unit as unit_name from lab_child_test sc where sc.branch_id=' . $branch_id . ' and sc.status=1 and sc.service_code="' . $service_code . '"');
+//print_r($service_data);exit();
 
-			$unitData=$this->MasterModel->_rawQuery('select id,name from lab_unit_master where status=1');
+//			$unitData=$this->MasterModel->_rawQuery('select id,name from lab_unit_master where status=1');
 			$unitSourceData=array();
-			if($unitData->totalCount>0)
-			{
-				$SourceData=$unitData->data;
-				array_push($unitSourceData,'NA');
-				foreach ($SourceData as $udata)
-				{
-					array_push($unitSourceData,$udata->id.'-'.$udata->name);
-				}
-			}
+//			if($unitData->totalCount>0)
+//			{
+//				$SourceData=$unitData->data;
+//				array_push($unitSourceData,'NA');
+//				foreach ($SourceData as $udata)
+//				{
+//					array_push($unitSourceData,$udata->id.'-'.$udata->name);
+//				}
+//			}
 			$masterDataM=array();
 			if($service_data->totalCount>0)
 			{
@@ -64,9 +65,9 @@ class LabController extends HexaController
 				foreach ($masterData as $value)
 				{
 					$unit='';
-					if($value->unit!=null && $value->unit!="" && $value->unit_name!="")
+					if($value->unit_name!=null && $value->unit_name!="")
 					{
-						$unit=$value->unit.'-'.$value->unit_name;
+						$unit=$value->unit_name;
 					}
 
 					$childData=array($value->id,$value->name,$value->method,$unit,$value->referance_range);
@@ -77,16 +78,16 @@ class LabController extends HexaController
 				$response['source']=$unitSourceData;
 			}
 			else{
-				$mainAdminservice_data = $this->MasterModel->_rawQuery('select sc.*,(select name from lab_unit_master where id=sc.unit) as unit_name from lab_admin_child_test sc where sc.status=1 and sc.service_code="' . $service_code . '"');
+				$mainAdminservice_data = $this->MasterModel->_rawQuery('select sc.*,sc.unit as unit_name from lab_admin_child_test sc where sc.status=1 and sc.service_code="' . $service_code . '"');
 				if($mainAdminservice_data->totalCount>0)
 				{
 					$adminmasterData=$mainAdminservice_data->data;
 					foreach ($adminmasterData as $value)
 					{
 						$unit='';
-						if($value->unit!=null && $value->unit!="" && $value->unit_name!="")
+						if($value->unit_name!=null && $value->unit_name!="")
 						{
-							$unit=$value->unit.'-'.$value->unit_name;
+							$unit=$value->unit_name;
 						}
 
 						$childData=array($value->id,$value->name,$value->method,$unit,$value->referance_range);
@@ -131,21 +132,22 @@ class LabController extends HexaController
 						if ($arrValue[1] != "" && $arrValue[3] != "" && $arrValue[4] != "") {
 							$unit = '';
 							if ($arrValue[3] != "") {
-								$unitC = explode('-', $arrValue[3]);
-								if (count($unitC) > 1) {
-									$unit = $unitC[0];
-								} else {
-									$unitObject = $this->MasterModel->_rawQuery('select id from lab_unit_master where name = "' . $arrValue[3] . '" limit 1');
-									if ($unitObject->totalCount > 0) {
-										$unit = $unitObject->data[0]->id;
-									} else {
-										$data = array('name' => $arrValue[3], 'transaction_date' => date('Y-m-d H:i:s'), 'status' => 1);
-										$insertObject = $this->MasterModel->_insert('lab_unit_master', $data);
-										if ($insertObject->status == TRUE) {
-											$unit = $insertObject->inserted_id;
-										}
-									}
-								}
+//								$unitC = explode('-', $arrValue[3]);
+//								if (count($unitC) > 1) {
+//									$unit = $unitC[0];
+//								} else {
+//									$unitObject = $this->MasterModel->_rawQuery('select id from lab_unit_master where name = "' . $arrValue[3] . '" limit 1');
+//									if ($unitObject->totalCount > 0) {
+//										$unit = $unitObject->data[0]->id;
+//									} else {
+//										$data = array('name' => $arrValue[3], 'transaction_date' => date('Y-m-d H:i:s'), 'status' => 1);
+//										$insertObject = $this->MasterModel->_insert('lab_unit_master', $data);
+//										if ($insertObject->status == TRUE) {
+//											$unit = $insertObject->inserted_id;
+//										}
+//									}
+//								}
+								$unit = $arrValue[3];
 							}
 							if ($arrValue[0] != "") {
 
@@ -179,8 +181,8 @@ class LabController extends HexaController
 				$result = false;
 				try {
 					$this->db->trans_start();
+					$this->db->update('lab_child_test', array('status' => 0), array('service_code' => $master_id));
 					if (!empty($updateData)) {
-						$this->db->update('lab_child_test', array('status' => 0), array('service_code' => $master_id));
 						$this->db->update_batch('lab_child_test', $updateData, 'id');
 					}
 					if (!empty($insertData)) {

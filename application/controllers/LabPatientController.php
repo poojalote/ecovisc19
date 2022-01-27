@@ -1552,6 +1552,7 @@ class LabPatientController extends HexaController
 
 	public function updateDynamicLabData()
 	{
+//		print_r($this->input->post());exit();
 		$value = $this->input->post('value');
 		$data=json_decode($value);
 		$session_data = $this->session->user_session;
@@ -1560,6 +1561,7 @@ class LabPatientController extends HexaController
 		$patientId = $this->input->post('patient_id');
 		$patient_name = $this->input->post('patient_name');
 		$patient_adhar = $this->input->post('patient_adhar');
+		$service_order_id = $this->input->post('service_order_id');
 		$lab_patient_table = $this->session->user_session->lab_patient_table;
 		$patient_table = $this->session->user_session->patient_table;
 		$update_batch = "";
@@ -1584,7 +1586,17 @@ class LabPatientController extends HexaController
 			$MainPatientDetails = $checkifPatientExistsinMain->data[0];
 			$mainPatientId = $MainPatientDetails->id;
 		}
-
+		$childDataArray=array();
+		$childData=$this->MasterModel->_rawQuery('select *,(select name from lab_master_test where master_service_id=service_code and branch_id=2 order by id desc limit 1) as master_name from lab_child_test where branch_id='.$branch_id.' and status=1 and service_code=(select service_id from lab_patient_serviceorder where id="'.$service_order_id.'")');
+		if($childData->totalCount>0)
+		{
+			foreach ($childData->data as $c_row)
+			{
+				$c_name=strtolower($c_row->name);
+				$childDataArray[$c_name]=$c_row;
+			}
+		}
+//		print_r($childDataArray);exit();
 		$patientIdA = 'N' . str_pad($patientId, '9', '0', STR_PAD_LEFT);
 		if($mainPatientId!="")
 		{
@@ -1592,63 +1604,69 @@ class LabPatientController extends HexaController
 		}
 		foreach ($data as $item) {
 			if($item[0]!="" && $item[1]!="") {
-				if($item[6]!="")//test_data_entry_primary_key
-				{
-					$ltde_data = array(
-						"id" => $item[6],
-						"value" => $item[2],
-						"unit " => $item[3]
-					);
-					array_push($lab_test_data, $ltde_data);
-				}
-				else{
-					$insert_test_data = array(
-						"branch_id" => $branch_id,
-						"patient_id" => $patientId,
-						"user_id " => $user_id,
-						"transaction_date"=>date('Y-m-d H:i:s'),
-						"status"=>1,
-						"order_id"=>$item[7],
-						"child_test_id"=>$item[5],
-						"value"=>$item[2],
-						"unit"=>$item[3],
-						"refe_value"=>$item[4],
-						"order_type"=>1,
-						"master_id"=>$item[0],
-						"master_name"=>$item[8]
-					);
-					array_push($lab_insert_test_data, $insert_test_data);
+				if (array_key_exists(strtolower($item[1]), $childDataArray)) {
+					$cdataentry = $childDataArray[strtolower($item[1])];
+//					print_r($data);
 
-				}
+//					if ($item[6] != "")//test_data_entry_primary_key
+//					{
+//						$ltde_data = array(
+//							"id" => $item[6],
+//							"value" => $item[2],
+//							"unit " => $item[3]
+//						);
+//						array_push($lab_test_data, $ltde_data);
+//					} else {
+						$insert_test_data = array(
+							"branch_id" => $branch_id,
+							"patient_id" => $patientId,
+							"user_id " => $user_id,
+							"transaction_date" => date('Y-m-d H:i:s'),
+							"status" => 1,
+							"order_id" => $service_order_id,
+							"child_test_id" => $cdataentry->id,
+							"value" => $item[2],
+							"unit" => $item[3],
+							"refe_value" => $cdataentry->referance_range,
+							"order_type" => 1,
+							"master_id" => $cdataentry->service_code,
+							"master_name" => $cdataentry->master_name
+						);
+						array_push($lab_insert_test_data, $insert_test_data);
 
-				$orderIdA = 'AA' . str_pad($item[7], '6', '0', STR_PAD_LEFT);
-				$excelStructureData = array('VisitDate' => date('M d Y H:i A'),
-					'Orgname' => 'Covidcare',
-					'Location' => $patient_location,
-					'Patient_number' => $patientIdA,
-					'Patient_Name' => $patient_name,
-					'Patient_Age' => $patient_age,
-					'OrderTest' => $item[8],
-					'ParameterId' => $item[5], //child_test_id
-					'ParameterName' => $item[1], //child_test_name
-					'result' => $item[2], //value
-					'unit' => $item[3], //unit
-					'ref_range' => $item[4], //ref_range
-					'orderId' => $orderIdA,
-					'branch_id' => $branch_id,
-					'order_number' => $item[7],
-					'external_patient_id' => $patientId,
-					'patient_id'=>$mainPatientId,
-					'patient_type' => 2);
-				array_push($excelStructureDataArray, $excelStructureData);
+//					}
+
+					$orderIdA = 'AA' . str_pad($service_order_id, '6', '0', STR_PAD_LEFT);
+					$excelStructureData = array('VisitDate' => date('M d Y H:i A'),
+						'Orgname' => 'Covidcare',
+						'Location' => $patient_location,
+						'Patient_number' => $patientIdA,
+						'Patient_Name' => $patient_name,
+						'Patient_Age' => $patient_age,
+						'OrderTest' => $cdataentry->master_name,
+						'ParameterId' => $cdataentry->id, //child_test_id
+						'ParameterName' => $cdataentry->name, //child_test_name
+						'result' => $item[2], //value
+						'unit' => $item[3], //unit
+						'ref_range' => $cdataentry->referance_range, //ref_range
+						'orderId' => $orderIdA,
+						'branch_id' => $branch_id,
+						'order_number' => $service_order_id,
+						'external_patient_id' => $patientId,
+						'patient_id' => $mainPatientId,
+						'patient_type' => 2);
+					array_push($excelStructureDataArray, $excelStructureData);
+				}
 			}
 		}
-//		print_r($lab_insert_test_data);exit();
-		if (count($lab_test_data)>0) {
-			$update_batch = $this->db->update_batch('lab_test_data_entry', $lab_test_data, 'id');
-		}
+
+//		if (count($lab_test_data)>0) {
+//			$update_batch = $this->db->update_batch('lab_test_data_entry', $lab_test_data, 'id');
+//		}
 		if(count($lab_insert_test_data)>0)
 		{
+			$whereExcel1 = array('patient_id' => $patientId,'branch_id' => $branch_id,'order_id'=>$service_order_id);
+			$delete1 = $this->db->where($whereExcel1)->delete('lab_test_data_entry');
 			$insert_b = $this->db->insert_batch('lab_test_data_entry', $lab_insert_test_data);
 		}
 		if (count($excelStructureDataArray) > 0) {
