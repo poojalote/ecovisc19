@@ -27,6 +27,7 @@ $route["admin/Reports_query"]="Report/Reports_query";
 // ------------------------------ Company Section ----------------------------------------
 
 $route["admin/view_companies"]="Welcome/view_companies";
+$route["admin/delete_patients"]="Welcome/delete_patients";
 // create and update company
 $route["admin/uploadCompany"]='CompaniesController/uploadCompany';
 // datatable fetch all companies
@@ -939,8 +940,11 @@ $route["RemoveChildTestData"]="LabController/RemoveChildTestData";
 $route["getLabPathologyTableData"]="PathologyOrderController/getLabPathologyTableData";
 $route["deletePathologyServiceOrder"]="LabPatientController/deletePathologyServiceOrder";
 
+$route['admin/getPatients'] = 'Welcome/getPatients';
+$route['admin/DeletePatient'] = 'Welcome/DeletePatient';
+$route['admin/Readmit'] = 'Welcome/Readmit';
 
-// ---------------------------- lab master setup ------------------------
+//---------------------------- lab master setup ------------------------
 
 $route["labMasterData_child"]="BranchController/labMasterData_child";
 
@@ -953,12 +957,14 @@ $route["labMasterData_child"]="BranchController/labMasterData_child";
 
 $route["getServiceOrderList"]="LabPatientController/getServiceOrderList";
 
-// ---------------------------- lab master admin ------------------------
+//---------------------------- lab master admin ------------------------
 $route["labMasterAdmin"]="LabMasterAdminController/index";
 $route["labMasterData"]="LabMasterAdminController/labMasterData";
 $route["getLabMasterData"]="LabMasterAdminController/getLabMasterData";
 $route["getLabMasterDataOption"]="LabMasterAdminController/getLabMasterDataOption";
 $route["labParentServices"]="LabMasterAdminController/labParentServices";
+
 $route["getHtmlLabAdminChildTest"]="LabMasterAdminController/getHtmlLabAdminChildTest";
 $route["saveLabChildData"]="LabMasterAdminController/saveLabChildData";
 $route["saveLabMasterData"]="LabMasterAdminController/saveLabMasterData";
+

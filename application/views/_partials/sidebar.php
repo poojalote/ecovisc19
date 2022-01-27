@@ -147,6 +147,12 @@ if (isset($this->session->user_session)) {
                         <span>Branch Level Access</span>
                     </a>
                 </li>
+				<li class="<?php echo $this->uri->segment(2) == 'delete_patients' ? 'active' : ''; ?>">
+					<a class="nav-link" href="<?php echo base_url(); ?>admin/delete_patients">
+						<i class="fas fa-swatchbook"></i>
+						<span>Delete Patients</span>
+					</a>
+				</li>
                 <li class="<?php echo $this->uri->segment(1) == 'branch_access_management' ? 'active' : ''; ?>">
                     <a class="nav-link" href="<?php echo base_url(); ?>labMasterData">
                         <i class="fas fa-keyboard"></i>
