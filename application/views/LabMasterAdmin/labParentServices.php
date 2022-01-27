@@ -98,7 +98,7 @@ $this->load->view('_partials/header');
 		var array = hosController.getData();
 		let formdata = new FormData();
 		formdata.set('data',array);
-		app.request(baseURL + 'saveLabMasterData',formdata).then(res=>{
+		app.request(baseURL + 'saveLabMainMasterData',formdata).then(res=>{
 			if(res.status === 200)
 			{
 				app.successToast(res.body);

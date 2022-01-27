@@ -964,5 +964,7 @@ $route["getHtmlLabAdminChildTest"]="LabMasterAdminController/getHtmlLabAdminChil
 $route["saveLabChildData"]="LabMasterAdminController/saveLabChildData";
 
 $route["saveLabMasterData"]="LabMasterAdminController/saveLabMasterData";
+$route["saveLabMainMasterData"]="LabMasterAdminController/saveLabMainMasterData";
+
 $route["labChildServices"]="LabMasterAdminController/labChildServices";
 
