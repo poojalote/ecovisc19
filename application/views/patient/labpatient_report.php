@@ -479,7 +479,6 @@ $this->load->view('_partials/header');
 			$("#tabentryhandsondata").html('');
             showPanel1('handson',143);
 
-
         })
         $("#labPathologyCollection").on('click',function (event) {
             // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
