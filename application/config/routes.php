@@ -948,8 +948,6 @@ $route['admin/Readmit'] = 'Welcome/Readmit';
 
 $route["labMasterData_child"]="BranchController/labMasterData_child";
 
-
-
 $route["saveLabMasterData"]="BranchController/saveLabMasterData";
 
 $route["getHtmlLabAdminChildTest"]="BranchController/getHtmlLabAdminChildTest";
@@ -963,3 +961,5 @@ $route["labMasterData"]="LabMasterAdminController/labMasterData";
 $route["getLabMasterData"]="LabMasterAdminController/getLabMasterData";
 $route["getLabMasterDataOption"]="LabMasterAdminController/getLabMasterDataOption";
 $route["labParentServices"]="LabMasterAdminController/labParentServices";
+$route["getLabMasterTest"]="LabMasterAdminController/getLabMasterTest";
+$route["saveLabMasterData"]="LabMasterAdminController/saveLabMasterData";

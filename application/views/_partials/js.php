@@ -355,6 +355,11 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
 
     <!--<script src="<?php echo base_url(); ?>assets/js/module/department/companyModule.js"></script>-->
 <?php } ?>
+<?php if ($this->uri->segment(1) == "labParentServices" || $this->uri->segment(2) == "labParentServices") { ?>
+	<script type="text/javascript" src="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/page/modules-toastr.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
+<?php } ?>
 <?php if ($this->uri->segment(1) == "labpatient_info") { ?>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
@@ -727,6 +732,7 @@ if ($this->uri->segment(1) == "setup_lab_master" || $this->uri->segment(1) == "s
     <?php
 }
 ?>
+
 
 <?php if ($this->uri->segment(1) == "patient_navigation") { ?>
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
