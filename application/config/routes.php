@@ -968,3 +968,6 @@ $route["saveLabMainMasterData"]="LabMasterAdminController/saveLabMainMasterData"
 
 $route["labChildServices"]="LabMasterAdminController/labChildServices";
 
+$route["getLabMainMasterDataOption"]="LabMasterAdminController/getLabMainMasterDataOption";
+$route["getMainLabAdminChildTest"]="LabMasterAdminController/getMainLabAdminChildTest";
+$route["saveMainChildServices"]="LabMasterAdminController/saveMainChildServices";

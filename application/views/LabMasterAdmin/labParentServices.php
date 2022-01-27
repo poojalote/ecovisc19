@@ -6,7 +6,7 @@ $this->load->view('_partials/header');
 <div class="main-content">
 	<section class="section">
 		<div class="section-header">
-			<h1>Lab Patient Services</h1>
+			<h1>Lab Master Services</h1>
 		</div>
 
 		<div class="section-body">
@@ -97,7 +97,7 @@ $this->load->view('_partials/header');
 	function saveLabData() {
 		var array = hosController.getData();
 		let formdata = new FormData();
-		formdata.set('data',array);
+		formdata.set('data',JSON.stringify(array));
 		app.request(baseURL + 'saveLabMainMasterData',formdata).then(res=>{
 			if(res.status === 200)
 			{

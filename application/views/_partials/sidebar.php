@@ -349,7 +349,7 @@ if (isset($this->session->user_session)) {
 				</li>
 				<li class="<?php echo $this->uri->segment(1) == 'labParentServices' ? 'active' : ''; ?>">
 					<a class="nav-link" href="<?php echo base_url(); ?>labParentServices">
-						<i class="fas fa-vial"></i>
+						<i class="fas fa-flask"></i>
 						<span>Lab Master Services</span>
 					</a>
 				</li>
@@ -361,7 +361,7 @@ if (isset($this->session->user_session)) {
 				</li>
 				<li class="<?php echo $this->uri->segment(1) == 'labMasterData' ? 'active' : ''; ?>">
 					<a class="nav-link" href="<?php echo base_url(); ?>labMasterData">
-						<i class="fas fa-vial"></i>
+						<i class="fas fa-map-signs"></i>
 						<span>Lab Services Mapping </span>
 					</a>
 				</li>
