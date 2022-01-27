@@ -334,6 +334,19 @@ if (isset($this->session->user_session)) {
 					</li>
 
 				</div>
+			<?php }else if ($role == 6 ) {?>
+				<li class="<?php echo $this->uri->segment(1) == 'labMasterAdmin' ? 'active' : ''; ?>">
+					<a class="nav-link" href="<?php echo base_url(); ?>labMasterAdmin">
+						<i class="fas fa-fire"></i>
+						<span>Lab Admin Dashboard</span>
+					</a>
+				</li>
+				<li class="<?php echo $this->uri->segment(1) == 'labMasterData' ? 'active' : ''; ?>">
+					<a class="nav-link" href="<?php echo base_url(); ?>labMasterData">
+						<i class="fas fa-vial"></i>
+						<span>Lab Master Test</span>
+					</a>
+				</li>
 			<?php }
 			if ($role == 2 && $user_type == 3 && $this->uri->segment(1) == "company") { ?>
 				<style type="text/css">

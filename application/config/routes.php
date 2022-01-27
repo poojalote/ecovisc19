@@ -941,14 +941,20 @@ $route["deletePathologyServiceOrder"]="LabPatientController/deletePathologyServi
 
 
 // ---------------------------- lab master setup ------------------------
-$route["labMasterData"]="BranchController/labMasterData";
-$route["labMasterData_child"]="BranchController/labMasterData_child";
-$route["getLabMasterDataOption"]="BranchController/getLabMasterDataOption";
 
-$route["getLabMasterData"]="BranchController/getLabMasterData";
+$route["labMasterData_child"]="BranchController/labMasterData_child";
+
+
+
 $route["saveLabMasterData"]="BranchController/saveLabMasterData";
 
 $route["getHtmlLabAdminChildTest"]="BranchController/getHtmlLabAdminChildTest";
 $route["saveLabChildData"]="BranchController/saveLabChildData";
 
 $route["getServiceOrderList"]="LabPatientController/getServiceOrderList";
+
+// ---------------------------- lab master admin ------------------------
+$route["labMasterAdmin"]="LabMasterAdminController/index";
+$route["labMasterData"]="LabMasterAdminController/labMasterData";
+$route["getLabMasterData"]="LabMasterAdminController/getLabMasterData";
+$route["getLabMasterDataOption"]="LabMasterAdminController/getLabMasterDataOption";

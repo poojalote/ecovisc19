@@ -7,6 +7,8 @@ function checkLogin1(form) {
 			if (parseInt(userData.roles) === 1) {
 
 				window.location.href = baseURL + "admin/dashboard";
+			} else if(parseInt(userData.roles) === 6){
+				window.location.href = baseURL + "labMasterAdmin";
 			} else {
 				if(parseInt(userData.roles) === 2) {
 					 if (parseInt(userData.user_type) === 5) {
@@ -119,6 +121,8 @@ function redirect(type) {
 	if (type === 1) {
 		if (parseInt(userData.roles) === 1) {
 			window.location.href = baseURL + "admin/dashboard";
+		} else if(parseInt(userData.roles) === 6){
+			window.location.href = baseURL + "labMasterAdmin";
 		} else {
 			if (parseInt(userData.roles) === 2) {
 				if (parseInt(userData.user_type) === 5) {

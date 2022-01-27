@@ -467,61 +467,16 @@ class BranchController extends HexaController
 		// echo json_encode($output);
 	}
 
-	public function labMasterData()
-	{
-		$this->load->view('admin/branch/lab_master_data', array('title' => 'Lab Master Data'));
-	}
+
 	public function labMasterData_child()
 	{
 		$this->load->view('admin/branch/lab_master_data_c', array('title' => 'Lab Master Data'));
 	}
 
 
-	public function getLabMasterData()
-	{
-		$id = $this->input->post('id');
-		$param = '';
 
-		$checkbox = '';
-		$query = $this->db->get("lab_admin_master_test")->result();
-		if (!empty($query)) {
-			foreach ($query as $prow) {
-				$query_lmd = $this->db->where(array('branch_id'=>$id,'name'=>$prow->name))->get("lab_master_test")->row();
-				$selected = '';
-				// if (!is_null($id) && !empty($id)) {
-					if (!empty($query_lmd)) {
-						$selected = 'checked';
-					}
-				// }
-				$checkbox .= '<div class="col-md-6">
-								<input type="checkbox" name="labMasterData[]" '.$selected.' value="' . $prow->id . '" id="per' . $prow->id . '" class="checkboxall">  <label for="per' . $prow->id . '">' . $prow->name . '</label>
-							</div>';
-			}
-		}
-		$response['status'] = 200;
-		$response['data'] = $checkbox;
-		echo json_encode($response);
-	}
 
-	public function getLabMasterDataOption(){
-		$id = $this->input->post('id');
-		$query_lmd = $this->db->where(array('branch_id'=>$id))->get("lab_master_test")->result();
-		$option = '<option>Select Lab Master Data</option>';
-		$response = array();
-		if (!empty($query_lmd)) {
-			foreach ($query_lmd as $value) {
-				$option .= '<option value="'.$value->master_service_id.'">'.$value->name.'</option>';
-			}
 
-			$response['status']=200;
-			$response['data']=$option;
-		}else{
-			$response['status']=201;
-			$response['data']="No option found";
-		}
-
-		echo json_encode($response);
-	}
 
 	public function saveLabMasterData()
 	{

@@ -135,6 +135,7 @@ $this->load->view('_partials/header');
 <?php $this->load->view('_partials/footer'); ?>
 <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet"/>
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script>var base_url='<?php echo base_url(); ?>';</script>
 <script type="text/javascript">
 	//query_data
 	$( document ).ready(function() {
@@ -188,6 +189,7 @@ $this->load->view('_partials/header');
 
 	function getAllBranchesList(){
 		$("#branches").html('');
+		$("#branch_id").html('');
 		$.ajax({
 			type: "POST",
 			url: "<?= base_url("getAllBranchesList") ?>",
@@ -248,24 +250,47 @@ $this->load->view('_partials/header');
 
 	function getHtmlFormChild(id=null){
 		// alert(id);return false;
-		$.ajax({
-			type: "POST",
-			url: "<?= base_url("getLabMasterDataOption") ?>",
-			dataType: "json",
-			data:{id},
-			success: function (result) {
-					console.log(result.data);
-				if (result.status == '200') {
-					$("#lab_master_test").html("").append(result.data);
-				}else{
-					$("#lab_master_test").html("").append('<option>No Test Avalable</option>');
-					$("#query_data_1").html("");
-				}
-				// $("#lab_master_test").select2();
-			}, error: function (error) {
-				
-				app.errorToast('Something went wrong please try again');
-			}
+		//$.ajax({
+		//	type: "POST",
+		//	url: "<?//= base_url("getLabMasterDataOption") ?>//",
+		//	dataType: "json",
+		//	data:{id},
+		//	success: function (result) {
+		//			console.log(result.data);
+		//		if (result.status == '200') {
+		//			$("#lab_master_test").html("").append(result.data);
+		//		}else{
+		//			$("#lab_master_test").html("").append('<option>No Test Avalable</option>');
+		//			$("#query_data_1").html("");
+		//		}
+		//		// $("#lab_master_test").select2();
+		//	}, error: function (error) {
+		//
+		//		app.errorToast('Something went wrong please try again');
+		//	}
+		//});
+		$('#lab_master_test').select2({
+			ajax: {
+				url: base_url + "getLabMasterDataOption",
+				type: "post",
+				dataType: "json",
+				delay: 250,
+				placeholder: "Service Lab Test Name",
+				data: function (params) {
+					return {
+						data:id,
+						type: 1,
+						searchTerm: params.term
+					};
+				},
+				processResults: function (response) {
+					return {
+						results: response.body
+					};
+				},
+				cache: true
+			},
+			minimumInputLength: 1
 		});
 	}
 
