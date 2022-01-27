@@ -350,13 +350,19 @@ if (isset($this->session->user_session)) {
 				<li class="<?php echo $this->uri->segment(1) == 'labParentServices' ? 'active' : ''; ?>">
 					<a class="nav-link" href="<?php echo base_url(); ?>labParentServices">
 						<i class="fas fa-vial"></i>
-						<span>Lab Master Service Test</span>
+						<span>Lab Master Services</span>
+					</a>
+				</li>
+				<li class="<?php echo $this->uri->segment(1) == 'labChildServices' ? 'active' : ''; ?>">
+					<a class="nav-link" href="<?php echo base_url(); ?>labChildServices">
+						<i class="fas fa-vial"></i>
+						<span>Lab Child Services</span>
 					</a>
 				</li>
 				<li class="<?php echo $this->uri->segment(1) == 'labMasterData' ? 'active' : ''; ?>">
 					<a class="nav-link" href="<?php echo base_url(); ?>labMasterData">
 						<i class="fas fa-vial"></i>
-						<span>Lab Master Data</span>
+						<span>Lab Services Mapping </span>
 					</a>
 				</li>
 			<?php }

@@ -26,6 +26,10 @@ class LabMasterAdminController extends HexaController
 	{
 		$this->load->view('LabMasterAdmin/labParentServices', array('title' => 'Lab Master Services'));
 	}
+	public function labChildServices()
+	{
+		$this->load->view('LabMasterAdmin/labChildServices', array('title' => 'Lab Master Services'));
+	}
 
 	public function getLabMasterData()
 	{
@@ -244,5 +248,98 @@ class LabMasterAdminController extends HexaController
 		}
 		echo json_encode($response);
 	}
+	public function getLabMasterTest()
+	{
+		$company_id = $this->session->userdata('company_id');
+		$group_data_array = $this->MasterModel->_rawQuery('select * from lab_admin_master_test');
+		$departments = $this->db->select('*')->from('lab_admin_department_master')->get()->result();
+		$depart  = array();
+		if(count($departments) > 0 )
+		{
+			foreach($departments as $key=>$value)
+			{
+				array_push($depart,$value->id.'-'.$value->name);
+			}
+		}
+		$data_array = array();
+		if ($group_data_array->totalCount > 0) {
+			$labData = $group_data_array->data;
+			foreach($labData as $row)
+			{
+				$departmentData =  $this->db->select('*')->where('id',$row->dep_id)->from('lab_admin_department_master')->get()->row();
+				if($departmentData != null)
+				{
+					$dep_id = $departmentData->id."-".$departmentData->name;
+				}
+				else
+				{
+					$dep_id = "";
+				}
+				$data = array(
+					$row->master_service_id,
+					$row->name,
+					$row->description,
+					$row->master_rate,
+					$dep_id
+				);
+				array_push($data_array,$data);
+			}
+			$response['status'] = 200;
+			$response['data'] = $data_array;
+			$response['department'] = $depart;
+			$response['body'] = "Data Found";
+		} else {
+			$response['status'] = 201;
+			$response['data'] = array('');
+			$response['department'] = $depart;
+			$response['body'] = "No Data Found";
+		}
+		echo json_encode($response);
+	}
 
+	public function saveLabMasterData()
+	{
+		$value = $this->input->post('data');
+		if($value != null && $value != "")
+		{
+			$array_data = array();
+			$deleteData = $this->db->delete('lab_admin_master_test');
+			foreach($value as $item)
+			{
+				$department = explode('-',$item[4]);
+				$department_id = 0;
+				if($department > 1)
+				{
+					$department_id = $department[0];
+				}
+				$data  = array(
+					'master_service_id'=>$item[0],
+					'name' => $item[1],
+					'description' => $item[2],
+					'master_rate' => $item[3],
+					'dep_id'=>$department_id,
+					'status' => 1
+				);
+				array_push($array_data,$data);
+			}
+			$insert_data = $this->MasterModel->_insert('lab_admin_master_test',$array_data);
+			if($insert_data->status == true)
+			{
+				$response['status'] = 200;
+				$response['data'] = $array_data;
+				$response['body'] = "Data Inserted Successfully";
+			}
+			else
+			{
+				$response['status'] = 201;
+				$response['body'] = "Something Went Wrong";
+			}
+		}
+		else
+		{
+			$response['status'] = 201;
+			$response['body'] = "No Data To Upload";
+		}
+		echo json_encode($response);
+	}
 }
