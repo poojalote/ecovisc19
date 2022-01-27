@@ -142,7 +142,6 @@ class ServiceOrderController extends HexaController
         $tableName = 'service_master';
         $where = "where commonly_use='1' and branch_id=".$this->session->user_session->branch_id;
         $resultObject = $this->ServiceOrderModel->selectDataById($tableName, $where);
-
         if ($resultObject->totalCount > 0) {
             $options = '';
             $data = $resultObject->data;
