@@ -147,6 +147,12 @@ if (isset($this->session->user_session)) {
                         <span>Branch Level Access</span>
                     </a>
                 </li>
+				<li class="<?php echo $this->uri->segment(2) == 'delete_patients' ? 'active' : ''; ?>">
+					<a class="nav-link" href="<?php echo base_url(); ?>admin/delete_patients">
+						<i class="fas fa-swatchbook"></i>
+						<span>Delete Patients</span>
+					</a>
+				</li>
 			<?php } else if ($role == 2 && $this->uri->segment(1) !== "company") { ?>
 				<style type="text/css">
 					.main-sidebar {

@@ -651,6 +651,13 @@ if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "index") { ?>
     <!--<script src="<?php echo base_url(); ?>assets/js/module/department/companyModule.js"></script>-->
 <?php } ?>
 
+<?php if ($this->uri->segment(2) == "delete_patients" || $this->uri->segment(1) == "delete_patients") { ?>
+	<script src="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
+	<script src="//cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@1.6.0/src/loadingoverlay.min.js"></script>
+<?php } ?>
+
 <?php if ($this->uri->segment(2) == "Html_template_drag") { ?>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->

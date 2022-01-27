@@ -27,6 +27,7 @@ $route["admin/Reports_query"]="Report/Reports_query";
 // ------------------------------ Company Section ----------------------------------------
 
 $route["admin/view_companies"]="Welcome/view_companies";
+$route["admin/delete_patients"]="Welcome/delete_patients";
 // create and update company
 $route["admin/uploadCompany"]='CompaniesController/uploadCompany';
 // datatable fetch all companies
@@ -938,3 +939,8 @@ $route["RemoveChildTestData"]="LabController/RemoveChildTestData";
 
 $route["getLabPathologyTableData"]="PathologyOrderController/getLabPathologyTableData";
 $route["deletePathologyServiceOrder"]="LabPatientController/deletePathologyServiceOrder";
+
+
+$route['admin/getPatients'] = 'Welcome/getPatients';
+$route['admin/DeletePatient'] = 'Welcome/DeletePatient';
+$route['admin/Readmit'] = 'Welcome/Readmit';

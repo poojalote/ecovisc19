@@ -461,7 +461,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
               href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
     <?php } ?>
-
     <?php
     if ($this->uri->segment(1) == "report_maker") { ?>
 
@@ -513,6 +512,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
         <?php
     } ?>
+	<?php if ($this->uri->segment(2) == "delete_patients" || $this->uri->segment(1) == "delete_patients") { ?>
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
+		<link rel="stylesheet"
+			  href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet"
+			  href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+	<?php } ?>
     <!-- Template CSS -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/components.css">
