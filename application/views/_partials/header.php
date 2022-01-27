@@ -242,6 +242,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet"
               href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
+	<?php } else if ($this->uri->segment(1) == "labParentServices" || $this->uri->segment(2) == "labParentServices") { ?>
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/excel_handson/handsontable.full.min.css"/>
     <?php } else if ($this->uri->segment(1) == "labpatient_report") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
         <link rel="stylesheet"
