@@ -950,8 +950,6 @@ $route["labMasterData_child"]="BranchController/labMasterData_child";
 
 $route["saveLabMasterData"]="BranchController/saveLabMasterData";
 
-$route["getHtmlLabAdminChildTest"]="BranchController/getHtmlLabAdminChildTest";
-$route["saveLabChildData"]="BranchController/saveLabChildData";
 
 $route["getServiceOrderList"]="LabPatientController/getServiceOrderList";
 
@@ -962,4 +960,5 @@ $route["getLabMasterData"]="LabMasterAdminController/getLabMasterData";
 $route["getLabMasterDataOption"]="LabMasterAdminController/getLabMasterDataOption";
 $route["labParentServices"]="LabMasterAdminController/labParentServices";
 $route["getLabMasterTest"]="LabMasterAdminController/getLabMasterTest";
-$route["saveLabMasterData"]="LabMasterAdminController/saveLabMasterData";
+$route["getHtmlLabAdminChildTest"]="LabMasterAdminController/getHtmlLabAdminChildTest";
+$route["saveLabChildData"]="LabMasterAdminController/saveLabChildData";
