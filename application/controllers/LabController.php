@@ -47,17 +47,17 @@ class LabController extends HexaController
 			$service_data = $this->MasterModel->_rawQuery('select sc.*,sc.unit as unit_name from lab_child_test sc where sc.branch_id=' . $branch_id . ' and sc.status=1 and sc.service_code="' . $service_code . '"');
 //print_r($service_data);exit();
 
-			$unitData=$this->MasterModel->_rawQuery('select id,name from lab_unit_master where status=1');
+//			$unitData=$this->MasterModel->_rawQuery('select id,name from lab_unit_master where status=1');
 			$unitSourceData=array();
-			if($unitData->totalCount>0)
-			{
-				$SourceData=$unitData->data;
-				array_push($unitSourceData,'NA');
-				foreach ($SourceData as $udata)
-				{
-					array_push($unitSourceData,$udata->id.'-'.$udata->name);
-				}
-			}
+//			if($unitData->totalCount>0)
+//			{
+//				$SourceData=$unitData->data;
+//				array_push($unitSourceData,'NA');
+//				foreach ($SourceData as $udata)
+//				{
+//					array_push($unitSourceData,$udata->id.'-'.$udata->name);
+//				}
+//			}
 			$masterDataM=array();
 			if($service_data->totalCount>0)
 			{
@@ -181,8 +181,8 @@ class LabController extends HexaController
 				$result = false;
 				try {
 					$this->db->trans_start();
+					$this->db->update('lab_child_test', array('status' => 0), array('service_code' => $master_id));
 					if (!empty($updateData)) {
-						$this->db->update('lab_child_test', array('status' => 0), array('service_code' => $master_id));
 						$this->db->update_batch('lab_child_test', $updateData, 'id');
 					}
 					if (!empty($insertData)) {
