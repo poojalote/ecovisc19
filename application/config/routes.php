@@ -958,3 +958,5 @@ $route["labMasterAdmin"]="LabMasterAdminController/index";
 $route["labMasterData"]="LabMasterAdminController/labMasterData";
 $route["getLabMasterData"]="LabMasterAdminController/getLabMasterData";
 $route["getLabMasterDataOption"]="LabMasterAdminController/getLabMasterDataOption";
+$route["labParentServices"]="LabMasterAdminController/labParentServices";
+

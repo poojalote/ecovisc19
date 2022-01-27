@@ -341,10 +341,16 @@ if (isset($this->session->user_session)) {
 						<span>Lab Admin Dashboard</span>
 					</a>
 				</li>
+				<li class="<?php echo $this->uri->segment(1) == 'labParentServices' ? 'active' : ''; ?>">
+					<a class="nav-link" href="<?php echo base_url(); ?>labParentServices">
+						<i class="fas fa-vial"></i>
+						<span>Lab Master Service Test</span>
+					</a>
+				</li>
 				<li class="<?php echo $this->uri->segment(1) == 'labMasterData' ? 'active' : ''; ?>">
 					<a class="nav-link" href="<?php echo base_url(); ?>labMasterData">
 						<i class="fas fa-vial"></i>
-						<span>Lab Master Test</span>
+						<span>Lab Master Data</span>
 					</a>
 				</li>
 			<?php }

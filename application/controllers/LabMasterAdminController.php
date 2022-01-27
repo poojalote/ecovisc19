@@ -22,6 +22,10 @@ class LabMasterAdminController extends HexaController
 	{
 		$this->load->view('LabMasterAdmin/lab_master_data', array('title' => 'Lab Master Data'));
 	}
+	public function labParentServices()
+	{
+		$this->load->view('LabMasterAdmin/labParentServices', array('title' => 'Lab Master Services'));
+	}
 
 	public function getLabMasterData()
 	{
@@ -52,23 +56,7 @@ class LabMasterAdminController extends HexaController
 		echo json_encode($response);
 	}
 	public function getLabMasterDataOption(){
-//		$id = $this->input->post('id');
-//		$query_lmd = $this->db->where(array('branch_id'=>$id))->get("lab_master_test")->result();
-//		$option = '<option>Select Lab Master Data</option>';
-//		$response = array();
-//		if (!empty($query_lmd)) {
-//			foreach ($query_lmd as $value) {
-//				$option .= '<option value="'.$value->master_service_id.'">'.$value->name.'</option>';
-//			}
-//
-//			$response['status']=200;
-//			$response['data']=$option;
-//		}else{
-//			$response['status']=201;
-//			$response['data']="No option found";
-//		}
-//
-//		echo json_encode($response);
+
 		$validObject = $this->is_parameter(array("type", "searchTerm","data"));
 		$response = array();
 		if ($validObject->status) {
