@@ -879,7 +879,7 @@ class LabPatientController extends HexaController
 			$session_data = $this->session->user_session;
 			$branch_id = $session_data->branch_id;
 
-			$service_rate1 = $this->db->query('select rate from setup_lab_service_master where service_code="' . $service_code . '" and branch_id="' . $branch_id . '"');
+			$service_rate1 = $this->db->query('select master_rate as rate from lab_master_test where master_service_id="' . $service_code . '" and branch_id="' . $branch_id . '"');
 			if ($this->db->affected_rows() > 0) {
 				$service_rate1 = $service_rate1->row();
 
