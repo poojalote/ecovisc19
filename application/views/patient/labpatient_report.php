@@ -1120,9 +1120,9 @@ function SavePathologyProgress2(formData) {
 				var rows = data;
 				var types = [
                     {type: 'text'},
-					{type: 'text',readOnly:true},
 					{type: 'text'},
-                    {type: 'text',readOnly:true},
+					{type: 'text'},
+                    {type: 'text'},
                     {type: 'text',readOnly:true},
                     {type: 'text'},
                     {type: 'text'},

@@ -1643,7 +1643,7 @@ class LabPatientController extends HexaController
 				array_push($excelStructureDataArray, $excelStructureData);
 			}
 		}
-//		print_r($lab_insert_test_data);exit();
+//		print_r($lab_test_data);exit();
 		if (count($lab_test_data)>0) {
 			$update_batch = $this->db->update_batch('lab_test_data_entry', $lab_test_data, 'id');
 		}
