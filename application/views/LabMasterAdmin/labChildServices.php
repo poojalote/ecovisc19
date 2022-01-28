@@ -70,6 +70,7 @@ $this->load->view('_partials/header');
 		});
 	});
 	function getHtmlLabAdminChildTest(id=null){
+		$.LoadingOverlay("show");
 		var lab_master_test = $("#lab_master_test").val();
 
 		$.ajax({
@@ -78,6 +79,7 @@ $this->load->view('_partials/header');
 			dataType: "json",
 			data:{lab_master_test,lab_master_test},
 			success: function (res) {
+				$.LoadingOverlay("hide");
 				let columnsHeader = [
 					"Name",
 					"Method",
@@ -104,6 +106,7 @@ $this->load->view('_partials/header');
 				];
 				handson(columnsHeader, columnsRows, columnTypes, 'lab_master', hiddenColumns);
 			}, error: function (error) {
+				$.LoadingOverlay("hide");
 				app.errorToast('Something went wrong please try again');
 			}
 		});
@@ -140,6 +143,7 @@ $this->load->view('_partials/header');
 		hosController.validateCells();
 	}
 	function saveMainChildServices() {
+		$.LoadingOverlay("show");
 		let array = hosController.getData();
 		console.log(array);
 		let formdata = new FormData();
@@ -153,7 +157,7 @@ $this->load->view('_partials/header');
 			contentType:false,
 			processData:false,
 			success: function (res) {
-
+				$.LoadingOverlay("hide");
 			if(res.status === 200)
 			{
 				app.successToast(res.body);
@@ -165,6 +169,7 @@ $this->load->view('_partials/header');
 			}
 
 			}, error: function (error) {
+				$.LoadingOverlay("hide");
 				app.errorToast('Something went wrong please try again');
 			}
 		});
