@@ -146,8 +146,10 @@ function redirect(type) {
 					// window.location.href = baseURL + "pharmeasy";
 				} else if (parseInt(userData.user_type) === 12) {
 					window.location.href = baseURL + "labpatient_info";
-				} else {
+				} else if (parseInt(userData.user_type) === 7)  {
 					window.location.href = baseURL + "view_radiologypickup";
+				}else{
+					window.location.href = baseURL + "patient_info";
 				}
 			}
 		}
