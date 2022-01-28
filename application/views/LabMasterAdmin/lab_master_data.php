@@ -182,16 +182,19 @@ $this->load->view('_partials/header');
 	}
 
 	function getLabMasterData(){
+		$.LoadingOverlay("show");
 		$("#query_data").html('');
 		$.ajax({
 			type: "POST",
 			url: "<?= base_url("getLabMasterData") ?>",
 			dataType: "json",
 			success: function (result) {
+				$.LoadingOverlay("hide");
 				// console.log(result.body);
 				$("#query_data").append(result.data);
 				$("#branches").select2({});
 			}, error: function (error) {
+				$.LoadingOverlay("hide");
 				app.errorToast('Something went wrong please try again');
 			}
 		});
@@ -216,6 +219,7 @@ $this->load->view('_partials/header');
 		});
 	}
 	function getHtmlForm(id=null){
+		$.LoadingOverlay("show");
 		$("#selectall").prop('checked', false);
 		if(id !== null){
 			var x = document.getElementById("query_data");
@@ -229,15 +233,18 @@ $this->load->view('_partials/header');
 			dataType: "json",
 			data:{id},
 			success: function (result) {
+				$.LoadingOverlay("hide");
 				$("#query_data").html('').html(result.data);
 
 			}, error: function (error) {
+				$.LoadingOverlay("hide");
 				app.errorToast('Something went wrong please try again');
 			}
 		});
 	}
 
 	function saveFormData(){
+		$.LoadingOverlay("show");
 		$("#errorDiv").html('');
 		var obj = {};
 		obj.labMasterData = $('input[name="labMasterData[]"]:checked').map(function(){
@@ -254,6 +261,7 @@ $this->load->view('_partials/header');
 			contentType:false,
 			processData:false,
 			success: function (result) {
+				$.LoadingOverlay("hide");
 				if(result.status==200){
 					app.successToast(result.body);
 				} else if(result.status==202){
@@ -280,6 +288,7 @@ $this->load->view('_partials/header');
 					app.errorToast(result.body);
 				}
 			}, error: function (error) {
+				$.LoadingOverlay("hide");
 				app.errorToast('Something went wrong please try again');
 			}
 		});
@@ -316,6 +325,7 @@ $this->load->view('_partials/header');
 
 
 	function getHtmlLabAdminChildTest(id=null){
+		$.LoadingOverlay("show");
 		// alert(id);return false;
 		var branch_id = $("#branch_id").val();
 		$.ajax({
@@ -324,11 +334,13 @@ $this->load->view('_partials/header');
 			dataType: "json",
 			data:{id,branch_id},
 			success: function (result) {
+				$.LoadingOverlay("hide");
 				// console.log(result.data);
 				// $("#lab_master_test").html("").append(result.data);
 				// $("#lab_master_test").select2();
 				$("#query_data_1").html("").html(result.data);
 			}, error: function (error) {
+				$.LoadingOverlay("hide");
 				app.errorToast('Something went wrong please try again');
 			}
 		});
@@ -336,6 +348,7 @@ $this->load->view('_partials/header');
 
 	
 	function saveFormChildData(){
+		$.LoadingOverlay("show");
 		var objc = {};
 		objc.labChildData = $('input[name="labChildData[]"]:checked').map(function(){
 			return  this.value;
@@ -352,6 +365,7 @@ $this->load->view('_partials/header');
 			contentType:false,
 			processData:false,
 			success: function (result) {
+				$.LoadingOverlay("hide");
 				if(result.status==200){
 					app.successToast(result.body);
 					// window.location.reload();
@@ -361,6 +375,7 @@ $this->load->view('_partials/header');
 					app.errorToast(result.body);
 				}
 			}, error: function (error) {
+				$.LoadingOverlay("hide");
 				app.errorToast('Something went wrong please try again');
 			}
 		});

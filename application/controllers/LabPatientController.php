@@ -1088,7 +1088,10 @@ class LabPatientController extends HexaController
 		$session_data = $this->session->user_session;
 		$branch_id = $session_data->branch_id;
 		// $branch_id=2;
-		$select = array(" id", "service_id", "service_rate", "service_date", "service_type", '(case when service_type=1 then (select sm.name from lab_master_test sm where sm.master_service_id=t1.service_id) else (select mp.package_name from master_package mp where mp.id=t1.service_id) end) as service_name');
+		$select = array(" id", "service_id", "service_rate", "service_date", "service_type",
+			'(case when service_type=1 then 
+			(select sm.name from lab_master_test sm where sm.master_service_id=t1.service_id and sm.branch_id='.$branch_id.') else 
+			(select mp.package_name from master_package mp where mp.id=t1.service_id and mp.branch_id='.$branch_id.') end) as service_name');
 		$order = array('created_on' => 'desc');
 		$column_order = array('',);
 		$column_search = array("", "");
@@ -1423,7 +1426,7 @@ class LabPatientController extends HexaController
 			$param=$header->param;
 			$session_data = $this->session->user_session;
 			$branch_id = $session_data->branch_id;
-			$resultObject = $this->MasterModel->_rawQuery('select lt.*,(select lc.name from lab_child_test lc where lc.id=lt.child_test_id) as child_test_name,(select lm.name from lab_master_test lm where lm.master_service_id=lt.master_id) as master_name from lab_test_data_entry lt where lt.order_id="'.$param->order_id.'" and lt.branch_id="'.$branch_id.'"');
+			$resultObject = $this->MasterModel->_rawQuery('select lt.*,(select lc.name from lab_child_test lc where lc.id=lt.child_test_id and lc.branch_id='.$branch_id.') as child_test_name,(select lm.name from lab_master_test lm where lm.master_service_id=lt.master_id and lm.branch_id='.$branch_id.') as master_name from lab_test_data_entry lt where lt.order_id="'.$param->order_id.'" and lt.branch_id="'.$branch_id.'"');
 //			print_r($resultObject);exit();
 			$datanew=array();
 			if ($resultObject->totalCount > 0) {

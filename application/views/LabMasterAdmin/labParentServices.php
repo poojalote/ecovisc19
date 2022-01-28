@@ -35,7 +35,9 @@ $this->load->view('_partials/header');
 	});
 
 	function getData() {
+		$.LoadingOverlay("show");
 		app.request(baseURL + "getLabMasterTest", null).then(res => {
+			$.LoadingOverlay("hide");
 			let columnsHeader = [
 				"Master Service Id",
 				"Name",
@@ -96,10 +98,12 @@ $this->load->view('_partials/header');
 	}
 
 	function saveLabData() {
+		$.LoadingOverlay("show");
 		var array = hosController.getData();
 		let formdata = new FormData();
 		formdata.set('data',JSON.stringify(array));
 		app.request(baseURL + 'saveLabMainMasterData',formdata).then(res=>{
+			$.LoadingOverlay("hide");
 			if(res.status === 200)
 			{
 				app.successToast(res.body);
@@ -109,7 +113,10 @@ $this->load->view('_partials/header');
 			{
 				app.errorToast(res.body);
 			}
-		}).catch(error=>console.log(error));
+		}).catch(error=>{
+			console.log(error);
+			$.LoadingOverlay("hide");
+		});
 	}
 
 </script>
