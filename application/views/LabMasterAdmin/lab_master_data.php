@@ -47,6 +47,7 @@ $this->load->view('_partials/header');
 									</div>
 								</div>
 								<div class="col-md-12  form-group" id="">
+									<div id="errorDiv"></div>
 									<div class="">
 										<h6 >Select Lab Admin Master Test</h6>
 										<input type="checkbox" id="selectall"> <label for="selectall">All</label>
@@ -237,6 +238,7 @@ $this->load->view('_partials/header');
 	}
 
 	function saveFormData(){
+		$("#errorDiv").html('');
 		var obj = {};
 		obj.labMasterData = $('input[name="labMasterData[]"]:checked').map(function(){
 			return  this.value;
@@ -254,8 +256,26 @@ $this->load->view('_partials/header');
 			success: function (result) {
 				if(result.status==200){
 					app.successToast(result.body);
-					// document.getElementById("accessMgmtForm").reset();//form1 is the form id.
-					// getHtmlForm(result.branch_id);
+				} else if(result.status==202){
+					app.errorToast(result.body);
+
+					$("#errorDiv").html(`<div style="font-size: 14px;">
+						<div class="alert alert-light alert-has-icon">
+                  <div class="alert-icon"><i class="fa fa-edit"></i></div>
+                     <div class="alert-body">
+                     <div class="alert-title">Uncheck Some of Services which are not in service master for that branch if you want to continue for checked services click on save button </div>
+
+                     </div>
+                 </div></div>`);
+					let cservices=result.error;
+					$("#selectall")[0].checked=false;
+					for(var j=0;j<cservices.length;j++)
+					{
+						if($('input[type="checkbox"][value='+cservices[j]+']').is(":checked"))
+						{
+							$('input[type="checkbox"][value='+cservices[j]+']')[0].checked = false
+						}
+					}
 				}else{
 					app.errorToast(result.body);
 				}
