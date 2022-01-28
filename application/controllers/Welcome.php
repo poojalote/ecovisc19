@@ -232,14 +232,23 @@ class Welcome extends CI_Controller
 					$bed_id = $Pdata->bed_id;
 					$room_id = $Pdata->roomid;
 					if ($data != null) {
-						$delete_patient = $this->Patient_Model->_delete($patient_table, array('id' => $patient_id));
-						$releaseBed = $this->Patient_Model->_update('com_1_bed', array('status' => 1), array('id' => $bed_id));
-						$query = $this->db->last_query();
-						$insertPatient = $this->Patient_Model->_insert('deleted_patients', $data);
+						try {
+							$this->db->trans_start();
+							$delete_patient = $this->Patient_Model->_delete($patient_table, array('id' => $patient_id));
+							$releaseBed = $this->Patient_Model->_update('com_1_bed', array('status' => 1), array('id' => $bed_id));
+							$insertPatient = $this->Patient_Model->_insert('deleted_patients', $data);
+							if ($this->db->trans_status() === FALSE) {
+								$this->db->trans_rollback();
+							} else {
+								$this->db->trans_commit();
+							}
+							$this->db->trans_complete();
+						} catch (Exception $ex) {
+							$this->db->trans_rollback();
+						}
 						if ($insertPatient) {
 							$response['status'] = 200;
 							$response['data'] = $data;
-							$response['query'] = $query;
 							$response['body'] = "Patient Deleted Successfully";
 						} else {
 							$response['status'] = 200;
