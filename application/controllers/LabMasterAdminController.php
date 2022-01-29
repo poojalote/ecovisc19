@@ -193,7 +193,7 @@ class LabMasterAdminController extends HexaController
 	}
 	public function saveLabChildData()
 	{
-		if(!is_null($this->input->post('branch_id')) && $this->input->post('branch_id')!="" && $this->input->post('branch_id')!="null" && !is_null($this->input->post('lab_master_test')) && $this->input->post('lab_master_test')!="null") {
+		if(!is_null($this->input->post('branch_id')) && $this->input->post('branch_id')!="" && $this->input->post('branch_id')!="null" && !is_null($this->input->post('lab_master_test')) && $this->input->post('lab_master_test')!="null" && $this->input->post('lab_master_test')!="") {
 		$branch_id = $this->input->post('branch_id');
 		$lab_master_test = $this->input->post('lab_master_test');
 		$labChildData = $this->input->post('labChildData');
