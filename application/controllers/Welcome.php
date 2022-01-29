@@ -299,7 +299,7 @@ class Welcome extends CI_Controller
 						$releaseBed = $this->Patient_Model->_update('com_1_bed', array('status' => 0), array('id' => $bed_id));
 					}
 					$discharge_data = array(
-						'discharge_data'=>null,
+						'discharge_date'=>null,
 						"significant_event" => null,
 						"discharge_condition" => null,
 						"medication" => null,
