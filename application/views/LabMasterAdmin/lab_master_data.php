@@ -182,6 +182,7 @@ $this->load->view('_partials/header');
 	}
 
 	function getLabMasterData(){
+		$("#errorDiv").html('');
 		$.LoadingOverlay("show");
 		$("#query_data").html('');
 		$.ajax({
@@ -295,6 +296,7 @@ $this->load->view('_partials/header');
 	}
 
 	function getHtmlFormChild(id=null){
+
 		$("#lab_master_test").val("");
 		$("#lab_master_test").select2({allowClear:true});
 
