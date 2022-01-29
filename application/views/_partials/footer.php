@@ -66,7 +66,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	let windowCount=0;
 	function go_chat() {
 		if(windowCount === 0){
-			chatWindow =window.open("https://covidcare.docango.com/chat",'Popup','width=300, height=900');
+			chatWindow =window.open("https://covidcare.ecovisrkca.com/chat",'Popup','width=300, height=900');
 			chatWindow.setUpFrame = function(e){
 				console.log("setUpFrame ",e);
 			}

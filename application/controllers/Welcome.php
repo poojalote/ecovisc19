@@ -235,8 +235,13 @@ class Welcome extends CI_Controller
 						try {
 							$this->db->trans_start();
 							$delete_patient = $this->Patient_Model->_delete($patient_table, array('id' => $patient_id));
-							$releaseBed = $this->Patient_Model->_update('com_1_bed', array('status' => 1), array('id' => $bed_id));
-							$insertPatient = $this->Patient_Model->_insert('deleted_patients', $data);
+							$releaseBed=false;
+							if($delete_patient){
+								$releaseBed = $this->Patient_Model->_update('com_1_bed', array('status' => 1), array('id' => $bed_id));
+							}
+							if($releaseBed){
+								$insertPatient = $this->Patient_Model->_insert('deleted_patients', $data);
+							}
 							if ($this->db->trans_status() === FALSE) {
 								$this->db->trans_rollback();
 							} else {
@@ -249,6 +254,7 @@ class Welcome extends CI_Controller
 						if ($insertPatient) {
 							$response['status'] = 200;
 							$response['data'] = $data;
+							$response['insertPatient'] = $insertPatient;
 							$response['body'] = "Patient Deleted Successfully";
 						} else {
 							$response['status'] = 200;

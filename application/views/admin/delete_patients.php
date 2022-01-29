@@ -142,7 +142,7 @@ $this->load->view('_partials/header');
 	}
 
 	function  readmit(id) {
-		if (confirm('Are you sure you want to delete this?')) {
+		if (confirm('Are you sure you want to re-admit this?')) {
 			var branch_id = $('#branches').val();
 			let formdata = new FormData();
 			formdata.set('patient_id', id);
