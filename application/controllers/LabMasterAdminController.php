@@ -246,7 +246,7 @@ class LabMasterAdminController extends HexaController
 			if($resultStatus == TRUE){
 				$response['status'] = 200;
 				$response['branch_id'] = $branch_id;
-				$response['body'] = 'Inserted Successfully';
+				$response['body'] = 'Changes Saved';
 			}else{
 				$response['status'] = 201;
 				$response['branch_id'] = $branch_id;
