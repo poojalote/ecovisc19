@@ -193,7 +193,7 @@ class LabMasterAdminController extends HexaController
 	}
 	public function saveLabChildData()
 	{
-		if(!is_null($this->input->post('branch_id')) && $this->input->post('branch_id')!="" && $this->input->post('branch_id')!="null" && !is_null($this->input->post('lab_master_test')) && $this->input->post('lab_master_test')!="") {
+		if(!is_null($this->input->post('branch_id')) && $this->input->post('branch_id')!="" && $this->input->post('branch_id')!="null" && !is_null($this->input->post('lab_master_test')) && $this->input->post('lab_master_test')!="null") {
 		$branch_id = $this->input->post('branch_id');
 		$lab_master_test = $this->input->post('lab_master_test');
 		$labChildData = $this->input->post('labChildData');
@@ -397,7 +397,7 @@ class LabMasterAdminController extends HexaController
 			$type = $validObject->param->type;
 			$search = $validObject->param->searchTerm;
 			$where = array();
-			
+
 				$where = array("status"=>1);
 				$userData = $this->db->select(array("master_service_id", "name"))->where($where)->like("name", $search)->limit(10, 0)->get("lab_admin_master_test")->result();
 				$response["last_query"] = $this->db->last_query();
