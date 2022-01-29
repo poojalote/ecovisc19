@@ -299,7 +299,7 @@ $this->load->view('_partials/header');
 
 		$("#lab_master_test").val("");
 		$("#lab_master_test").select2({allowClear:true});
-
+		$("#query_data_1").html("");
 		$('#lab_master_test').select2({
 			ajax: {
 				url: base_url + "getLabMasterDataOption",
