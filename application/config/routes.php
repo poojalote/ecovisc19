@@ -948,7 +948,7 @@ $route['admin/Readmit'] = 'Welcome/Readmit';
 
 $route["labMasterData_child"]="BranchController/labMasterData_child";
 
-$route["saveLabMasterData"]="BranchController/saveLabMasterData";
+//$route["saveLabMasterData"]="BranchController/saveLabMasterData";
 
 
 $route["getServiceOrderList"]="LabPatientController/getServiceOrderList";

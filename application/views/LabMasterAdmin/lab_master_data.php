@@ -308,7 +308,7 @@ $this->load->view('_partials/header');
 				data: function (params) {
 					return {
 						data:id,
-						type: 1,
+						type: 0,
 						searchTerm: params.term
 					};
 				},
