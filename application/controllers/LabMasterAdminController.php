@@ -119,73 +119,70 @@ class LabMasterAdminController extends HexaController
 			$labMasterData = $this->input->post('labMasterData');
 			$labMasterData = json_decode($labMasterData);
 			$ldata = (array)$labMasterData;
-			$labData = implode(',', $ldata['labMasterData']);
-			$session_data = $this->session->user_session;
-			$user_id = $session_data->id;
-			$resultStatus = False;
-			$servicemasterObject = $this->MasterModel->_rawQuery('select id from lab_admin_master_test where status=1 and master_service_id not in (select service_id from service_master where status=1 and branch_id="'.$branch_id.'") and find_in_set(id,"' . $labData . '")');
-			if($servicemasterObject->totalCount>0)
-			{
-				$errorArray=array();
-				foreach($servicemasterObject->data as $smRow)
-				{
-					array_push($errorArray,$smRow->id);
-				}
-				$response['status']=202;
-				$response['body']='Add Services For Branch Or uncheck service';
-				$response['error']=$errorArray;
-				echo json_encode($response);
-				exit();
-			}
-			else {
-				try {
-					$this->db->trans_start();
-
-					$masterObject = $this->MasterModel->_rawQuery('select * from lab_admin_master_test where status=1 and find_in_set(id,"' . $labData . '")');
-					$insert_batch = array();
-					if ($masterObject->totalCount > 0) {
-						foreach ($masterObject->data as $m_row) {
-							$res = array(
-								'name' => $m_row->name,
-								'description' => $m_row->description,
-								'branch_id' => $branch_id,
-								'user_id' => $user_id,
-								'transaction_date' => date('Y-m-d H:i:s'),
-								'status' => 1,
-								'dep_id' => $m_row->dep_id,
-								'master_service_id' => $m_row->master_service_id,
-								'master_rate' => $m_row->master_rate,
-							);
-							array_push($insert_batch, $res);
-						}
+				$labData = implode(',', $ldata['labMasterData']);
+				$session_data = $this->session->user_session;
+				$user_id = $session_data->id;
+				$resultStatus = False;
+				$servicemasterObject = $this->MasterModel->_rawQuery('select id from lab_admin_master_test where status=1 and master_service_id not in (select service_id from service_master where status=1 and branch_id="' . $branch_id . '") and find_in_set(id,"' . $labData . '")');
+				if ($servicemasterObject->totalCount > 0) {
+					$errorArray = array();
+					foreach ($servicemasterObject->data as $smRow) {
+						array_push($errorArray, $smRow->id);
 					}
-					$this->db->where('branch_id', $branch_id)->delete('lab_master_test');
-					if (count($insert_batch) > 0) {
-						$this->db->insert_batch('lab_master_test', $insert_batch);
-					}
-					if ($this->db->trans_status() === FALSE) {
-						$this->db->trans_rollback();
-						$resultStatus = FALSE;
-					} else {
-						$this->db->trans_commit();
-						$resultStatus = TRUE;
-					}
-					$this->db->trans_complete();
-					$response["last_query"] = $masterObject->last_query;
-				} catch (Exception $ex) {
-					$resultStatus = FALSE;
-					$this->db->trans_rollback();
-				}
-				if ($resultStatus == TRUE) {
-					$response['status'] = 200;
-					$response['branch_id'] = $branch_id;
-					$response['body'] = 'Changes Saved';
+					$response['status'] = 202;
+					$response['body'] = 'Add Services For Branch Or uncheck service';
+					$response['error'] = $errorArray;
+					echo json_encode($response);
+					exit();
 				} else {
-					$response['status'] = 201;
-					$response['branch_id'] = $branch_id;
-					$response['body'] = 'Changes Not Saved';
+					try {
+						$this->db->trans_start();
+
+						$masterObject = $this->MasterModel->_rawQuery('select * from lab_admin_master_test where status=1 and find_in_set(id,"' . $labData . '")');
+						$insert_batch = array();
+						if ($masterObject->totalCount > 0) {
+							foreach ($masterObject->data as $m_row) {
+								$res = array(
+									'name' => $m_row->name,
+									'description' => $m_row->description,
+									'branch_id' => $branch_id,
+									'user_id' => $user_id,
+									'transaction_date' => date('Y-m-d H:i:s'),
+									'status' => 1,
+									'dep_id' => $m_row->dep_id,
+									'master_service_id' => $m_row->master_service_id,
+									'master_rate' => $m_row->master_rate,
+								);
+								array_push($insert_batch, $res);
+							}
+						}
+						$this->db->where('branch_id', $branch_id)->delete('lab_master_test');
+						if (count($insert_batch) > 0) {
+							$this->db->insert_batch('lab_master_test', $insert_batch);
+						}
+						if ($this->db->trans_status() === FALSE) {
+							$this->db->trans_rollback();
+							$resultStatus = FALSE;
+						} else {
+							$this->db->trans_commit();
+							$resultStatus = TRUE;
+						}
+						$this->db->trans_complete();
+						$response["last_query"] = $masterObject->last_query;
+					} catch (Exception $ex) {
+						$resultStatus = FALSE;
+						$this->db->trans_rollback();
+					}
+					if ($resultStatus == TRUE) {
+						$response['status'] = 200;
+						$response['branch_id'] = $branch_id;
+						$response['body'] = 'Changes Saved';
+					} else {
+						$response['status'] = 201;
+						$response['branch_id'] = $branch_id;
+						$response['body'] = 'Changes Not Saved';
+					}
 				}
-			}
 		}
 		else{
 			$response['status'] = 201;
@@ -400,7 +397,7 @@ class LabMasterAdminController extends HexaController
 			$type = $validObject->param->type;
 			$search = $validObject->param->searchTerm;
 			$where = array();
-			if ((int)$type != 1)
+			
 				$where = array("status"=>1);
 				$userData = $this->db->select(array("master_service_id", "name"))->where($where)->like("name", $search)->limit(10, 0)->get("lab_admin_master_test")->result();
 				$response["last_query"] = $this->db->last_query();
