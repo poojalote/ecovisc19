@@ -292,7 +292,21 @@ class Welcome extends CI_Controller
 					if ($checkBed->totalCount > 0) {
 						$releaseBed = $this->Patient_Model->_update('com_1_bed', array('status' => 0), array('id' => $bed_id));
 					}
-					$update_patient = $this->Patient_Model->_update($patient_table, array('discharge_date' => null), array('id' => $patient_id));
+					$discharge_data = array(
+						'discharge_data'=>null,
+						"significant_event" => null,
+						"discharge_condition" => null,
+						"medication" => null,
+						"physical_activity" => null,
+						"followup_date" => null,
+						"urgent_care" => null,
+						"is_transfered" => 0,
+						"transfer_to" => null,
+						"transfer_reason" => null,
+						"event" => null,
+						"hospital_medication" => null,
+					);
+					$update_patient = $this->Patient_Model->_update($patient_table,$discharge_data, array('id' => $patient_id));
 					if ($update_patient) {
 						$response['status'] = 200;
 						$response['body'] = "Patient Readmitted";
