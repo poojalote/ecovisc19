@@ -226,12 +226,12 @@ if (!isset($patient_id)) {
 									<input type="text" style="display: none;" id="vtc" class="form-control"
 										   name="vtc">
 								</div>
-								<div class="form-group col-md-6">
+								<!--<div class="form-group col-md-6">
 									<label>Reference ID</label>
 									<input type="text" class="form-control"
 										   name="reference_id" id="reference_id">
 
-								</div>
+								</div>-->
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-6">

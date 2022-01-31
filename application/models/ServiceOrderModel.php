@@ -23,11 +23,12 @@ class ServiceOrderModel extends MasterModel
 		return $this->_select($tableName, $where, "*", false);
 	}
 
-	public function getSelectServicesRateData($tableName, $id)
+	public function getSelectServicesRateData($tableName, $id,$branch_id='')
 	{
 		// $query = "select * from " . $tableName . " where id='".$id."' " ;
 		// return parent::_rawQuery($query);
-		return $this->_select($tableName, array("service_id" => $id), "*", false);
+		$branch_id=$this->session->user_session->branch_id;
+		return $this->_select($tableName, array("service_id" => $id,'branch_id'=>$branch_id), "*", false);
 	}
 
 	public function service_order_history($tableName, $where)
@@ -207,10 +208,8 @@ class ServiceOrderModel extends MasterModel
 						$insertLabPatient = $this->ServiceOrderModel->_insert($lab_patient_table, $data);
 						$labPatientId = $insertLabPatient->inserted_id;
 					}
-					$serviceCodes=array();//service code for entry lab child test in test_entry_data
 					foreach ($formData as $index1 => $value) {
 						if ($value['service_category'] == 'PATHOLOGY') {
-
 							$labServiceData = array(
 								'patient_id' => $labPatientId,
 								'ext_pid' => $value['patient_id'],

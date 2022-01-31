@@ -288,8 +288,6 @@ class PatientController extends HexaController
 									$ref_id="NESA".str_pad($patientId,6,"0",STR_PAD_LEFT);
 								}else if($branch_id == 10){
                                 	$ref_id="MJC".str_pad($patientId,6,"0",STR_PAD_LEFT);
-								}else if($branch_id == 2){
-									 $ref_id="NAG".str_pad($patientId,6,"0",STR_PAD_LEFT);
 								}else{
                                 	$ref_id="";
 								}
@@ -329,8 +327,6 @@ class PatientController extends HexaController
 									$ref_id="NESA".str_pad($patientId,6,"0",STR_PAD_LEFT);
 								}else if($branch_id == 10){
 									$ref_id="MJC".str_pad($patientId,6,"0",STR_PAD_LEFT);
-								}else if($branch_id == 2){
-									$ref_id="NAG".str_pad($patientId,6,"0",STR_PAD_LEFT);
 								}else{
 									$ref_id="";
 								}
@@ -369,8 +365,6 @@ class PatientController extends HexaController
 							$ref_id="NESA".str_pad($patientId,6,"0",STR_PAD_LEFT);
 						}else if($branch_id == 10){
 							$ref_id="MJC".str_pad($patientId,6,"0",STR_PAD_LEFT);
-						}else if($branch_id == 2){
-							$ref_id="NAG".str_pad($patientId,6,"0",STR_PAD_LEFT);
 						}else{
 							$ref_id="";
 						}
