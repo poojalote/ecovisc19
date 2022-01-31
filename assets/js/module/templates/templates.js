@@ -982,6 +982,8 @@ function dateElement(id, type, elementId, data = null) {
 	let is_required = "";
 	let placeholder = "";
 	let visible = "d-none";
+	let date_type="";
+	let date_position="";
 	if (data != null) {
 		value = data.name;
 		if (parseInt(data.is_required) === 1) {
@@ -991,7 +993,14 @@ function dateElement(id, type, elementId, data = null) {
 			placeholder = data.placeholder;
 			visible = "";
 		}
-
+		if(data.date_type!==null)
+		{
+			date_type=data.date_type;
+		}
+		if(data.date_position!==null)
+		{
+			date_position=data.date_position;
+		}
 	}
 	return `
 	<li class="list-group-item ui-state-default" id="date_${id}"  data-type="${type}" data-id="${id}">
@@ -1008,15 +1017,32 @@ function dateElement(id, type, elementId, data = null) {
 			${hiddenIDElement}
 		</div>		
 		<div class="form-group my-0 py-0">
-			<button class="btn btn-link btn-sm" type="button"
-			onclick="$('#txt_description_box_${id}').toggleClass('d-none')">
-			add placeholder
+			<button class="btn btn-link btn-sm" type="button" onclick="$('#txt_description_box_${id}').toggleClass('d-none')">
+				add placeholder
 			</button>
 			<div class="form-group my-0 py-0 ${visible}" id="txt_description_box_${id}">
 				<input type="text" class="form-control" name="date_placeholder_${id}"
-				  value="${placeholder}" placeholder="write something here"/>
+	  				value="${placeholder}" placeholder="write something here"/>
 			</div>
 		</div>
+		<div class="form-group my-0 py-0">
+			<div class="title">Date Type</div>
+			<select class="form-control" name="date_type_${id}" id="date_type_${id}">
+				<option value="1">Date & Time</option>
+				<option value="2">Date</option>
+			</select>
+		</div>
+		<script>$("#date_type_${id}").val(${date_type});</script>
+		<div class="form-group my-0 py-0">
+		<div class="title">Date Sequence</div>
+			<select class="form-control" name="date_seq_${id}" id="date_seq_${id}">
+				<option value="1">All Dates</option>
+				<option value="2">Before Current Date</option>
+				<option value="3">Only Current Date</option>
+				<option value="4">Only Current & Next Dates</option>
+			</select>
+		</div>
+		<script>$("#date_seq_${id}").val(${date_position});</script>
 		<div class="custom-control-inline">
 			<label class="custom-switch mt-2">
 				<input type="checkbox" name="ck_date_text_required_${id}" ${is_required}

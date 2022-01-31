@@ -17,7 +17,7 @@ class TemplateController extends HexaController
 
 	function saveTemplate()
 	{
-
+//		print_r($this->input->post());exit();
 		$validationObject = $this->is_parameter(array("department_id","section_name", "elementSequenceType","elementSequenceId"));
 		if ($validationObject->status) {
 
@@ -326,6 +326,8 @@ class TemplateController extends HexaController
 		$shortTextPlaceholder = $this->input->post("date_placeholder_".$position);
 		$shortTextRequired = $this->input->post("ck_date_text_required_".$position);
 		$shortTextHistory = $this->input->post("ck_date_text_history_".$position);
+		$shortTexttype = $this->input->post("date_type_".$position);
+		$shortTextSeq = $this->input->post("date_seq_".$position);
 
 		$shortTextObject->name = $shortText;
 		if ($shortTextId != null)
@@ -336,6 +338,10 @@ class TemplateController extends HexaController
 			$shortTextObject->is_required = $shortTextRequired == "on" ? 1 : 0;
 		if ($shortTextHistory != null)
 			$shortTextObject->is_history = $shortTextHistory == "on" ? 1 : 0;
+		if ($shortTexttype != null)
+			$shortTextObject->date_type = $shortTexttype;
+		if ($shortTextSeq != null)
+			$shortTextObject->date_position = $shortTextSeq;
 		return $shortTextObject;
 	}
 

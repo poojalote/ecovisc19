@@ -216,23 +216,64 @@ class FormController extends HexaController
 					<div class="col-sm-9">
 					<input type="number" class="form-control"id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '" ' . $validation . ' /></div>';
 					} else if ($value1->ans_type == 5) {
-						$isDate = '<script>
-							var dt = new Date();   
-   							var month = dt.getMonth()+1;
-							var day = dt.getDate();
-							var output = dt.getFullYear() + "-" +
-    (month<10 ? "0" : "") + month + "-" +
-    (day<10 ? "0" : "") + day+" 00:00:00";
-//   var date=output+\"T\"+time;
-   document.getElementById("form_field' . $value1->id . '").min = app.getDate(output);
-					</script>';
+
+						if($value1->date_type==2)
+						{
+							$dtype='date';
+							$isDate = '<script language="javascript">
+										var today'.$value1->id.' = new Date();
+										var dd'.$value1->id.' = String(today'.$value1->id.'.getDate()).padStart(2, \'0\');
+										var mm'.$value1->id.' = String(today'.$value1->id.'.getMonth() + 1).padStart(2, \'0\');
+										var yyyy'.$value1->id.' = today'.$value1->id.'.getFullYear();
+										today'.$value1->id.' = yyyy'.$value1->id.' + \'-\' + mm'.$value1->id.' + \'-\' + dd'.$value1->id.';';
+							if($value1->date_position==2)
+							{
+								$isDate.='
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',today'.$value1->id.');';
+							}elseif($value1->date_position==3)
+							{
+								$isDate.='	$(\'#form_field' . $value1->id . '\').attr(\'min\',today'.$value1->id.');
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',today'.$value1->id.');';
+							}else if($value1->date_position==4)
+							{
+								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',today'.$value1->id.');
+										';
+							}
+							$isDate.='</script>';
+						}
+						else{
+							$dtype='datetime-local';
+							$isDate = '<script>
+							var dt_'.$value1->id.' = new Date();   
+   							var month'.$value1->id.' = dt_'.$value1->id.'.getMonth()+1;
+							var day'.$value1->id.' = dt_'.$value1->id.'.getDate();
+							 var hour'.$value1->id.' = dt_'.$value1->id.'.getHours().toString().padStart(2, "0");
+							var minute'.$value1->id.' = dt_'.$value1->id.'.getMinutes().toString().padStart(2, "0");
+							var output'.$value1->id.' = dt_'.$value1->id.'.getFullYear() + "-" +
+							(month'.$value1->id.'<10 ? "0" : "") + month'.$value1->id.' + "-" +
+							(day'.$value1->id.'<10 ? "0" : "") + day'.$value1->id.'+"T"+(hour'.$value1->id.')+":"+(minute'.$value1->id.');console.log(output'.$value1->id.');';
+							if($value1->date_position==2)
+							{
+								$isDate.='
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',output'.$value1->id.');';
+							}elseif($value1->date_position==3)
+							{
+								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',output'.$value1->id.');
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',output);';
+							}else if($value1->date_position==4)
+							{
+								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',output'.$value1->id.');';
+							}
+							$isDate.='</script>';
+						}
+
 						if ((int)$value1->id == 83 || (int)$value1->id == 17 || (int)$value1->id == 258 || (int)$value1->id == 364) {
 							$isDate = "";
 						}
 						$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9 d-flex">
-					<input type="datetime-local" class="form-control" id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
+					<input type="'.$dtype.'" class="form-control" id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
 					' . $isDate . '
 					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 					</div>';
@@ -1030,6 +1071,7 @@ class FormController extends HexaController
 				$patientResultObject = null;
 				$patientObject = null;
 				$active = 0;
+				$dateCnt=1;
 				foreach ($query as $value) {
 					// print_r($value);exit();
 					$activePanel = "show";
@@ -1130,10 +1172,61 @@ class FormController extends HexaController
 					<div class="col-sm-9">
 					<input type="number" class="form-control"id="u_form_field' . $value1->id . '" value="' . $patientValue . '" name="u_form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '" ' . $validation . ' /></div>';
 						} else if ($value1->ans_type == 5) {
+							if($value1->date_type==2)
+							{
+								$dtype='date';
+								$isDate = '<script language="javascript">
+										var today'.$dateCnt.' = new Date();
+										var dd'.$dateCnt.' = String(today'.$dateCnt.'.getDate()).padStart(2, \'0\');
+										var mm'.$dateCnt.' = String(today'.$dateCnt.'.getMonth() + 1).padStart(2, \'0\');
+										var yyyy'.$dateCnt.' = today'.$dateCnt.'.getFullYear();
+								
+										today'.$dateCnt.' = yyyy'.$dateCnt.' + \'-\' + mm'.$dateCnt.' + \'-\' + dd'.$dateCnt.';';
+								if($value1->date_position==2)
+								{
+									$isDate.='
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',today'.$dateCnt.');';
+								}elseif($value1->date_position==3)
+								{
+									$isDate.='	$(\'#u_form_field' . $value1->id . '\').attr(\'min\',today'.$dateCnt.');
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',today'.$dateCnt.');';
+								}else if($value1->date_position==4)
+								{
+									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',today'.$dateCnt.');
+										';
+								}
+								$isDate.='</script>';
+							}
+							else{
+								$dtype='datetime-local';
+								$isDate = '<script>
+							var dt_'.$dateCnt.' = new Date();   
+   							var month'.$dateCnt.' = dt_'.$dateCnt.'.getMonth()+1;
+							var day'.$dateCnt.' = dt_'.$dateCnt.'.getDate();
+							 var hour'.$dateCnt.' = dt_'.$dateCnt.'.getHours().toString().padStart(2, "0");
+							var minute'.$dateCnt.' = dt_'.$dateCnt.'.getMinutes().toString().padStart(2, "0");
+							var output'.$dateCnt.' = dt_'.$dateCnt.'.getFullYear() + "-" +
+							(month'.$dateCnt.'<10 ? "0" : "") + month'.$dateCnt.' + "-" +
+							(day'.$dateCnt.'<10 ? "0" : "") + day'.$dateCnt.'+"T"+(hour'.$dateCnt.')+":"+(minute'.$dateCnt.');console.log(output'.$dateCnt.');';
+								if($value1->date_position==2)
+								{
+									$isDate.='
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',output'.$dateCnt.');';
+								}elseif($value1->date_position==3)
+								{
+									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',output'.$dateCnt.');
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',output);';
+								}else if($value1->date_position==4)
+								{
+									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',output'.$dateCnt.');';
+								}
+								$isDate.='</script>';
+							}
 							$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9 d-flex">
-					<input type="datetime-local" class="form-control" id="u_form_field' . $value1->id . '" value="' . $patientValue . '" name="u_form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
+					<input type="'.$dtype.'" class="form-control" id="u_form_field' . $value1->id . '" value="' . $patientValue . '" name="u_form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
+					'.$isDate.'
 					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'u_form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 					<script>
 //						var dt = new Date();
@@ -1383,7 +1476,7 @@ class FormController extends HexaController
 					// 	}
 					// }
 
-
+					$dateCnt++;
 				}
 				$data .= "</div><div class='text-right'>
 									<button class='btn btn-primary mr-1' type='button' onclick='update_form_data(\"update_data_form_" . $section_id . "\")'>Submit
