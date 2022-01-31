@@ -482,7 +482,7 @@ $("#patientForm").validate({
 
 		$.ajax({
 			type: "POST",
-			url: 'http://localhost/c19/' + 'savePatient',
+			url: 'http://localhost/ecovisc19/' + 'savePatient',
 			dataType: "json",
 			data: Form_data,
 			contentType: false,
@@ -503,7 +503,7 @@ $("#patientForm").validate({
 						get_forms(result.patient_id,4,result.patient_name);
 					}
 					else {
-						window.location.href='http://localhost/c19/' +"patient_info";
+						window.location.href='http://localhost/ecovisc19/' +"patient_info";
 					}
 					//
 					// loadPatients(1);
@@ -523,7 +523,7 @@ $("#patientForm").validate({
 function get_PatientDataById(patientId) {
 
 	$.LoadingOverlay("show");
-	serverRequest("http://localhost/c19/new_patients/getPatientData", {patientId: patientId}).then(response => {
+	serverRequest("http://localhost/ecovisc19/new_patients/getPatientData", {patientId: patientId}).then(response => {
 
 		$.LoadingOverlay("hide");
 		if (response.status === 200) {
