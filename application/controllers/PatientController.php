@@ -283,7 +283,23 @@ class PatientController extends HexaController
                                     $this->db->where(array("id" => $insert_id));
                                     $this->db->update($table_name, array("adhar_no" => $adhar_no));
                                 }
+
+                                if($branch_id == 9){
+									$ref_id="NESA".str_pad($patientId,6,"0",STR_PAD_LEFT);
+								}else if($branch_id == 10){
+                                	$ref_id="MJC".str_pad($patientId,6,"0",STR_PAD_LEFT);
+								}else if($branch_id == 2){
+									 $ref_id="NAG".str_pad($patientId,6,"0",STR_PAD_LEFT);
+								}else{
+                                	$ref_id="";
+								}
+                                if($ref_id != ""){
+									$this->db->where(array("id" => $insert_id));
+									$this->db->update($table_name, array("reference_id" => $ref_id));
+								}
                                 $response["status"] = 200;
+                                $response["ref_id"] = $ref_id;
+                                $response["branch_id"] = $branch_id;
                                 $response["data"] = "uploaded successfully 3";
 								$response["patient_id"] = $patientId;
 								$response["patient_name"] = $patient_name;
@@ -298,6 +314,7 @@ class PatientController extends HexaController
                     }
 
                     if ((int)$user_data->data[0]->admission_mode == 1) {
+
                         if (!is_null($user_data->data[0]->discharge_date)) {
                             $result = $this->Patient_Model->addForm($table_name, $insert_data);
                             if ($result->status == TRUE) {
@@ -308,6 +325,19 @@ class PatientController extends HexaController
                                     $this->db->where(array("id" => $insert_id));
                                     $this->db->update($table_name, array("adhar_no" => $adhar_no));
                                 }
+								if($branch_id == 9){
+									$ref_id="NESA".str_pad($patientId,6,"0",STR_PAD_LEFT);
+								}else if($branch_id == 10){
+									$ref_id="MJC".str_pad($patientId,6,"0",STR_PAD_LEFT);
+								}else if($branch_id == 2){
+									$ref_id="NAG".str_pad($patientId,6,"0",STR_PAD_LEFT);
+								}else{
+									$ref_id="";
+								}
+								if($ref_id != ""){
+									$this->db->where(array("id" => $insert_id));
+									$this->db->update($table_name, array("reference_id" => $ref_id));
+								}
                                 $response["status"] = 200;
                                 $response["data"] = "uploaded successfully ";
 								$response["patient_id"] = $patientId;
@@ -324,6 +354,7 @@ class PatientController extends HexaController
 
 
                 } else {
+
                     // insert
                     $result = $this->Patient_Model->addForm($table_name, $insert_data);
                     if ($result->status == TRUE) {
@@ -334,6 +365,19 @@ class PatientController extends HexaController
                             $this->db->where(array("id" => $insert_id));
                             $this->db->update($table_name, array("adhar_no" => $adhar_no));
                         }
+						if($branch_id == 9){
+							$ref_id="NESA".str_pad($patientId,6,"0",STR_PAD_LEFT);
+						}else if($branch_id == 10){
+							$ref_id="MJC".str_pad($patientId,6,"0",STR_PAD_LEFT);
+						}else if($branch_id == 2){
+							$ref_id="NAG".str_pad($patientId,6,"0",STR_PAD_LEFT);
+						}else{
+							$ref_id="";
+						}
+						if($ref_id != ""){
+							$this->db->where(array("id" => $insert_id));
+							$this->db->update($table_name, array("reference_id" => $ref_id));
+						}
                         if($admission_mode == 2)
                         {
                             $checkSmsStatus = $this->Patient_Model->_select('branch_master',array('id'=>$branch_id,'isSMS'=>1),'*',true);
