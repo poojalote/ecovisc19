@@ -198,8 +198,9 @@ class ServiceOrderController extends HexaController
     {
         if (!is_null($this->input->post('id'))) {
             $service_id = $this->input->post('id');
+            $branch_id=$this->session->user_session->branch_id;
             $tableName = 'service_master';
-            $resultObject = $this->ServiceOrderModel->getSelectServicesRateData($tableName, $service_id);
+            $resultObject = $this->ServiceOrderModel->getSelectServicesRateData($tableName, $service_id,$branch_id);
             // print_r($resultObject);exit();
             // $option="No Data Found";
             if ($resultObject->totalCount > 0) {
@@ -231,8 +232,8 @@ class ServiceOrderController extends HexaController
     public function get_status_true_billing($BillingTable, $patientId, $branch_id, $service_id, $company_id, $date)
     {
         $alreadyServiceExist = $this->db->query('select *,
-		(select service_category from service_master s where s.service_id=b.service_id) as service_cat,
-		(select service_description from service_master s where s.service_id=b.service_id) as service_description
+		(select service_category from service_master s where s.service_id=b.service_id and s.branch_id='.$branch_id.') as service_cat,
+		(select service_description from service_master s where s.service_id=b.service_id and s.branch_id='.$branch_id.') as service_description
 		from ' . $BillingTable . ' b where patient_id=' . $patientId . ' AND branch_id=' . $branch_id . ' AND service_id="' . $service_id . '" AND confirm=0 AND is_deleted=1 AND DATE(date_service) = DATE("' . $date . '")')->row();
 
         if ($this->db->affected_rows() > 0) {
@@ -301,7 +302,7 @@ class ServiceOrderController extends HexaController
                     $serviceOrderExistData = $this->db->query("select * from " . $tableServiceOrder . " where patient_id='" . $patientId . "' AND service_id='" . $value['service_id'] . "' AND order_date='" . $value['service_date'] . "' AND company_id='" . $company_id . "' AND branch_id='" . $branch_id . "' AND service_category !='PATHOLOGY'")->num_rows();
 
                     if ($serviceOrderExistData <= 0) {
-                        $resultServiceCategory = $this->db->query("select service_category,service_no from service_master where service_id='" . $value['service_id'] . "'")->row();
+                        $resultServiceCategory = $this->db->query("select service_category,service_no from service_master where service_id='" . $value['service_id'] . "' AND branch_id=".$branch_id)->row();
                         $s_category_coll = $resultServiceCategory->service_category;
                         $service_no = $resultServiceCategory->service_no;
                         $sample_collection = 1;
@@ -464,7 +465,7 @@ class ServiceOrderController extends HexaController
                         exit();
                     }
                     if ($serviceOrderExistData <= 0) {
-                        $resultServiceCategory = $this->db->query("select service_category,service_no from service_master where service_id='" . $standardServiceId . "'")->row();
+                        $resultServiceCategory = $this->db->query("select service_category,service_no from service_master where service_id='" . $standardServiceId . "' AND branch_id=".$branch_id)->row();
                         $s_category_coll = $resultServiceCategory->service_category;
                         $service_no = $resultServiceCategory->service_no;
                         $sample_collection = 1;
@@ -1357,11 +1358,13 @@ class ServiceOrderController extends HexaController
                     $data = array('service_provider' => $user_id,
                         'service_given_date' => date('Y-m-d H:i:s'),
 					"file_upload_status"=>1,
+					"sample_pickup"=>1,
                         'confirm_service_given' => $confirm_service_given);
                 } else {
                     $data = array('service_provider' => NULL,
                         'service_given_date' => NULL,
 					"file_upload_status"=>1,
+					"sample_pickup"=>1,
                         'confirm_service_given' => $confirm_service_given);
                 }
 
@@ -1512,11 +1515,13 @@ class ServiceOrderController extends HexaController
                     $data = array('service_provider' => $user_id,
                         'service_given_date' => date('Y-m-d H:i:s'),
                     "file_upload_status"=>1,
+						"sample_pickup"=>1,
                         'confirm_service_given' => $confirm_service_given);
                 } else {
                     $data = array('service_provider' => NULL,
                         'service_given_date' => NULL,
                     "file_upload_status"=>1,
+						"sample_pickup"=>1,
                         'confirm_service_given' => $confirm_service_given);
                 }
 

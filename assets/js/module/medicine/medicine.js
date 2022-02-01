@@ -523,19 +523,21 @@ function getreturnMedicineTable(patient_id="")
 			});
 }
 
-function maxValue(id,max)
-{
-	// console.log(max);
-	var numbers = document.getElementById("edit-quantity_"+id);
+function maxValue(id, max) {
+
+	console.log(max);
+	var  numbers= document.getElementById("edit-quantity_" + id).value;
 	var maxQuantity = max;
-	numbers.addEventListener("input",function(e)
-	{
-		if(this.value > maxQuantity)
-		{
+	/*numbers.addEventListener("input", function (e) {
+		if (this.value > maxQuantity) {
 			app.errorToast('max value reached ! ');
 			this.value = maxQuantity;
 		}
-	})
+	})*/
+	if (numbers > maxQuantity) {
+		app.errorToast('max value reached ! ');
+		$("#edit-quantity_" + id).val(maxQuantity);
+	}
 
 }
  

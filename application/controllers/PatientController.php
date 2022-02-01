@@ -288,17 +288,14 @@ class PatientController extends HexaController
 									$ref_id="NESA".str_pad($patientId,6,"0",STR_PAD_LEFT);
 								}else if($branch_id == 10){
                                 	$ref_id="MJC".str_pad($patientId,6,"0",STR_PAD_LEFT);
-								}else if($branch_id == 2){
-									 $ref_id="NAG".str_pad($patientId,6,"0",STR_PAD_LEFT);
 								}else{
                                 	$ref_id="";
 								}
                                 if($ref_id != ""){
 									$this->db->where(array("id" => $insert_id));
-									$this->db->update($table_name, array("reference_id" => $ref_id));
+									$this->db->update($table_name, array("ipd_number" => $ref_id));
 								}
                                 $response["status"] = 200;
-                                $response["ref_id"] = $ref_id;
                                 $response["branch_id"] = $branch_id;
                                 $response["data"] = "uploaded successfully 3";
 								$response["patient_id"] = $patientId;
@@ -329,14 +326,12 @@ class PatientController extends HexaController
 									$ref_id="NESA".str_pad($patientId,6,"0",STR_PAD_LEFT);
 								}else if($branch_id == 10){
 									$ref_id="MJC".str_pad($patientId,6,"0",STR_PAD_LEFT);
-								}else if($branch_id == 2){
-									$ref_id="NAG".str_pad($patientId,6,"0",STR_PAD_LEFT);
 								}else{
 									$ref_id="";
 								}
 								if($ref_id != ""){
 									$this->db->where(array("id" => $insert_id));
-									$this->db->update($table_name, array("reference_id" => $ref_id));
+									$this->db->update($table_name, array("ipd_number" => $ref_id));
 								}
                                 $response["status"] = 200;
                                 $response["data"] = "uploaded successfully ";
@@ -369,14 +364,12 @@ class PatientController extends HexaController
 							$ref_id="NESA".str_pad($patientId,6,"0",STR_PAD_LEFT);
 						}else if($branch_id == 10){
 							$ref_id="MJC".str_pad($patientId,6,"0",STR_PAD_LEFT);
-						}else if($branch_id == 2){
-							$ref_id="NAG".str_pad($patientId,6,"0",STR_PAD_LEFT);
 						}else{
 							$ref_id="";
 						}
 						if($ref_id != ""){
 							$this->db->where(array("id" => $insert_id));
-							$this->db->update($table_name, array("reference_id" => $ref_id));
+							$this->db->update($table_name, array("ipd_number" => $ref_id));
 						}
                         if($admission_mode == 2)
                         {
