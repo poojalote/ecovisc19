@@ -696,8 +696,8 @@ if (is_null($user_permission_array)) {
 
 				$('#history_table_' + section_id).DataTable(
 						{
-							order: [[result.transColumnIndex, "desc"]],
-							"columnDefs": [{"targets": result.transColumnIndex, "type": "date-eu"}],
+							order: false,
+							//"columnDefs": [{"targets": result.transColumnIndex, "type": "date-eu"}],*/
 						}
 				);
 			}, error: function (error) {
@@ -740,8 +740,7 @@ if (is_null($user_permission_array)) {
 
 				$('#history_table_' + section_id).DataTable(
 						{
-							order: [[result.transColumnIndex, "desc"]],
-							"columnDefs": [{"targets": result.transColumnIndex, "type": "date-eu"}],
+							order: false,
 						}
 				);
 			}, error: function (error) {

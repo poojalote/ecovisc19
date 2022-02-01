@@ -1358,11 +1358,13 @@ class ServiceOrderController extends HexaController
                     $data = array('service_provider' => $user_id,
                         'service_given_date' => date('Y-m-d H:i:s'),
 					"file_upload_status"=>1,
+					"sample_pickup"=>1,
                         'confirm_service_given' => $confirm_service_given);
                 } else {
                     $data = array('service_provider' => NULL,
                         'service_given_date' => NULL,
 					"file_upload_status"=>1,
+					"sample_pickup"=>1,
                         'confirm_service_given' => $confirm_service_given);
                 }
 
@@ -1513,11 +1515,13 @@ class ServiceOrderController extends HexaController
                     $data = array('service_provider' => $user_id,
                         'service_given_date' => date('Y-m-d H:i:s'),
                     "file_upload_status"=>1,
+						"sample_pickup"=>1,
                         'confirm_service_given' => $confirm_service_given);
                 } else {
                     $data = array('service_provider' => NULL,
                         'service_given_date' => NULL,
                     "file_upload_status"=>1,
+						"sample_pickup"=>1,
                         'confirm_service_given' => $confirm_service_given);
                 }
 
