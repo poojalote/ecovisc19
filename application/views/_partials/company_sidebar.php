@@ -172,6 +172,7 @@ if (isset($this->session->user_session)) {
 				</a>
 			<?php } ?>
 			<?php
+
 			if (in_array("prescription_master", $permission_array)) { ?>
 				<a href="<?php echo base_url(); ?>company/admin/prescription_master"
 				   style="<?php echo $this->uri->segment(3) == 'prescription_master' ? 'color: white;text-decoration: none;' : 'color: black;text-decoration: none;'; ?>">
