@@ -3,35 +3,42 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $this->load->view('_partials/header');
 $role = $this->session->user_session->roles;
 $type = $this->session->user_session->user_type;
+$branch_id = $this->session->user_session->branch_id;
 ?>
-<input type="hidden" name="roles" id="roles" value="<?=$role?>">
-<input type="hidden" name="user_type" id="user_type" value="<?=$type?>">
+<input type="hidden" name="roles" id="roles" value="<?= $role ?>">
+<input type="hidden" name="user_type" id="user_type" value="<?= $type ?>">
 <div class="main-content">
 	<section class="section">
 		<div class="section-header">
 			<h1>Patients List</h1>
 		</div>
 		<div class="card">
-			<div class="row p-3">
-				<div class="col-md-6">
-					<div class="form-group">
-						<select class="form-control" name="branches" id="branches">
-						</select>
+
+			<?php if ($role == 2 && $type == 3) { ?>
+				<input type="hidden" name="branch_id" id="branch_id" value="<?= $branch_id ?>">
+				<input type="hidden" name="type" id="type1" value="3">
+			<?php } else { ?>
+				<div class="row p-3">
+					<div class="col-md-6">
+						<div class="form-group">
+							<select class="form-control" name="branches" id="branches">
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<select class="form-control" name="type" id="type">
+								<option value="1">All</option>
+								<option value="2">Admitted</option>
+								<option value="3">Discharge</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<button class="btn btn-primary float-right" onclick="getPatientsList()">Filter</button>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<select class="form-control" name="type" id="type">
-							<option value="1">All</option>
-							<option value="2">Admitted</option>
-							<option value="3">Discharge</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-md-12">
-					<button class="btn btn-primary float-right" onclick="getPatientsList()">Filter</button>
-				</div>
-			</div>
+			<?php } ?>
 
 			<div class="row p-4">
 				<div class="table-responsive">
@@ -60,7 +67,13 @@ $type = $this->session->user_session->user_type;
 <?php $this->load->view('_partials/footer'); ?>
 <script>
 	$(document).ready(function () {
+		var role = $('#roles').val();
+		var user_type = $('#user_type').val();
+		if(role == 2 && user_type == 3){
+			getPatientsList();
+		}
 		getBranches(1);
+
 	});
 
 	function getBranches(id) {
@@ -80,11 +93,17 @@ $type = $this->session->user_session->user_type;
 	}
 
 	function getPatientsList() {
-
-		var branch_id = $('#branches').val();
-		var type = $('#type').val();
 		var role = $('#roles').val();
 		var user_type = $('#user_type').val();
+		let branch_id = "";
+		let type = "";
+		if (role == 2 && user_type == 3) {
+			branch_id = $('#branch_id').val();
+			type = $('#type1').val();
+		} else {
+			branch_id = $('#branches').val();
+			type = $('#type').val();
+		}
 		app.dataTable('patient_list', {
 			url: baseURL + "getPatients",
 			data: {branch_id: branch_id, type: type}
@@ -107,39 +126,34 @@ $type = $this->session->user_session->user_type;
 			{
 				data: 0,
 				render: (d, t, r, m) => {
-					if(role == 2 && user_type == 3){
-						if(type == 3){
+					if (role == 2 && user_type == 3) {
+						if (type == 3) {
 							return `<button class="btn btn-primary" onclick="readmit(${d})"><i class="fas fa-syringe"></i></button>`;
-						}else{
+						} else {
 							return ``;
 						}
-					}
-					else {
-						if(type == 3)
-						{
+					} else {
+						if (type == 3) {
 							return `<button class="btn btn-primary" onclick="readmit(${d})"><i class="fas fa-syringe"></i></button>
 								<button class="btn btn-primary" onclick="delPatient(${d})"><i class="fas fa-trash"></i></button>`;
-						}else {
+						} else {
 							return `<button class="btn btn-primary" onclick="delPatient(${d})"><i class="fas fa-trash"></i></button>`;
 						}
 					}
 				},
 			},
 		], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
-			if(role == 2 && user_type == 3)
-			{
-				if(type == 3){
+			if (role == 2 && user_type == 3) {
+				if (type == 3) {
 					$('td:eq(6)', nRow).html(`<button class="btn btn-primary" onclick="readmit(${aData[0]})"><i class="fas fa-syringe"></i></button>`);
-				}else{
+				} else {
 					$('td:eq(6)', nRow).html(``);
 				}
-			}
-			else{
-				if(type == 3)
-				{
+			} else {
+				if (type == 3) {
 					$('td:eq(6)', nRow).html(`<button class="btn btn-primary" onclick="readmit(${aData[0]})"><i class="fas fa-syringe"></i></button>
 										<button class="btn btn-primary" onclick="delPatient(${aData[0]})"><i class="fas fa-trash"></i></button>`);
-				}else {
+				} else {
 					$('td:eq(6)', nRow).html(`<button class="btn btn-primary" onclick="delPatient(${aData[0]})"><i class="fas fa-trash"></i></button>`);
 				}
 			}
@@ -165,7 +179,7 @@ $type = $this->session->user_session->user_type;
 		}
 	}
 
-	function  readmit(id) {
+	function readmit(id) {
 		if (confirm('Are you sure you want to re-admit this?')) {
 			var branch_id = $('#branches').val();
 			let formdata = new FormData();
