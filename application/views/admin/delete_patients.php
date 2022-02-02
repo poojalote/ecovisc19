@@ -1,7 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 $this->load->view('_partials/header');
+$role = $this->session->user_session->roles;
+$type = $this->session->user_session->user_type;
 ?>
+<input type="hidden" name="roles" id="roles" value="<?=$role?>">
+<input type="hidden" name="user_type" id="user_type" value="<?=$type?>">
 <div class="main-content">
 	<section class="section">
 		<div class="section-header">
@@ -29,7 +33,7 @@ $this->load->view('_partials/header');
 				</div>
 			</div>
 
-			<div class="row">
+			<div class="row p-4">
 				<div class="table-responsive">
 					<div class="dataTables_wrapper no-footer">
 						<table class="table table-striped dataTable no-footer" id="patient_list"
@@ -79,6 +83,8 @@ $this->load->view('_partials/header');
 
 		var branch_id = $('#branches').val();
 		var type = $('#type').val();
+		var role = $('#roles').val();
+		var user_type = $('#user_type').val();
 		app.dataTable('patient_list', {
 			url: baseURL + "getPatients",
 			data: {branch_id: branch_id, type: type}
@@ -101,23 +107,41 @@ $this->load->view('_partials/header');
 			{
 				data: 0,
 				render: (d, t, r, m) => {
-					if(type == 3)
-					{
-						return `<button class="btn btn-primary" onclick="readmit(${d})"><i class="fas fa-syringe"></i></button>
-								<button class="btn btn-primary" onclick="delPatient(${d})"><i class="fas fa-trash"></i></button>`;
-					}else {
-						return `<button class="btn btn-primary" onclick="delPatient(${d})"><i class="fas fa-trash"></i></button>`;
+					if(role == 2 && user_type == 3){
+						if(type == 3){
+							return `<button class="btn btn-primary" onclick="readmit(${d})"><i class="fas fa-syringe"></i></button>`;
+						}else{
+							return ``;
+						}
 					}
-
+					else {
+						if(type == 3)
+						{
+							return `<button class="btn btn-primary" onclick="readmit(${d})"><i class="fas fa-syringe"></i></button>
+								<button class="btn btn-primary" onclick="delPatient(${d})"><i class="fas fa-trash"></i></button>`;
+						}else {
+							return `<button class="btn btn-primary" onclick="delPatient(${d})"><i class="fas fa-trash"></i></button>`;
+						}
+					}
 				},
 			},
 		], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
-			if(type == 3)
+			if(role == 2 && user_type == 3)
 			{
-				$('td:eq(6)', nRow).html(`<button class="btn btn-primary" onclick="readmit(${aData[0]})"><i class="fas fa-syringe"></i></button>
+				if(type == 3){
+					$('td:eq(6)', nRow).html(`<button class="btn btn-primary" onclick="readmit(${aData[0]})"><i class="fas fa-syringe"></i></button>`);
+				}else{
+					$('td:eq(6)', nRow).html(``);
+				}
+			}
+			else{
+				if(type == 3)
+				{
+					$('td:eq(6)', nRow).html(`<button class="btn btn-primary" onclick="readmit(${aData[0]})"><i class="fas fa-syringe"></i></button>
 										<button class="btn btn-primary" onclick="delPatient(${aData[0]})"><i class="fas fa-trash"></i></button>`);
-			}else {
-				$('td:eq(6)', nRow).html(`<button class="btn btn-primary" onclick="delPatient(${aData[0]})"><i class="fas fa-trash"></i></button>`);
+				}else {
+					$('td:eq(6)', nRow).html(`<button class="btn btn-primary" onclick="delPatient(${aData[0]})"><i class="fas fa-trash"></i></button>`);
+				}
 			}
 		});
 	}
