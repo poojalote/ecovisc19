@@ -58,7 +58,10 @@ class MedicineReturnController extends HexaController
 							}
 					$return_quantity = $medicine->return_quantity ==null ? 0 : $medicine->return_quantity;
 					$bu = $medicine->required_bu ==null ? 0 : $medicine->required_bu;
-
+					if($bu < $user_quantity){
+						$user_quantity=$bu;
+						$user_quantity=$user_quantity-$return_quantity;
+					}
 					$balance=$bu-$user_quantity- $return_quantity;
 
 					$medicine_name=$medicine->medicine_name.' ( T='.$bu.' / U='.$user_quantity.' / R='.$return_quantity.' / B ='.$balance.' )';

@@ -75,7 +75,7 @@ class TemplateModel extends MasterModel
 					}
 					$fields = (array)$field;
 //var_dump($fields);
-
+//					print_r($fields);exit();
 					if (!property_exists($field, "id")) {
 						$this->db->insert("template_master", $fields);
 						$field_id = $this->db->insert_id();
@@ -96,6 +96,8 @@ class TemplateModel extends MasterModel
 						$dependancy="";
 						$is_extended_template="";
 						$ext_template_id="";
+						$date_type="";
+						$date_sequence="";
 						if(array_key_exists("custom_query",$fields)){
 							$custom_query=$fields['custom_query'];
 						}
@@ -108,11 +110,17 @@ class TemplateModel extends MasterModel
 						if(array_key_exists("ext_template_id",$fields)){
 							$ext_template_id=$fields['ext_template_id'];
 						}
+						if(array_key_exists("date_type",$fields)){
+							$date_type=$fields['date_type'];
+						}
+						if(array_key_exists("date_position",$fields)){
+							$date_sequence=$fields['date_position'];
+						}
 						$this->db->set(
 						array("name" => $field->name, "ans_type" => $field->ans_type,
 						"is_history"=>$sectionHistoryMode,
 						'sequeance_num'=>$field->sequeance_num,"custom_query"=>$custom_query,
-						"dependancy"=>$dependancy,"is_extended_template"=>$is_extended_template,"ext_template_id"=>$ext_template_id))
+						"dependancy"=>$dependancy,"is_extended_template"=>$is_extended_template,"ext_template_id"=>$ext_template_id,"date_type"=>$date_type,"date_position"=>$date_sequence))
 							->where(array("id" => $field->id))
 							->update("template_master");
 
@@ -241,7 +249,7 @@ class TemplateModel extends MasterModel
 	{
 		$sql='select t.id,t.name,t.ans_type,t.sequeance_num,t.is_required,t.is_history,t.placeholder,t.custom_query,t.dependancy,t.is_extended_template,t.ext_template_id,
 		(select group_concat(o.id,"|||",o.name) from option_master o where o.temp_id=t.id) as options,
-		(select group_concat(s.id,"|||",s.name,"|||",s.is_traction) from section_master s where s.id=t.section_id) as section
+		(select group_concat(s.id,"|||",s.name,"|||",s.is_traction) from section_master s where s.id=t.section_id) as section,t.date_type,t.date_position
 		from template_master t where department_id='.$department_id.' and t.status=1 and section_id='.$section_id.' and status=1 order by sequeance_num';
 		return $this->_rawQuery($sql);
 //		return $this->_select("template_master t",

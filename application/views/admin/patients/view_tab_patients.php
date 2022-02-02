@@ -241,11 +241,11 @@ if (is_null($user_permission_array)) {
 						<div class="card-body px-1">
 							<section>
 								<input type="hidden" id="department_id" name="department_id"
-									   value="">
+									   value="20">
 								<input type="hidden" id="section_id" name="section_id"
-									   value="">
+									   value="101">
 								<input type="hidden" id="queryparameter_hidden" name="queryparameter_hidden"
-									   value="">
+									   value="eyJicmFuY2hfaWQiOiIyIn0=">
 								<div class="tabs tabs-style-underline">
 									<nav>
 
@@ -696,8 +696,8 @@ if (is_null($user_permission_array)) {
 
 				$('#history_table_' + section_id).DataTable(
 						{
-							order: [[result.transColumnIndex, "desc"]],
-							"columnDefs": [{"targets": result.transColumnIndex, "type": "date-eu"}],
+							order: false,
+							//"columnDefs": [{"targets": result.transColumnIndex, "type": "date-eu"}],*/
 						}
 				);
 			}, error: function (error) {
@@ -740,8 +740,7 @@ if (is_null($user_permission_array)) {
 
 				$('#history_table_' + section_id).DataTable(
 						{
-							order: [[result.transColumnIndex, "desc"]],
-							"columnDefs": [{"targets": result.transColumnIndex, "type": "date-eu"}],
+							order: false,
 						}
 				);
 			}, error: function (error) {
