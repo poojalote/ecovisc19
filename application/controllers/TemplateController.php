@@ -17,7 +17,6 @@ class TemplateController extends HexaController
 
 	function saveTemplate()
 	{
-//		print_r($this->input->post());exit();
 		$validationObject = $this->is_parameter(array("department_id","section_name", "elementSequenceType","elementSequenceId"));
 		if ($validationObject->status) {
 
@@ -172,6 +171,7 @@ class TemplateController extends HexaController
 		$dropDownRequired = $this->input->post("ck_drop_down_required_".$position);
 		$dropDownHistory = $this->input->post("ck_drop_down_history_".$position);
 		$dropDownOptions = $this->input->post("drop_down_option_value_".$position);
+		$dropDownDefaultSelection = $this->input->post("dropdown_default_option_".$position);
 		$dropDownObject->name = $dropDown;
 		if ($dropDownId != null)
 			$dropDownObject->id = $dropDownId;
@@ -190,10 +190,12 @@ class TemplateController extends HexaController
 				}
 			}
 			$dropDownObject->options = $optionsValues;
+			if ($dropDownDefaultSelection != null) {
+				$dropDownObject->default_select = $dropDownDefaultSelection;
+			}
 		}else{
 			$dropDownObject->options = array();
 		}
-
 		return $dropDownObject;
 	}
 
@@ -243,6 +245,7 @@ class TemplateController extends HexaController
 		$dropDownRequired = $this->input->post("ck_multi_drop_down_required_".$position);
 		$dropDownHistory = $this->input->post("ck_multi_drop_down_history_".$position);
 		$dropDownOptions = $this->input->post("multi_drop_down_option_value_".$position);
+		$dropdownDefaultOptions = $this->input->post("dropdown_default_option_".$position);
 		$dropDownObject->name = $dropDown;
 		if ($dropDownId != null)
 			$dropDownObject->id = $dropDownId;
@@ -261,6 +264,10 @@ class TemplateController extends HexaController
 				}
 			}
 			$dropDownObject->options = $optionsValues;
+			if($dropdownDefaultOptions!=null)
+			{
+				$dropDownObject->default_select=implode(",",$dropdownDefaultOptions);
+			}
 		}else{
 			$dropDownObject->options = array();
 		}
@@ -388,6 +395,7 @@ class TemplateController extends HexaController
 			$param = $validationObject->param;
 			$resultObject=$this->TemplateModel->fetchSectionElement($param->section_id,$param->department_id);
 			$response["status"]=200;
+			$response["query"]=$resultObject->last_query;
 			$response["body"]=$resultObject->data;
 		}else{
 			$response["status"]=201;

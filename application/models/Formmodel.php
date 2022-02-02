@@ -285,7 +285,32 @@ class formmodel extends MasterModel
 		return $this->_select($table_name, $where, "*", true);
 	
 	}
+	public function getSectionValueExist($patient_id,$branch_id,$section_id,$table_name)
+	{
+		$resulyArray=0;
+		$resultObject=$this->_rawQuery('select group_concat(tt.field_name) as field_name from template_master tt where tt.section_id='.$section_id.' and tt.status=1');
 
+		if($resultObject->totalCount>0)
+		{
+			$field_name=$resultObject->data[0]->field_name;
+			$resultObject1=$this->_rawQuery('select '.$field_name.' from '.$table_name.' where `patient_id` = '.$patient_id.' AND `branch_id` = '.$branch_id);
 
+			if($resultObject1->totalCount>0)
+			{
+				$d_ss=(array)$resultObject1->data[0];
+				$d_ss=array_filter($d_ss);
+				$d_select=0;
+				if(count($d_ss)>0)
+				{
+					$d_select=$d_select+1;
+				}
+
+				if($d_select>0){
+					$resulyArray=1;
+				}
+			}
+		}
+		return $resulyArray;
+	}
 
 }

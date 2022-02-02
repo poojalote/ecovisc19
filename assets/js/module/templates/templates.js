@@ -236,7 +236,7 @@ function fetchSection(department_id) {
 
 // save form
 function uploadSection(form) {
-	document.getElementById("templateFornBtn").disabled = true;
+	document.getElementById("templateFornBtn").disabled = false;
 	let formData = new FormData(form);
 	app.request("save_template", formData).then(response => {
 		if (response.status === 200) {
@@ -358,6 +358,8 @@ function addOptions(id, type) {
 	let idName;
 	let helm, helmValue = "";
 	let objectIndex;
+	let drop_type="";
+	let dropOrMultiName=`dropdown_default_option_${id}`;
 	if (type === 2) {
 		idName = "multi_item_";
 		value = $(`#multi_drop_down_option_${id}`).val();
@@ -369,6 +371,8 @@ function addOptions(id, type) {
 		})
 		length = elm.children().length;
 		$(`#multi_drop_down_option_${id}`).val('');
+		drop_type="checkbox";
+		dropOrMultiName=`dropdown_default_option_${id}[]`;
 	} else {
 		idName = "drop_down_item_";
 		helmValue = 'drop_down_option_value_' + id;
@@ -380,15 +384,17 @@ function addOptions(id, type) {
 		})
 		length = elm.children().length;
 		$(`#drop_down_option_${id}`).val('');
+		drop_type="radio";
+		dropOrMultiName=`dropdown_default_option_${id}`;
 	}
 
-
 	length++;
-	let template = `<li class="list-group-item" id="${idName + length}">
+	let template = `<li class="list-group-item" id="${idName + length+'_'+id}">
 				<div class="custom-header p-0">
 					<div class="title">${value}</div>
 					<div class="action">
-						<button type="button" class="btn btn-link text-dark" onclick="deleteOptions('${idName + length}','${helmValue}','${value}')">
+						<input type="${drop_type}" name="${dropOrMultiName}" id="dropdown_default_option_${id}" value="${value}">
+						<button type="button" class="btn btn-link text-dark" onclick="deleteOptions('${idName + length+'_'+id}','${helmValue}','${value}')">
 						<i class="fas fa-times"></i>
 						</button>
 					</div>
@@ -562,7 +568,15 @@ function dropDown(id, type, elementId, data = null) {
 			let values = [];
 
 			options = optionsList.map(i => {
+				let checked='';
 				let token = i.split("|||");
+				if(data.default_select!==null)
+				{
+					if(data.default_select==token[1])
+					{
+						checked=`checked`;
+					}
+				}
 				let helmValue = 'drop_down_option_value_' +elementId;
 				let idName = "drop_down_item_" + token[0];
 				values.push(token[1]);
@@ -570,6 +584,7 @@ function dropDown(id, type, elementId, data = null) {
 				<div class="custom-header p-0">
 					<div class="title">${token[1]}</div>
 					<div class="action">
+						<input type="radio" ${checked} name="dropdown_default_option_${id}" id="dropdown_default_option_${id}" value="${token[1]}">
 						<button type="button" class="btn btn-link text-dark" onclick="deleteOptions('${idName}','${helmValue}','${token[1]}')">
 						<i class="fas fa-times"></i>
 						</button>
@@ -893,7 +908,16 @@ function multipleDropDown(id, type, elementId, data = null) {
 			let optionsList = data.options.split(",");
 			let values = [];
 			options += optionsList.map(i => {
+				let checked=``;
 				let token = i.split("|||");
+				if(data.default_select!==null)
+				{
+					let d_select=data.default_select.split(',');
+					if ($.inArray(token[1], d_select) > -1)
+					{
+						checked=`checked`;
+					}
+				}
 				let helmValue = 'multi_drop_down_option_value_' + elementId;
 				let idName = "multi_item_" + token[0];
 				values.push(token[1]);
@@ -901,6 +925,7 @@ function multipleDropDown(id, type, elementId, data = null) {
 				<div class="custom-header p-0">
 					<div class="title">${token[1]}</div>
 					<div class="action">
+						<input type="checkbox" ${checked} name="dropdown_default_option_${id}[]" id="dropdown_default_option_${id}" value="${token[1]}">
 						<button type="button" class="btn btn-link text-dark" onclick="deleteOptions('${idName}','${helmValue}','${token[1]}')">
 						<i class="fas fa-times"></i>
 						</button>

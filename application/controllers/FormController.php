@@ -98,10 +98,12 @@ class FormController extends HexaController
 						$patientObject = (array)$patientResultObject->data;
 
 					}
-
 				}
-
-
+				$resultValueExist=$this->Formmodel->getSectionValueExist($patient_id,$branch_id,$section_id,$value->tb_name);
+				if($is_history==1)
+				{
+					$resultValueExist=0;
+				}
 				//is_traction
 				$data .= '<div id="accordion_' . $section_id . '">
 	<div class="accordion">
@@ -259,7 +261,7 @@ class FormController extends HexaController
 							}elseif($value1->date_position==3)
 							{
 								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',output'.$value1->id.');
-										$(\'#form_field' . $value1->id . '\').attr(\'max\',output);';
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',output'.$value1->id.');';
 							}else if($value1->date_position==4)
 							{
 								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',output'.$value1->id.');';
@@ -283,20 +285,40 @@ class FormController extends HexaController
 					<div class="col-sm-9">
 					<textarea id="form_field' . $value1->id . '" class="form-control"  name="form_field' . $value1->id . '" ' . $validation . '>' . $patientValue . '</textarea></div>';
 					} else if ($value1->ans_type == 3) {
+						$default_selection=array();
+						if($value1->default_select!="" && $value1->default_select!=null)
+						{
+							$default_selection=explode(',',$value1->default_select);
+						}
 						$get_option = $this->Formmodel->get_all_options($value1->id);
 						$option = "<option value=''  selected disabled></option>";
 						$selectedOptions = explode(",", $patientValue);
-
+						$d_select=array();
 						foreach ($get_option as $option_value) {
 							$selected = "";
-							foreach ($selectedOptions as $o_value) {
-								if ($o_value == $option_value->id) {
+							if (count($selectedOptions) > 0) {
+								foreach ($selectedOptions as $o_value) {
+									if ($o_value == $option_value->id) {
+										$selected = "selected";
+										break;
+									}
+								}
+							}
+							if($resultValueExist==0) {
+								if (in_array($option_value->name, $default_selection)) {
 									$selected = "selected";
-									break;
+									array_push($d_select,$option_value->id);
 								}
 							}
 
 							$option .= '<option value="' . $option_value->id . '" ' . $selected . '>' . ucfirst($option_value->name) . '</option>';
+						}
+						if(!empty($d_select))
+						{
+							$d_select=implode(',',$d_select);
+						}
+						else{
+							$d_select="";
 						}
 						$check_dependancy = $this->Formmodel->check_dependancy($value1->name, $section_id);
 
@@ -313,14 +335,21 @@ class FormController extends HexaController
 						$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9 d-flex" >
-					<select class="custom-select" id="form_field' . $value1->id . '"  onchange="' . $onchange . '" name="form_field' . $value1->id . '" ' . $validation . '>
+					<select class="custom-select" id="form_field' . $value1->id . '"  onchange="' . $onchange . '" name="form_field' . $value1->id . '" ' . $validation . ' data-default_select="'.$d_select.'">
 							' . $option . '
 									</select><button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 									<script>$("#form_field' . $value1->id . '").select2()</script></div>';
 					} else if ($value1->ans_type == 4) {
+						$default_selection=array();
+						if($value1->default_select!="" && $value1->default_select!=null)
+						{
+							$default_selection=explode(',',$value1->default_select);
+						}
+
 						$get_option = $this->Formmodel->get_all_options($value1->id);
 						$option = "<option value='' selected disabled></option>";
 						$selectedOptions = explode(",", $patientValue);
+						$d_select=array();
 						if (is_array($get_option)) {
 							foreach ($get_option as $option_value) {
 								$selected = "";
@@ -330,14 +359,26 @@ class FormController extends HexaController
 										break;
 									}
 								}
+								if($resultValueExist==0) {
+									if (in_array($option_value->name, $default_selection)) {
+										$selected = "selected";
+										array_push($d_select,$option_value->id);
+									}
+								}
 								$option .= '<option value="' . $option_value->id . '" ' . $selected . '>' . ucfirst($option_value->name) . '</option>';
 							}
 						}
-
+						if(!empty($d_select))
+						{
+							$d_select=implode(',',$d_select);
+						}
+						else{
+							$d_select="";
+						}
 						$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9">
-					<select class="form-control" multiple id="form_field' . $value1->id . '" name="form_field' . $value1->id . '[]" ' . $validation . '>
+					<select class="form-control" multiple id="form_field' . $value1->id . '" name="form_field' . $value1->id . '[]" ' . $validation . ' data-default_select="'.$d_select.'">
 							' . $option . '
 									</select> <script>$("#form_field' . $value1->id . '").select2()</script></div>';
 					} else if ($value1->ans_type == 7) {
@@ -498,7 +539,7 @@ class FormController extends HexaController
 //    (day<10 ? "0" : "") + day;
 //   var date=output+"T"+time;
 //   document.getElementById("transaction_date' . $section_id . '").min = date;
-					  	let date = app.getDate("' . $now . '")
+					  	 date = app.getDate("' . $now . '")
 					  	$("#transaction_date' . $section_id . '").val(date);
 					  </script>
                     ';
@@ -569,6 +610,17 @@ class FormController extends HexaController
 		if ($getSection->totalCount > 0) {
 			$is_history_on = $getSection->data->is_history;
 		}
+		$response['default_values']='';
+		if($is_history_on==1)
+		{
+			$getSection = $this->Formmodel->_rawQuery('select id,ans_type,default_select from template_master where section_id="'.$form_section_id.'" and status=1 and (default_select is not null and default_select!="")');
+			if($getSection->totalCount>0)
+			{
+				$default_select=$getSection->data;
+				$response['default_values']=$default_select;
+			}
+		}
+
 		$get_data = $this->Formmodel->get_all_data($department_id, $form_section_id);
 		if ($get_data != false) {
 			$data_to_insert = array();
@@ -1247,10 +1299,10 @@ class FormController extends HexaController
 					<div class="col-sm-9">
 					<textarea id="u_form_field' . $value1->id . '" class="form-control"  name="u_form_field' . $value1->id . '" ' . $validation . '>' . $patientValue . '</textarea></div>';
 						} else if ($value1->ans_type == 3) {
+
 							$get_option = $this->Formmodel->get_all_options($value1->id);
 							$option = "<option value=''  disabled></option>";
 							$selectedOptions = explode(",", $patientValue);
-
 
 							foreach ($get_option as $option_value) {
 								$selected = "";

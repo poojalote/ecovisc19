@@ -15,6 +15,10 @@ function save_form_data(form) {
 				$("#history_btn_"+section_id).click();
 				$('#data_form_'+section_id)[0].reset();
 				$('#data_form_'+section_id+' .custom-select').val(null).trigger("change");
+				if(result['default_values']!="")
+				{
+					setDefaultvalues(section_id,result['default_values']);
+				}
 			}
 		} else {
 			app.errorToast("Failed To Save Data")
@@ -150,4 +154,29 @@ function is_transfer_fun(id){
 	}else{
 		$("#transfer_section").hide();
 	}
+}
+// set default values of field
+function setDefaultvalues(section_id,data) {
+	$.each(data, function(i,dItem){
+	// data.map(dItem => {
+		if(dItem.ans_type==3)
+		{
+			let oldSelect=$("#form_field"+dItem.id);
+			let newValue=oldSelect.data('default_select');
+			$("#form_field"+dItem.id).val(newValue).trigger('change');
+		}
+		if(dItem.ans_type==4)
+		{
+			let oldSelect1=$("#form_field"+dItem.id);
+			let newValue1=oldSelect1.data('default_select');
+			let defaults='';
+			if(typeof newValue1 == "string" && newValue1.indexOf(',') > -1){
+				defaults=newValue1.split(',');
+			}
+			else {
+				defaults=newValue1;
+			}
+			$("#form_field"+dItem.id).val(defaults).trigger('change');
+		}
+	})
 }
