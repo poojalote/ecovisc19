@@ -191,7 +191,7 @@ if (isset($this->session->user_session)) {
 			</a>
 			<a href="<?php echo base_url(); ?>company/admit"
 			   style="<?php echo $this->uri->segment(3) == 'prescription_master' ? 'color: white;text-decoration: none;' : 'color: black;text-decoration: none;'; ?>">
-				<li class="menu-header mt-2 <?php echo $this->uri->segment(3) == 'admit' ? 'menu-header_section active' : 'menu-header_section1'; ?>"
+				<li class="menu-header mt-2 <?php echo $this->uri->segment(2) == 'admit' ? 'menu-header_section active' : 'menu-header_section1'; ?>"
 					style="">
 					Readmit Patients
 				</li>
