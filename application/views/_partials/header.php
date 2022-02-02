@@ -146,7 +146,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <?php
-    } elseif ($this->uri->segment(2) == "view_companies") { ?>
+    } elseif ($this->uri->segment(2) == "admit" || $this->uri->segment(3) == "admit" ) { ?>
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/datatables/datatables.min.css">
+		<link rel="stylesheet"
+			  href="<?php echo base_url(); ?>assets/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet"
+			  href="<?php echo base_url(); ?>assets/modules/datatables/Select-1.2.4/css/select.bootstrap4.min.css">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
+		<?php
+	}
+    elseif ($this->uri->segment(2) == "view_companies") { ?>
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/izitoast/css/iziToast.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/modules/select2/dist/css/select2.min.css">
         <?php
@@ -725,6 +735,10 @@ if ($this->uri->segment(1) == "company" && $this->uri->segment(3) == "hospital_o
     // $this->load->view('_partials/layout_2');
     $this->load->view('_partials/company_sidebar');
 }
+if ($this->uri->segment(1) == "company" && $this->uri->segment(2) == "admit") {
+	$this->load->view('_partials/company_sidebar');
+}
+
 if ($this->uri->segment(1) == "radiologySampleCollection") {
     $this->load->view('_partials/layout_2');
     $this->load->view('_partials/left_sidebar');
