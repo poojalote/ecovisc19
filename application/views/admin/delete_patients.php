@@ -162,8 +162,17 @@ $branch_id = $this->session->user_session->branch_id;
 
 	function delPatient(id) {
 		if (confirm('Are you sure you want to delete this?')) {
-			var branch_id = $('#branches').val();
-			var type = $('#type').val();
+			var role = $('#roles').val();
+			var user_type = $('#user_type').val();
+			let branch_id = "";
+			let type = "";
+			if (role == 2 && user_type == 3) {
+				branch_id = $('#branch_id').val();
+				type = $('#type1').val();
+			} else {
+				branch_id = $('#branches').val();
+				type = $('#type').val();
+			}
 			let formdata = new FormData();
 			formdata.set('patient_id', id);
 			formdata.set('branch_id', branch_id);
@@ -181,7 +190,17 @@ $branch_id = $this->session->user_session->branch_id;
 
 	function readmit(id) {
 		if (confirm('Are you sure you want to re-admit this?')) {
-			var branch_id = $('#branches').val();
+			var role = $('#roles').val();
+			var user_type = $('#user_type').val();
+			let branch_id = "";
+			let type = "";
+			if (role == 2 && user_type == 3) {
+				branch_id = $('#branch_id').val();
+				type = $('#type1').val();
+			} else {
+				branch_id = $('#branches').val();
+				type = $('#type').val();
+			}
 			let formdata = new FormData();
 			formdata.set('patient_id', id);
 			formdata.set('branch_id', branch_id);
