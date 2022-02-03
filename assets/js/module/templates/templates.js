@@ -236,7 +236,7 @@ function fetchSection(department_id) {
 
 // save form
 function uploadSection(form) {
-	document.getElementById("templateFornBtn").disabled = false;
+	document.getElementById("templateFornBtn").disabled = true;
 	let formData = new FormData(form);
 	app.request("save_template", formData).then(response => {
 		if (response.status === 200) {

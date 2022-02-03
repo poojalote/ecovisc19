@@ -114,7 +114,7 @@ class formmodel extends MasterModel
 
 	public function history_data($table_name, $where)
 	{
-		return $this->db->select("*")->where($where)->order_by("Date(trans_date)","desc")->get($table_name)->result();
+		return $this->db->select("*")->where($where)->order_by("trans_date","desc")->get($table_name)->result();
 //		return $this->_select($table_name, $where, "*", false);
 	}
 

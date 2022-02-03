@@ -241,11 +241,11 @@ if (is_null($user_permission_array)) {
 						<div class="card-body px-1">
 							<section>
 								<input type="hidden" id="department_id" name="department_id"
-									   value="20">
+									   value="">
 								<input type="hidden" id="section_id" name="section_id"
-									   value="101">
+									   value="">
 								<input type="hidden" id="queryparameter_hidden" name="queryparameter_hidden"
-									   value="eyJicmFuY2hfaWQiOiIyIn0=">
+									   value="">
 								<div class="tabs tabs-style-underline">
 									<nav>
 
