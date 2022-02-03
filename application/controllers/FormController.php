@@ -249,22 +249,26 @@ class FormController extends HexaController
 							var dt_'.$value1->id.' = new Date();   
    							var month'.$value1->id.' = dt_'.$value1->id.'.getMonth()+1;
 							var day'.$value1->id.' = dt_'.$value1->id.'.getDate();
-							 var hour'.$value1->id.' = dt_'.$value1->id.'.getHours().toString().padStart(2, "0");
-							var minute'.$value1->id.' = dt_'.$value1->id.'.getMinutes().toString().padStart(2, "0");
+							 var hour'.$value1->id.' = "00";
+							var minute'.$value1->id.' = "00";
 							var output'.$value1->id.' = dt_'.$value1->id.'.getFullYear() + "-" +
 							(month'.$value1->id.'<10 ? "0" : "") + month'.$value1->id.' + "-" +
-							(day'.$value1->id.'<10 ? "0" : "") + day'.$value1->id.'+"T"+(hour'.$value1->id.')+":"+(minute'.$value1->id.');console.log(output'.$value1->id.');';
+							(day'.$value1->id.'<10 ? "0" : "") + day'.$value1->id.';console.log(output'.$value1->id.');
+							var minoutput'.$value1->id.'= output'.$value1->id.' +"T"+(hour'.$value1->id.')+":"+(minute'.$value1->id.');
+							var maxoutput'.$value1->id.'= output'.$value1->id.' +"T23:59";';
+
 							if($value1->date_position==2)
 							{
+
 								$isDate.='
-										$(\'#form_field' . $value1->id . '\').attr(\'max\',output'.$value1->id.');';
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',maxoutput'.$value1->id.');';
 							}elseif($value1->date_position==3)
 							{
-								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',output'.$value1->id.');
-										$(\'#form_field' . $value1->id . '\').attr(\'max\',output'.$value1->id.');';
+								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',minoutput'.$value1->id.');
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',maxoutput'.$value1->id.');';
 							}else if($value1->date_position==4)
 							{
-								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',output'.$value1->id.');';
+								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',minoutput'.$value1->id.');';
 							}
 							$isDate.='</script>';
 						}
@@ -760,7 +764,7 @@ class FormController extends HexaController
 		echo json_encode($response);
 	}
 
-	public function get_history_data()
+	public function get_history_data1()
 	{
 		$table_name = $this->input->post('table_name');
 		$patient_id = $this->input->post('patient_id');
@@ -852,6 +856,156 @@ class FormController extends HexaController
 					if ($count == 1) {
 						$data .= "<tr>";
 						$data .= $td;
+						$data .= "<td>" . date('d/m H:i:a', strtotime($row['trans_date'])) . "</td>";
+						$data .= "<td>" . $edit_btn . "</td>";
+						$data .= "</tr>";
+						array_push($transArray, date('jS M H:i:a', strtotime($row['trans_date'])));
+					}
+
+				}
+			}
+			$data .= "</tbody></table>";
+		}
+
+		$response["table"] = $data;
+		$response["label"] = $labelArray;
+		$response["trans"] = $transArray;
+		$response["data"] = $dataArray;
+
+		echo json_encode($response);
+	}
+	public function get_history_data()
+	{
+		$table_name = $this->input->post('table_name');
+		$patient_id = $this->input->post('patient_id');
+		$section_id = $this->input->post('section_id');
+		$BloodInvestigationId = $this->input->post('BloodInvestigationId');
+		$branch_id = $this->session->user_session->branch_id;
+		$resultTemplateObject = $this->Formmodel->getHistoryTableColumn($section_id);
+		$labelArray = array();
+		$dataArray = array();
+		$transArray = array();
+		$data = "";
+		$optionsValue = array();
+		if ($resultTemplateObject->totalCount > 0) {
+			$data = "<table class='table table-responsive' style='width:100%' id='history_table_" . $section_id . "'><thead>";
+			foreach ($resultTemplateObject->data as $column) {
+				$data .= "<th>" . $column->name . "</th>";
+				if ((int)$column->ans_type == 3) {
+					$options = $this->Formmodel->get_all_options($column->id);
+					if (is_array($options)) {
+						$optionsValue[$column->field_name] = $options;
+					}
+				}
+				if ((int)$column->ans_type == 4) {
+					$options = $this->Formmodel->get_all_options($column->id);
+					if (is_array($options)) {
+						$optionsValue[$column->field_name] = $options;
+					}
+				}
+
+				if ((int)$column->ans_type == 6) {
+					array_push($labelArray, $column->name);
+				}
+			}
+			$totalColumn = count($resultTemplateObject->data);
+			$response["transColumnIndex"] = $totalColumn;
+			$response["dd"] = $resultTemplateObject->data;
+			if ($section_id == 43 || $section_id == 45) {
+				$data .= "<th>Total</th>";
+			}
+			$data .= "<th>Date</th><th>Action</th>";
+			$data .= "</thead><tbody>";
+			$w_arr = array("patient_id" => $patient_id, "branch_id" => $branch_id);
+			if ($section_id == 48) {
+				$w_arr['blood_transfusion_id'] = $BloodInvestigationId;
+			}
+			$resultObject = $this->Formmodel->history_data($table_name, $w_arr);
+			$response["query"] = $this->db->last_query();
+			// print_r($resultObject);exit();
+			$total_section43 = 0;
+			if (count($resultObject) > 0) {
+				foreach ($resultObject as $recordIndex => $record) {
+					$row = (array)$record;
+					$td = "";
+					$count = 0;
+					foreach ($resultTemplateObject->data as $column) {
+						$value = $row[$column->field_name];
+						if ((int)$column->ans_type == 7) {
+							if ($row[$column->field_name] != "" && $row[$column->field_name] != null)
+								$value = '<a href="' . base_url($row[$column->field_name]) . '" class="btn btn-link" download><i class="fa fa-download"></i> Download</a>';
+						}
+
+						if ((int)$column->ans_type == 4) {
+							$multi_op = array();
+							$option = $optionsValue[$column->field_name];
+							if (is_array($option)) {
+								foreach ($option as $optionValues) {
+									$value1 = explode(',', $value);
+									if (!empty($value1)) {
+										foreach ($value1 as $key_value) {
+
+											if ($optionValues->id == $key_value) {
+												array_push($multi_op, $optionValues->name);
+
+											}
+										}
+
+									}
+
+
+								}
+								if (!empty($multi_op)) {
+									$value = implode(',', $multi_op);
+								}
+							}
+
+						}
+
+						if ((int)$column->ans_type == 3) {
+							$option = $optionsValue[$column->field_name];
+							if (is_array($option)) {
+								foreach ($option as $optionValues) {
+									if ($optionValues->id == $value) {
+										$value = $optionValues->name;
+										break;
+									}
+								}
+							}
+						}
+						if ($value != "" && $value != null) {
+							$td .= "<td>" . $value . "</td>";
+							if ($section_id == 43) {
+								$total_section43 = $total_section43 + $value;
+							}
+							if ($section_id == 45) {
+
+								$expp = explode(" ", $value);
+								if (count($expp) >= 2) {
+									$total_section43 = $total_section43 + $expp[0];
+								}
+
+							}
+							$dataArray[$column->name][date('jS M H:i:a', strtotime($row['trans_date']))] = $row[$column->field_name];
+							$count = 1;
+						} else {
+							$td .= "<td></td>";
+						}
+					}
+					$edit_btn = '';
+					$permission_array = $this->session->user_permission;
+					if (in_array("history_update", $permission_array)) {
+						$edit_btn = "<button class='btn btn-primary btn-sm' data-toggle='modal' data-target='#editHistoryModal'  data-patient_id='" . $patient_id . "' data-section_id='" . $section_id . "' data-history_id='" . $record->id . "' id='editSectionButton_" . $section_id . "'><i class='fa fa-edit'></i></button>";
+					} else {
+						//$edit_btn="<button class='btn btn-primary btn-sm'id='editSectionButton_" . $section_id . "' disabled><i class='fa fa-edit'></i></button>";
+					}
+					if ($count == 1) {
+						$data .= "<tr>";
+						$data .= $td;
+						if ($section_id == 43 || $section_id == 45) {
+							$data .= "<td>" . $total_section43 . "</td>";
+						}
+
 						$data .= "<td>" . date('d/m H:i:a', strtotime($row['trans_date'])) . "</td>";
 						$data .= "<td>" . $edit_btn . "</td>";
 						$data .= "</tr>";
@@ -1255,22 +1409,24 @@ class FormController extends HexaController
 							var dt_'.$dateCnt.' = new Date();   
    							var month'.$dateCnt.' = dt_'.$dateCnt.'.getMonth()+1;
 							var day'.$dateCnt.' = dt_'.$dateCnt.'.getDate();
-							 var hour'.$dateCnt.' = dt_'.$dateCnt.'.getHours().toString().padStart(2, "0");
-							var minute'.$dateCnt.' = dt_'.$dateCnt.'.getMinutes().toString().padStart(2, "0");
+							 var hour'.$dateCnt.' = "00";
+							var minute'.$dateCnt.' = "00";
 							var output'.$dateCnt.' = dt_'.$dateCnt.'.getFullYear() + "-" +
 							(month'.$dateCnt.'<10 ? "0" : "") + month'.$dateCnt.' + "-" +
-							(day'.$dateCnt.'<10 ? "0" : "") + day'.$dateCnt.'+"T"+(hour'.$dateCnt.')+":"+(minute'.$dateCnt.');console.log(output'.$dateCnt.');';
+							(day'.$dateCnt.'<10 ? "0" : "") + day'.$dateCnt.';console.log(output'.$dateCnt.');
+							var minoutput'.$dateCnt.'= output'.$dateCnt.' +"T"+(hour'.$dateCnt.')+":"+(minute'.$dateCnt.');
+							var maxoutput'.$dateCnt.'= output'.$dateCnt.' +"T23:59";';
 								if($value1->date_position==2)
 								{
 									$isDate.='
-										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',output'.$dateCnt.');';
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',maxoutput'.$dateCnt.');';
 								}elseif($value1->date_position==3)
 								{
-									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',output'.$dateCnt.');
-										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',output);';
+									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',minoutput'.$dateCnt.');
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',maxoutput);';
 								}else if($value1->date_position==4)
 								{
-									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',output'.$dateCnt.');';
+									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',minoutput'.$dateCnt.');';
 								}
 								$isDate.='</script>';
 							}
