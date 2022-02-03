@@ -1423,7 +1423,7 @@ class FormController extends HexaController
 								}elseif($value1->date_position==3)
 								{
 									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',minoutput'.$dateCnt.');
-										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',maxoutput);';
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',maxoutput'.$dateCnt.');';
 								}else if($value1->date_position==4)
 								{
 									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',minoutput'.$dateCnt.');';
