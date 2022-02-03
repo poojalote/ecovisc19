@@ -1459,8 +1459,9 @@ class ServiceOrderController extends HexaController
 					} else {
 						$input_data = "";
 					}
+					$serviceIDSNEW=implode(",",$SampleCollectionPathService);
 					$dataNewTable=array(
-						"service_ids"=>$this->input->post('PserviceIDS'),
+						"service_ids"=>$serviceIDSNEW,
 						"patient_id"=>$patient_id,
 						"branch_id"=>$branch_id,
 						"file_uploaded"=>$input_data,
