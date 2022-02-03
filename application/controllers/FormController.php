@@ -99,10 +99,9 @@ class FormController extends HexaController
 
 					}
 				}
-				$resultValueExist=$this->Formmodel->getSectionValueExist($patient_id,$branch_id,$section_id,$value->tb_name);
-				if($is_history==1)
-				{
-					$resultValueExist=0;
+				$resultValueExist = $this->Formmodel->getSectionValueExist($patient_id, $branch_id, $section_id, $value->tb_name);
+				if ($is_history == 1) {
+					$resultValueExist = 0;
 				}
 				//is_traction
 				$data .= '<div id="accordion_' . $section_id . '">
@@ -219,58 +218,50 @@ class FormController extends HexaController
 					<input type="number" class="form-control"id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '" ' . $validation . ' /></div>';
 					} else if ($value1->ans_type == 5) {
 
-						if($value1->date_type==2)
-						{
-							$dtype='date';
+						if ($value1->date_type == 2) {
+							$dtype = 'date';
 							$isDate = '<script language="javascript">
-										var today'.$value1->id.' = new Date();
-										var dd'.$value1->id.' = String(today'.$value1->id.'.getDate()).padStart(2, \'0\');
-										var mm'.$value1->id.' = String(today'.$value1->id.'.getMonth() + 1).padStart(2, \'0\');
-										var yyyy'.$value1->id.' = today'.$value1->id.'.getFullYear();
-										today'.$value1->id.' = yyyy'.$value1->id.' + \'-\' + mm'.$value1->id.' + \'-\' + dd'.$value1->id.';';
-							if($value1->date_position==2)
-							{
-								$isDate.='
-										$(\'#form_field' . $value1->id . '\').attr(\'max\',today'.$value1->id.');';
-							}elseif($value1->date_position==3)
-							{
-								$isDate.='	$(\'#form_field' . $value1->id . '\').attr(\'min\',today'.$value1->id.');
-										$(\'#form_field' . $value1->id . '\').attr(\'max\',today'.$value1->id.');';
-							}else if($value1->date_position==4)
-							{
-								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',today'.$value1->id.');
+										var today' . $value1->id . ' = new Date();
+										var dd' . $value1->id . ' = String(today' . $value1->id . '.getDate()).padStart(2, \'0\');
+										var mm' . $value1->id . ' = String(today' . $value1->id . '.getMonth() + 1).padStart(2, \'0\');
+										var yyyy' . $value1->id . ' = today' . $value1->id . '.getFullYear();
+										today' . $value1->id . ' = yyyy' . $value1->id . ' + \'-\' + mm' . $value1->id . ' + \'-\' + dd' . $value1->id . ';';
+							if ($value1->date_position == 2) {
+								$isDate .= '
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',today' . $value1->id . ');';
+							} elseif ($value1->date_position == 3) {
+								$isDate .= '	$(\'#form_field' . $value1->id . '\').attr(\'min\',today' . $value1->id . ');
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',today' . $value1->id . ');';
+							} else if ($value1->date_position == 4) {
+								$isDate .= '$(\'#form_field' . $value1->id . '\').attr(\'min\',today' . $value1->id . ');
 										';
 							}
-							$isDate.='</script>';
-						}
-						else{
-							$dtype='datetime-local';
+							$isDate .= '</script>';
+						} else {
+							$dtype = 'datetime-local';
 							$isDate = '<script>
-							var dt_'.$value1->id.' = new Date();   
-   							var month'.$value1->id.' = dt_'.$value1->id.'.getMonth()+1;
-							var day'.$value1->id.' = dt_'.$value1->id.'.getDate();
-							 var hour'.$value1->id.' = "00";
-							var minute'.$value1->id.' = "00";
-							var output'.$value1->id.' = dt_'.$value1->id.'.getFullYear() + "-" +
-							(month'.$value1->id.'<10 ? "0" : "") + month'.$value1->id.' + "-" +
-							(day'.$value1->id.'<10 ? "0" : "") + day'.$value1->id.';console.log(output'.$value1->id.');
-							var minoutput'.$value1->id.'= output'.$value1->id.' +"T"+(hour'.$value1->id.')+":"+(minute'.$value1->id.');
-							var maxoutput'.$value1->id.'= output'.$value1->id.' +"T23:59";';
+							var dt_' . $value1->id . ' = new Date();   
+   							var month' . $value1->id . ' = dt_' . $value1->id . '.getMonth()+1;
+							var day' . $value1->id . ' = dt_' . $value1->id . '.getDate();
+							 var hour' . $value1->id . ' = "00";
+							var minute' . $value1->id . ' = "00";
+							var output' . $value1->id . ' = dt_' . $value1->id . '.getFullYear() + "-" +
+							(month' . $value1->id . '<10 ? "0" : "") + month' . $value1->id . ' + "-" +
+							(day' . $value1->id . '<10 ? "0" : "") + day' . $value1->id . ';console.log(output' . $value1->id . ');
+							var minoutput' . $value1->id . '= output' . $value1->id . ' +"T"+(hour' . $value1->id . ')+":"+(minute' . $value1->id . ');
+							var maxoutput' . $value1->id . '= output' . $value1->id . ' +"T23:59";';
 
-							if($value1->date_position==2)
-							{
+							if ($value1->date_position == 2) {
 
-								$isDate.='
-										$(\'#form_field' . $value1->id . '\').attr(\'max\',maxoutput'.$value1->id.');';
-							}elseif($value1->date_position==3)
-							{
-								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',minoutput'.$value1->id.');
-										$(\'#form_field' . $value1->id . '\').attr(\'max\',maxoutput'.$value1->id.');';
-							}else if($value1->date_position==4)
-							{
-								$isDate.='$(\'#form_field' . $value1->id . '\').attr(\'min\',minoutput'.$value1->id.');';
+								$isDate .= '
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',maxoutput' . $value1->id . ');';
+							} elseif ($value1->date_position == 3) {
+								$isDate .= '$(\'#form_field' . $value1->id . '\').attr(\'min\',minoutput' . $value1->id . ');
+										$(\'#form_field' . $value1->id . '\').attr(\'max\',maxoutput' . $value1->id . ');';
+							} else if ($value1->date_position == 4) {
+								$isDate .= '$(\'#form_field' . $value1->id . '\').attr(\'min\',minoutput' . $value1->id . ');';
 							}
-							$isDate.='</script>';
+							$isDate .= '</script>';
 						}
 
 						if ((int)$value1->id == 83 || (int)$value1->id == 17 || (int)$value1->id == 258 || (int)$value1->id == 364) {
@@ -279,7 +270,7 @@ class FormController extends HexaController
 						$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9 d-flex">
-					<input type="'.$dtype.'" class="form-control" id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
+					<input type="' . $dtype . '" class="form-control" id="form_field' . $value1->id . '" value="' . $patientValue . '" name="form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
 					' . $isDate . '
 					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 					</div>';
@@ -289,15 +280,14 @@ class FormController extends HexaController
 					<div class="col-sm-9">
 					<textarea id="form_field' . $value1->id . '" class="form-control"  name="form_field' . $value1->id . '" ' . $validation . '>' . $patientValue . '</textarea></div>';
 					} else if ($value1->ans_type == 3) {
-						$default_selection=array();
-						if($value1->default_select!="" && $value1->default_select!=null)
-						{
-							$default_selection=explode(',',$value1->default_select);
+						$default_selection = array();
+						if ($value1->default_select != "" && $value1->default_select != null) {
+							$default_selection = explode(',', $value1->default_select);
 						}
 						$get_option = $this->Formmodel->get_all_options($value1->id);
 						$option = "<option value=''  selected disabled></option>";
 						$selectedOptions = explode(",", $patientValue);
-						$d_select=array();
+						$d_select = array();
 						foreach ($get_option as $option_value) {
 							$selected = "";
 							if (count($selectedOptions) > 0) {
@@ -308,21 +298,19 @@ class FormController extends HexaController
 									}
 								}
 							}
-							if($resultValueExist==0) {
+							if ($resultValueExist == 0) {
 								if (in_array($option_value->name, $default_selection)) {
 									$selected = "selected";
-									array_push($d_select,$option_value->id);
+									array_push($d_select, $option_value->id);
 								}
 							}
 
 							$option .= '<option value="' . $option_value->id . '" ' . $selected . '>' . ucfirst($option_value->name) . '</option>';
 						}
-						if(!empty($d_select))
-						{
-							$d_select=implode(',',$d_select);
-						}
-						else{
-							$d_select="";
+						if (!empty($d_select)) {
+							$d_select = implode(',', $d_select);
+						} else {
+							$d_select = "";
 						}
 						$check_dependancy = $this->Formmodel->check_dependancy($value1->name, $section_id);
 
@@ -339,21 +327,20 @@ class FormController extends HexaController
 						$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9 d-flex" >
-					<select class="custom-select" id="form_field' . $value1->id . '"  onchange="' . $onchange . '" name="form_field' . $value1->id . '" ' . $validation . ' data-default_select="'.$d_select.'">
+					<select class="custom-select" id="form_field' . $value1->id . '"  onchange="' . $onchange . '" name="form_field' . $value1->id . '" ' . $validation . ' data-default_select="' . $d_select . '">
 							' . $option . '
 									</select><button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 									<script>$("#form_field' . $value1->id . '").select2()</script></div>';
 					} else if ($value1->ans_type == 4) {
-						$default_selection=array();
-						if($value1->default_select!="" && $value1->default_select!=null)
-						{
-							$default_selection=explode(',',$value1->default_select);
+						$default_selection = array();
+						if ($value1->default_select != "" && $value1->default_select != null) {
+							$default_selection = explode(',', $value1->default_select);
 						}
 
 						$get_option = $this->Formmodel->get_all_options($value1->id);
 						$option = "<option value='' selected disabled></option>";
 						$selectedOptions = explode(",", $patientValue);
-						$d_select=array();
+						$d_select = array();
 						if (is_array($get_option)) {
 							foreach ($get_option as $option_value) {
 								$selected = "";
@@ -363,26 +350,24 @@ class FormController extends HexaController
 										break;
 									}
 								}
-								if($resultValueExist==0) {
+								if ($resultValueExist == 0) {
 									if (in_array($option_value->name, $default_selection)) {
 										$selected = "selected";
-										array_push($d_select,$option_value->id);
+										array_push($d_select, $option_value->id);
 									}
 								}
 								$option .= '<option value="' . $option_value->id . '" ' . $selected . '>' . ucfirst($option_value->name) . '</option>';
 							}
 						}
-						if(!empty($d_select))
-						{
-							$d_select=implode(',',$d_select);
-						}
-						else{
-							$d_select="";
+						if (!empty($d_select)) {
+							$d_select = implode(',', $d_select);
+						} else {
+							$d_select = "";
 						}
 						$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9">
-					<select class="form-control" multiple id="form_field' . $value1->id . '" name="form_field' . $value1->id . '[]" ' . $validation . ' data-default_select="'.$d_select.'">
+					<select class="form-control" multiple id="form_field' . $value1->id . '" name="form_field' . $value1->id . '[]" ' . $validation . ' data-default_select="' . $d_select . '">
 							' . $option . '
 									</select> <script>$("#form_field' . $value1->id . '").select2()</script></div>';
 					} else if ($value1->ans_type == 7) {
@@ -614,14 +599,12 @@ class FormController extends HexaController
 		if ($getSection->totalCount > 0) {
 			$is_history_on = $getSection->data->is_history;
 		}
-		$response['default_values']='';
-		if($is_history_on==1)
-		{
-			$getSection = $this->Formmodel->_rawQuery('select id,ans_type,default_select from template_master where section_id="'.$form_section_id.'" and status=1 and (default_select is not null and default_select!="")');
-			if($getSection->totalCount>0)
-			{
-				$default_select=$getSection->data;
-				$response['default_values']=$default_select;
+		$response['default_values'] = '';
+		if ($is_history_on == 1) {
+			$getSection = $this->Formmodel->_rawQuery('select id,ans_type,default_select from template_master where section_id="' . $form_section_id . '" and status=1 and (default_select is not null and default_select!="")');
+			if ($getSection->totalCount > 0) {
+				$default_select = $getSection->data;
+				$response['default_values'] = $default_select;
 			}
 		}
 
@@ -874,6 +857,7 @@ class FormController extends HexaController
 
 		echo json_encode($response);
 	}
+
 	public function get_history_data()
 	{
 		$table_name = $this->input->post('table_name');
@@ -1277,7 +1261,7 @@ class FormController extends HexaController
 				$patientResultObject = null;
 				$patientObject = null;
 				$active = 0;
-				$dateCnt=1;
+				$dateCnt = 1;
 				foreach ($query as $value) {
 					// print_r($value);exit();
 					$activePanel = "show";
@@ -1378,63 +1362,55 @@ class FormController extends HexaController
 					<div class="col-sm-9">
 					<input type="number" class="form-control"id="u_form_field' . $value1->id . '" value="' . $patientValue . '" name="u_form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '" ' . $validation . ' /></div>';
 						} else if ($value1->ans_type == 5) {
-							if($value1->date_type==2)
-							{
-								$dtype='date';
+							if ($value1->date_type == 2) {
+								$dtype = 'date';
 								$isDate = '<script language="javascript">
-										var today'.$dateCnt.' = new Date();
-										var dd'.$dateCnt.' = String(today'.$dateCnt.'.getDate()).padStart(2, \'0\');
-										var mm'.$dateCnt.' = String(today'.$dateCnt.'.getMonth() + 1).padStart(2, \'0\');
-										var yyyy'.$dateCnt.' = today'.$dateCnt.'.getFullYear();
+										var today' . $dateCnt . ' = new Date();
+										var dd' . $dateCnt . ' = String(today' . $dateCnt . '.getDate()).padStart(2, \'0\');
+										var mm' . $dateCnt . ' = String(today' . $dateCnt . '.getMonth() + 1).padStart(2, \'0\');
+										var yyyy' . $dateCnt . ' = today' . $dateCnt . '.getFullYear();
 								
-										today'.$dateCnt.' = yyyy'.$dateCnt.' + \'-\' + mm'.$dateCnt.' + \'-\' + dd'.$dateCnt.';';
-								if($value1->date_position==2)
-								{
-									$isDate.='
-										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',today'.$dateCnt.');';
-								}elseif($value1->date_position==3)
-								{
-									$isDate.='	$(\'#u_form_field' . $value1->id . '\').attr(\'min\',today'.$dateCnt.');
-										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',today'.$dateCnt.');';
-								}else if($value1->date_position==4)
-								{
-									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',today'.$dateCnt.');
+										today' . $dateCnt . ' = yyyy' . $dateCnt . ' + \'-\' + mm' . $dateCnt . ' + \'-\' + dd' . $dateCnt . ';';
+								if ($value1->date_position == 2) {
+									$isDate .= '
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',today' . $dateCnt . ');';
+								} elseif ($value1->date_position == 3) {
+									$isDate .= '	$(\'#u_form_field' . $value1->id . '\').attr(\'min\',today' . $dateCnt . ');
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',today' . $dateCnt . ');';
+								} else if ($value1->date_position == 4) {
+									$isDate .= '$(\'#u_form_field' . $value1->id . '\').attr(\'min\',today' . $dateCnt . ');
 										';
 								}
-								$isDate.='</script>';
-							}
-							else{
-								$dtype='datetime-local';
+								$isDate .= '</script>';
+							} else {
+								$dtype = 'datetime-local';
 								$isDate = '<script>
-							var dt_'.$dateCnt.' = new Date();   
-   							var month'.$dateCnt.' = dt_'.$dateCnt.'.getMonth()+1;
-							var day'.$dateCnt.' = dt_'.$dateCnt.'.getDate();
-							 var hour'.$dateCnt.' = "00";
-							var minute'.$dateCnt.' = "00";
-							var output'.$dateCnt.' = dt_'.$dateCnt.'.getFullYear() + "-" +
-							(month'.$dateCnt.'<10 ? "0" : "") + month'.$dateCnt.' + "-" +
-							(day'.$dateCnt.'<10 ? "0" : "") + day'.$dateCnt.';console.log(output'.$dateCnt.');
-							var minoutput'.$dateCnt.'= output'.$dateCnt.' +"T"+(hour'.$dateCnt.')+":"+(minute'.$dateCnt.');
-							var maxoutput'.$dateCnt.'= output'.$dateCnt.' +"T23:59";';
-								if($value1->date_position==2)
-								{
-									$isDate.='
-										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',maxoutput'.$dateCnt.');';
-								}elseif($value1->date_position==3)
-								{
-									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',minoutput'.$dateCnt.');
-										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',maxoutput'.$dateCnt.');';
-								}else if($value1->date_position==4)
-								{
-									$isDate.='$(\'#u_form_field' . $value1->id . '\').attr(\'min\',minoutput'.$dateCnt.');';
+							var dt_' . $dateCnt . ' = new Date();   
+   							var month' . $dateCnt . ' = dt_' . $dateCnt . '.getMonth()+1;
+							var day' . $dateCnt . ' = dt_' . $dateCnt . '.getDate();
+							 var hour' . $dateCnt . ' = "00";
+							var minute' . $dateCnt . ' = "00";
+							var output' . $dateCnt . ' = dt_' . $dateCnt . '.getFullYear() + "-" +
+							(month' . $dateCnt . '<10 ? "0" : "") + month' . $dateCnt . ' + "-" +
+							(day' . $dateCnt . '<10 ? "0" : "") + day' . $dateCnt . ';console.log(output' . $dateCnt . ');
+							var minoutput' . $dateCnt . '= output' . $dateCnt . ' +"T"+(hour' . $dateCnt . ')+":"+(minute' . $dateCnt . ');
+							var maxoutput' . $dateCnt . '= output' . $dateCnt . ' +"T23:59";';
+								if ($value1->date_position == 2) {
+									$isDate .= '
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',maxoutput' . $dateCnt . ');';
+								} elseif ($value1->date_position == 3) {
+									$isDate .= '$(\'#u_form_field' . $value1->id . '\').attr(\'min\',minoutput' . $dateCnt . ');
+										$(\'#u_form_field' . $value1->id . '\').attr(\'max\',maxoutput' . $dateCnt . ');';
+								} else if ($value1->date_position == 4) {
+									$isDate .= '$(\'#u_form_field' . $value1->id . '\').attr(\'min\',minoutput' . $dateCnt . ');';
 								}
-								$isDate.='</script>';
+								$isDate .= '</script>';
 							}
 							$field = '
 					<label class="col-sm-3 col-form-label font-weight-bold"  style="font-size: medium; color: brown;">' . $value1->name . '</label>
 					<div class="col-sm-9 d-flex">
-					<input type="'.$dtype.'" class="form-control" id="u_form_field' . $value1->id . '" value="' . $patientValue . '" name="u_form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
-					'.$isDate.'
+					<input type="' . $dtype . '" class="form-control" id="u_form_field' . $value1->id . '" value="' . $patientValue . '" name="u_form_field' . $value1->id . '" placeholder="' . $value1->placeholder . '"  ' . $validation . ' />
+					' . $isDate . '
 					<button type="button" class="btn btn-link btn-sm" style="color: #891635d9 !important" onclick="clearElementValue(\'u_form_field' . $value1->id . '\',' . $value1->ans_type . ')">X</button>
 					<script>
 //						var dt = new Date();
