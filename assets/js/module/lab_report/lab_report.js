@@ -264,6 +264,7 @@ function loadGraph(records, lable, transDate) {
 
 function UpdatePathologyFile(id, p_id) {
 	$("#ListPathologyServicesModal").modal('show');
+	$("#service_Path_file").val('');
 	var forminputs = `<input type="hidden" id="pathology_id" name="pathology_id" value="${id}">
 					<input type="hidden" id="patient_id" name="patient_id" value="${p_id}">`;
 	$("#PathologyServiceList").append(forminputs);
