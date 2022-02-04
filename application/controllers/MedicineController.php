@@ -245,11 +245,10 @@ class medicineController extends HexaController
 								array_push($iterationDoes, $obj);
 							}
 						}
-						$doesObject->confirm_status="";
-						$doesObject->order_status="";
-						$doesObject->alt_medicine="";
-						if($item->order_status!=null && $item->order_status!="")
-						{
+						$doesObject->confirm_status = "";
+						$doesObject->order_status = "";
+						$doesObject->alt_medicine = "";
+						if ($item->order_status != null && $item->order_status != "") {
 							$order_status_onArray = explode('||', $item->order_status);
 							if (count($order_status_onArray) > 2) {
 								$doesObject->confirm_status = $order_status_onArray[0];
@@ -257,7 +256,7 @@ class medicineController extends HexaController
 								$doesObject->alt_medicine = $order_status_onArray[2];
 							}
 						}
-						
+
 						$doesObject->remark = $item->remark;
 						$doesObject->flowRate_chk = $item->flowRate_chk;
 						$doesObject->flowRate_text = $item->flowRate_text;
@@ -284,11 +283,10 @@ class medicineController extends HexaController
 						$doesObject->quantity = $item->quantity;
 						$dates = $this->getDatesFromRange($item->start_date, $item->end_date);
 
-						$doesObject->confirm_status="";
-						$doesObject->order_status="";
-						$doesObject->alt_medicine="";
-						if($item->order_status!=null && $item->order_status!="")
-						{
+						$doesObject->confirm_status = "";
+						$doesObject->order_status = "";
+						$doesObject->alt_medicine = "";
+						if ($item->order_status != null && $item->order_status != "") {
 							$order_status_onArray = explode('||', $item->order_status);
 							if (count($order_status_onArray) > 2) {
 								$doesObject->confirm_status = $order_status_onArray[0];
@@ -347,7 +345,7 @@ class medicineController extends HexaController
 							// iterated for each check box
 							for ($i = 1; $i < 6; $i++) {
 
-								$comment_m=" <i class='fa fa-comment comment_pointer ml-1' onclick='addMedicineComment(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)'></i> ";
+								$comment_m = " <i class='fa fa-comment comment_pointer ml-1' onclick='addMedicineComment(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)'></i> ";
 
 								if ($i <= (int)$total_iteration) {
 									$datetime = "";
@@ -368,8 +366,8 @@ class medicineController extends HexaController
 												$template .= "<td><span class='color_in'>In: </span>" . $datetime . " - <span class='color_out'> out: </span>" . $outdatetime . " <i class='fa fa-window-close p-1' onclick='clearDoesEntry(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ")'></i></td>";
 												$todaysDoesIteration .= "<td><span class='color_in'>In: </span>" . $datetime . " - <span class='color_out'> out: </span>" . $outdatetime . "  <i class='fa fa-window-close p-1' onclick='clearDoesEntry(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ")'></i></td>";
 											} else {
-												$template .= "<td><input type='checkbox' data-if='yes' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`," . $doesObject->flowRate_chk . ")' class='mr-1' /> ".$comment_m." <span class='color_in p-1'>   In: </span>" . $datetime . " <i class='fa fa-window-close p-1' onclick='clearDoesEntry(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ")'></i></td>";
-												$todaysDoesIteration .= "<td><input type='checkbox' data-if='no' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`," . $doesObject->flowRate_chk . ")' class='mr-1' /> ".$comment_m." <span class='color_in'>  In: </span>" . $datetime . "   <i class='fa fa-window-close p-1' onclick='clearDoesEntry(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ")'></i></td>";
+												$template .= "<td><input type='checkbox' data-if='yes' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`," . $doesObject->flowRate_chk . ")' class='mr-1' /> " . $comment_m . " <span class='color_in p-1'>   In: </span>" . $datetime . " <i class='fa fa-window-close p-1' onclick='clearDoesEntry(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ")'></i></td>";
+												$todaysDoesIteration .= "<td><input type='checkbox' data-if='no' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`," . $doesObject->flowRate_chk . ")' class='mr-1' /> " . $comment_m . " <span class='color_in'>  In: </span>" . $datetime . "   <i class='fa fa-window-close p-1' onclick='clearDoesEntry(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ")'></i></td>";
 											}
 
 
@@ -378,10 +376,10 @@ class medicineController extends HexaController
 											$todaysDoesIteration .= "<td>" . $datetime . "  <i class='fa fa-window-close p-1' onclick='clearDoesEntry(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ")'></i></td>";
 										}
 									} else {
-										
 
-										$template .= "<td><input type='checkbox' data-if='yes' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)' /> ".$comment_m."</td>";
-										$todaysDoesIteration .= "<td><input type='checkbox' data-if='no' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)' /> ".$comment_m."</td>";
+
+										$template .= "<td><input type='checkbox' data-if='yes' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)' /> " . $comment_m . "</td>";
+										$todaysDoesIteration .= "<td><input type='checkbox' data-if='no' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)' /> " . $comment_m . "</td>";
 
 									}
 
@@ -395,14 +393,13 @@ class medicineController extends HexaController
 
 							for ($i = 1; $i < 6; $i++) {
 								// create check box upto total iteration
-								$comment_m=" <i class='fa fa-comment comment_pointer ml-1' onclick='addMedicineComment(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)'></i> ";
+								$comment_m = " <i class='fa fa-comment comment_pointer ml-1' onclick='addMedicineComment(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)'></i> ";
 
 								if ($i <= (int)$total_iteration) {
-									
-										
 
-									$template .= "<td><input type='checkbox' data-else='yes' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)' /> ".$comment_m."</td>";
-									$todaysDoesIteration .= "<td><input type='checkbox' data-else='no' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)' /> ".$comment_m."</td>";
+
+									$template .= "<td><input type='checkbox' data-else='yes' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)' /> " . $comment_m . "</td>";
+									$todaysDoesIteration .= "<td><input type='checkbox' data-else='no' onchange='doesGiven(" . $doesObject->pid . "," . $doesObject->id . "," . $i . ",`$doesDate`)' /> " . $comment_m . "</td>";
 								} else {
 									$template .= "<td>-</td>";
 									$todaysDoesIteration .= "<td>-</td>";
@@ -419,8 +416,8 @@ class medicineController extends HexaController
 						// $sql = "select confirm_status,order_status from " . $medicionOrderTable . " where medicine_id=" . $doesObject->name . " AND patient_id=" . $p_id;
 						// $query = $this->db->query($sql);
 						// if ($this->db->affected_rows() > 0) {
-							// $confirm_status = $query->row()->confirm_status;
-							// $order_status = $query->row()->order_status;
+						// $confirm_status = $query->row()->confirm_status;
+						// $order_status = $query->row()->order_status;
 						// }
 						$confirm_status = $doesObject->confirm_status;
 						$order_status = $doesObject->order_status;
@@ -435,29 +432,23 @@ class medicineController extends HexaController
 							$disabled = "disabled";
 						}
 						if ($doesObject->route !== "" && !is_null($doesObject->route)) {
-							if($doesObject->route=="null")
-							{
+							if ($doesObject->route == "null") {
 								$route = "Rt:NA";
-							}
-							else
-							{
+							} else {
 								$route = "Rt:" . $doesObject->route;
 							}
-							
+
 
 						} else {
 							$route = "";
 						}
 						if ($doesObject->quantity !== "" && !is_null($doesObject->quantity)) {
-							if(!(int)$doesObject->quantity)
-							{
+							if (!(int)$doesObject->quantity) {
 								$quantity = "Qty:1";
-							}
-							else
-							{
+							} else {
 								$quantity = "Qty:" . $doesObject->quantity;
 							}
-							
+
 						} else {
 							$quantity = "";
 						}
@@ -469,13 +460,12 @@ class medicineController extends HexaController
 									$todayDoesRow .= "<tr><td colspan='6'>
 								<div class='box'><span class='mx-2'>" . $doesDate . "</span>
 								<span class='mx-2 '>" . $doesObject->medicineName . "</span>";
-								
-								if ($doesObject->alt_medicine != "" && $doesObject->alt_medicine != "0")
-								{
-									
-									$todayDoesRow .="<span class='mx-2'><i class='text-danger  font-weight-bold'>Alternative Medicine - </i>" . $doesObject->alt_medicine . "</span>";
-								}
-								$todayDoesRow .="
+
+									if ($doesObject->alt_medicine != "" && $doesObject->alt_medicine != "0") {
+
+										$todayDoesRow .= "<span class='mx-2'><i class='text-danger  font-weight-bold'>Alternative Medicine - </i>" . $doesObject->alt_medicine . "</span>";
+									}
+									$todayDoesRow .= "
 								<span class='mx-2 text-danger font-weight-bold'>" . $doesObject->remark . "</span>
 								<span class='mx-2 text-danger font-weight-bold'>" . $doesObject->flowRate_text . "</span>
 								<span class='mx-2 text-primary font-weight-bold'>" . $route . "</span>
@@ -674,6 +664,7 @@ class medicineController extends HexaController
 					"flowRate_text" => $flowRate_text,
 					"route" => $ms_route,
 					"quantity" => $ms_quantity,
+					"create_by" => $this->session->user_session->id,
 				);
 				$dateRang = $this->getDatesFromRange($Start_Date_new, $End_Date_new);
 
@@ -685,6 +676,7 @@ class medicineController extends HexaController
 				$medicineObject->patient_id = $patient_name;
 				$medicineObject->branch_id = $this->session->user_session->branch_id;
 				$medicineObject->create_on = date('Y-m-d h:i:s');
+				$medicineObject->create_by = $this->session->user_session->id;
 				$medicineResultObject = $this->medicine_model->_select("medicine_master", array('id' => $medicine_name), array("id", "name", "bu", "pkt"));
 				if ($medicineResultObject->totalCount > 0) {
 					$medicineObject->medicine_name = $medicineResultObject->data->name;
@@ -839,13 +831,13 @@ class medicineController extends HexaController
 				$this->db->trans_start();
 				$this->db
 					->set(array('active' => 0, 'end_date' => $date, 'reason' => $reason))
-					->where( array("id" => $id))
+					->where(array("id" => $id))
 					->update($table);
-				$resultObject=$this->db->where(array("id"=>$id))->get($table)->row();
+				$resultObject = $this->db->where(array("id" => $id))->get($table)->row();
 				$response["query"] = $this->db->last_query();
-				if(!is_null($resultObject)){
-					$this->db->set("status",'0')->where(
-						array("medicine_id"=>$resultObject->name,"patient_id"=>$resultObject->p_id,"medicine_date >="=>$date)
+				if (!is_null($resultObject)) {
+					$this->db->set("status", '0')->where(
+						array("medicine_id" => $resultObject->name, "patient_id" => $resultObject->p_id, "medicine_date >=" => $date)
 					)->update($table_reschedule);
 				}
 
@@ -942,15 +934,12 @@ class medicineController extends HexaController
 
 		if (count($resultObject) > 0) {
 			foreach ($resultObject as $group) {
-				if($group->id==1)
-				{
+				if ($group->id == 1) {
 					$options .= "<option selected value='" . $group->id . "'>" . $group->name . "</option>";
-				}
-				else
-				{
+				} else {
 					$options .= "<option value='" . $group->id . "'>" . $group->name . "</option>";
 				}
-				
+
 			}
 			$response["status"] = 200;
 		} else {
@@ -991,10 +980,10 @@ class medicineController extends HexaController
 			$branch_id = $this->session->user_session->branch_id;
 			$company_id = $this->session->user_session->company_id;
 			$patient_medicine_table = $this->session->user_session->patient_mediine_table;//dose details table
-			
+
 			$dose_history_table = $this->session->user_session->patient_medicine_history_table;//dose details table
 			$patient_reschedule_medicine_table = "com_1_reschedule_medicine";
-			$medicine_comment_table="com_1_medicine_comment";
+			$medicine_comment_table = "com_1_medicine_comment";
 			$select = array(
 				'd.id',
 				'd.p_id',
@@ -1003,7 +992,7 @@ class medicineController extends HexaController
 				'd.start_date',
 				'd.end_date',
 				'd.total_iteration',
-				'(select group_concat(cm.comment,"||",cm.medicine_iteration,"||",date(cm.medicine_date) SEPARATOR "@") from '.$medicine_comment_table.' cm where cm.patient_id=d.p_id and cm.status=1 and cm.medicine_id=d.id) as medicine_comment',
+				'(select group_concat(cm.comment,"||",cm.medicine_iteration,"||",date(cm.medicine_date) SEPARATOR "@") from ' . $medicine_comment_table . ' cm where cm.patient_id=d.p_id and cm.status=1 and cm.medicine_id=d.id) as medicine_comment',
 				'(select group_concat(h.iteration_count, "|",iteration_on,"|",iteration_time order by h.iteration_count ) from ' . $dose_history_table . ' h where h.p_id=p_id and h.status=1 and h.does_details_id=d.id) as ite_details',
 				'(SELECT group_concat(rm.medicine_id,"|",rm.medicine_date,"|",rm.reschedule_iteration) FROM ' . $patient_reschedule_medicine_table . ' rm where rm.patient_id = d.p_id and rm.medicine_id = d.name and rm.status=1) as reschedule_medicine',
 				'd.active'
@@ -1055,28 +1044,25 @@ class medicineController extends HexaController
 							}
 						}
 						$iterationComment = array();
-						if($item->medicine_comment!=null && $item->medicine_comment!="")
-							{
+						if ($item->medicine_comment != null && $item->medicine_comment != "") {
 
-								$ex_data=explode('@', $item->medicine_comment);
-								if(count($ex_data)>0)
-								{
+							$ex_data = explode('@', $item->medicine_comment);
+							if (count($ex_data) > 0) {
 
-									foreach ($ex_data as $key => $value) {
-										$ex_comm=explode('||', $value);
-										
-										if(count($ex_comm)>2)
-										{
-											$obj1 = new stdClass();
-											$obj1->item = $item->id;
-											$obj1->comment = $ex_comm[0];
-											$obj1->iteration = $ex_comm[1];
-											$obj1->date = $ex_comm[2];
-											array_push($iterationComment, $obj1);
-										}
+								foreach ($ex_data as $key => $value) {
+									$ex_comm = explode('||', $value);
+
+									if (count($ex_comm) > 2) {
+										$obj1 = new stdClass();
+										$obj1->item = $item->id;
+										$obj1->comment = $ex_comm[0];
+										$obj1->iteration = $ex_comm[1];
+										$obj1->date = $ex_comm[2];
+										array_push($iterationComment, $obj1);
 									}
 								}
 							}
+						}
 						$doesObject->medicine_comment = $iterationComment;
 
 
@@ -1107,25 +1093,22 @@ class medicineController extends HexaController
 						array_push($sortArray, $doesObject);
 
 						$iterationComment = array();
-						if($item->medicine_comment!=null && $item->medicine_comment!="")
-							{
-								$ex_data=explode('@', $item->medicine_comment);
-								if(count($ex_data)>0)
-								{
-									foreach ($ex_data as $key => $value) {
-										$ex_comm=explode('||', $value);
-										if(count($ex_comm)>2)
-										{
-											$obj1 = new stdClass();
-											$obj1->item = $item->id;
-											$obj1->comment = $ex_comm[0];
-											$obj1->iteration = $ex_comm[1];
-											$obj1->date = $ex_comm[2];
-											array_push($iterationComment, $obj1);
-										}
+						if ($item->medicine_comment != null && $item->medicine_comment != "") {
+							$ex_data = explode('@', $item->medicine_comment);
+							if (count($ex_data) > 0) {
+								foreach ($ex_data as $key => $value) {
+									$ex_comm = explode('||', $value);
+									if (count($ex_comm) > 2) {
+										$obj1 = new stdClass();
+										$obj1->item = $item->id;
+										$obj1->comment = $ex_comm[0];
+										$obj1->iteration = $ex_comm[1];
+										$obj1->date = $ex_comm[2];
+										array_push($iterationComment, $obj1);
 									}
 								}
 							}
+						}
 						$doesObject->medicine_comment = $iterationComment;
 					}
 
@@ -1146,37 +1129,33 @@ class medicineController extends HexaController
 							<tr>
 								<th>Medicine Name</th>";
 				foreach ($newDateRange as $date) {
-					$classname="";
-					if($date==date('Y-m-d'))
-					{
-						$classname="id='scrollMe'";
+					$classname = "";
+					if ($date == date('Y-m-d')) {
+						$classname = "id='scrollMe'";
 					}
-					$dataTable .= "<th ".$classname.">" . date('d-M', strtotime($date)) . "</th>";
+					$dataTable .= "<th " . $classname . ">" . date('d-M', strtotime($date)) . "</th>";
 				}
 				$response["range"] = $newDateRange;
 				$dataTable .= "</tr></thead><tbody>";
-				$dataTable1="";
-				$dataTable2="";
-				$dataTable3="";
+				$dataTable1 = "";
+				$dataTable2 = "";
+				$dataTable3 = "";
 				$currentDate = date('Y-m-d');
 				foreach ($sortArray as $medicine) {
-					$dataTable_pos1="";
-					$dataTable_pos2="";
+					$dataTable_pos1 = "";
+					$dataTable_pos2 = "";
 					// echo "<pre>";
 					// print_r($medicine);
-					$row_pos=0;
-					$delete_pos=0;
-					if(is_array($medicine->rescheduleDoes)){
+					$row_pos = 0;
+					$delete_pos = 0;
+					if (is_array($medicine->rescheduleDoes)) {
 						$result = array_values(array_column($medicine->rescheduleDoes, 'reschedule_date'));
 						// print_r($result);
-						if(in_array(date('Y-m-d'), $result) && (int)$medicine->active == 1)
-						{
+						if (in_array(date('Y-m-d'), $result) && (int)$medicine->active == 1) {
 							$row_pos++;
+						} else if (in_array(date('Y-m-d'), $result) && (int)$medicine->active == 0) {
+							$delete_pos++;
 						}
-						else if(in_array(date('Y-m-d'), $result) && (int)$medicine->active == 0)
-							{
-								$delete_pos++;
-							}
 						// foreach ($medicine->rescheduleDoes as $checkReschedule_date) {
 						// 	if($checkReschedule_date->reschedule_date==date('Y-m-d') && (int)$medicine->active == 1)
 						// 	{
@@ -1186,20 +1165,17 @@ class medicineController extends HexaController
 						// 	{
 						// 		$delete_pos++;
 						// 	}
-							
+
 						// }
 					}
-					if(is_array($medicine->dateRange)){
-						if(in_array(date('Y-m-d'), $medicine->dateRange) && (int)$medicine->active == 1)
-						{
+					if (is_array($medicine->dateRange)) {
+						if (in_array(date('Y-m-d'), $medicine->dateRange) && (int)$medicine->active == 1) {
 							$row_pos++;
-						}
-						else if(in_array(date('Y-m-d'), $medicine->dateRange) && (int)$medicine->active == 0)
-						{
+						} else if (in_array(date('Y-m-d'), $medicine->dateRange) && (int)$medicine->active == 0) {
 							$delete_pos++;
 						}
 					}
-					
+
 					if ((int)$medicine->active == 1) {
 						$template = $medicine->medicineName;
 					} else {
@@ -1231,27 +1207,24 @@ class medicineController extends HexaController
 								" . $template . "</div> </td>";
 					foreach ($newDateRange as $date) {
 
-							$commentM="";
-							$commentT="";
-							$medicine_comment="";
-							if(!empty($medicine->medicine_comment))
-							{
-								
-								$cmdata=$this->getMedicineCommentView($medicine->medicine_comment,$date);
-								
-								if(!empty($cmdata))
-								{
+						$commentM = "";
+						$commentT = "";
+						$medicine_comment = "";
+						if (!empty($medicine->medicine_comment)) {
 
-									foreach ($cmdata as $key => $value) {
-										if($value->status==1)
-										{
-											$commentM.='<div class="d-flex"><div><i class="fa fa-arrow-right mr-1"></i> </div> <div> '.$value->data.'</div></div>';
-											$commentT.="".$value->date."";
-										}
+							$cmdata = $this->getMedicineCommentView($medicine->medicine_comment, $date);
+
+							if (!empty($cmdata)) {
+
+								foreach ($cmdata as $key => $value) {
+									if ($value->status == 1) {
+										$commentM .= '<div class="d-flex"><div><i class="fa fa-arrow-right mr-1"></i> </div> <div> ' . $value->data . '</div></div>';
+										$commentT .= "" . $value->date . "";
 									}
-									$medicine_comment.="class='popoverData' class='btn' data-html='true' data-content='".$commentM."' rel='popover' data-original-title='medicine comments' data-trigger='hover'";
 								}
+								$medicine_comment .= "class='popoverData' class='btn' data-html='true' data-content='" . $commentM . "' rel='popover' data-original-title='medicine comments' data-trigger='hover'";
 							}
+						}
 						$isExist = $this->isExistDate($medicine->dateRange, $date);
 						if ($isExist) {
 							$alreadyGivenDoesCount = $this->alreadyGivenDoesCount($medicine->itrationData, $date);
@@ -1278,9 +1251,9 @@ class medicineController extends HexaController
 									data-alreadyGivenDoesCount='" . $alreadyGivenDoesCount . "'
 									data-toggle='modal'
 									data-target='#rescheduleMedicine'
-									><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></button></td>";
+									><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></button></td>";
 										} else {
-											$dataTable_pos1 .= "<td><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
+											$dataTable_pos1 .= "<td><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
 										}
 									} else {
 										// $dataTable .= "<td>@" . $alreadyGivenDoesCount . "/" . $total_iteration . "</td>";
@@ -1291,13 +1264,13 @@ class medicineController extends HexaController
 									data-alreadyGivenDoesCount='" . $alreadyGivenDoesCount . "'
 									data-toggle='modal'
 									data-target='#rescheduleMedicine'
-									><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></button></td>";
+									><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></button></td>";
 										} else {
-											$dataTable_pos1 .= "<td><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
+											$dataTable_pos1 .= "<td><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
 										}
 									}
 								} else {
-									$dataTable_pos1 .= "<td><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
+									$dataTable_pos1 .= "<td><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
 								}
 
 
@@ -1311,19 +1284,19 @@ class medicineController extends HexaController
 									data-alreadyGivenDoesCount='" . $alreadyGivenDoesCount . "'
 									data-toggle='modal'
 									data-target='#rescheduleMedicine'
-									><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></button></td>";
+									><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></button></td>";
 
 									} else {
 										// print_r($medicine->medicine_comment);
-									
-										
-										$dataTable_pos1 .= "<td><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
+
+
+										$dataTable_pos1 .= "<td><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
 									}
 
 								} else {
 									// print_r($medicine->medicine_comment);
-								
-									$dataTable_pos1 .= "<td><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
+
+									$dataTable_pos1 .= "<td><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $total_iteration . "</span></td>";
 								}
 							}
 						} else {
@@ -1353,9 +1326,9 @@ class medicineController extends HexaController
 										data-alreadyGivenDoesCount='" . $alreadyGivenDoesCount . "'
 										data-toggle='modal'
 										data-target='#rescheduleMedicine'
-										><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $rescheduleDoes->reschedule_iteration . "</span></button></td>";
+										><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $rescheduleDoes->reschedule_iteration . "</span></button></td>";
 									} else {
-										$dataTable_pos1 .= "<td><span ".$medicine_comment.">" . $alreadyGivenDoesCount . "/" . $rescheduleDoes->reschedule_iteration . "</span></td>";
+										$dataTable_pos1 .= "<td><span " . $medicine_comment . ">" . $alreadyGivenDoesCount . "/" . $rescheduleDoes->reschedule_iteration . "</span></td>";
 									}
 								}
 							} else {
@@ -1383,22 +1356,19 @@ class medicineController extends HexaController
 						}
 					}
 					$dataTable_pos1 .= "</tr>";
-					
-					if($row_pos > 0)
-					{
-						
-						$dataTable1.=$dataTable_pos1;
-					} else if($delete_pos>0){
-						$dataTable2.=$dataTable_pos1;
+
+					if ($row_pos > 0) {
+
+						$dataTable1 .= $dataTable_pos1;
+					} else if ($delete_pos > 0) {
+						$dataTable2 .= $dataTable_pos1;
+					} else {
+
+						$dataTable3 .= $dataTable_pos1;
 					}
-					else
-					{
-					
-						$dataTable3.=$dataTable_pos1;
-					}
-					
+
 				}
-				$dataTable.=$dataTable1.$dataTable2.$dataTable3;
+				$dataTable .= $dataTable1 . $dataTable2 . $dataTable3;
 				$dataTable .= "</tbody></table>";
 			}
 			$response["status"] = 200;
@@ -1424,7 +1394,7 @@ class medicineController extends HexaController
 			$user_id = $this->session->user_session->id;
 			$patient_medicine_history_table = $this->session->user_session->patient_medicine_history_table;//dose details table
 			$medicineData = array("medicine_id" => $medicine_id, "medicine_date" => $reschedule_date, "reschedule_iteration" => $schedule_day,
-				"branch_id" => $branch_id, "patient_id" => $patient_id, "create_on" => date("Y-m-d H:i:a"), "create_by" => $user_id,"status"=>1);
+				"branch_id" => $branch_id, "patient_id" => $patient_id, "create_on" => date("Y-m-d H:i:a"), "create_by" => $user_id, "status" => 1);
 			try {
 				$this->db->trans_start();
 				$this->db->where(array("medicine_id" => $medicine_id, "medicine_date" => $reschedule_date, "patient_id" => $patient_id, "branch_id" => $branch_id))->get("com_1_reschedule_medicine");
@@ -1465,24 +1435,24 @@ class medicineController extends HexaController
 
 	}
 
-	public function getMedicineCommentView($c_data,$date)
+	public function getMedicineCommentView($c_data, $date)
 	{
-		$result="";
-		
-		$dataArray=array();
+		$result = "";
+
+		$dataArray = array();
 		foreach ($c_data as $key => $value) {
-			if(date("Y-m-d", strtotime($value->date))==date("Y-m-d", strtotime($date)))
-			{
-				$data=$value->comment;
+			if (date("Y-m-d", strtotime($value->date)) == date("Y-m-d", strtotime($date))) {
+				$data = $value->comment;
 				$obj1 = new stdClass();
-				$obj1->data=$data;
-				$obj1->date=date("Y d M", strtotime($value->date));
-				$obj1->status=1;
+				$obj1->data = $data;
+				$obj1->date = date("Y d M", strtotime($value->date));
+				$obj1->status = 1;
 				array_push($dataArray, $obj1);
 			}
 		}
 		return $dataArray;
 	}
+
 	public function isExistDate($dateRage, $date)
 	{
 		$result = false;
@@ -1662,32 +1632,29 @@ class medicineController extends HexaController
 			"m_iteration_id", "m_dose_date", "medicine_comment"));
 
 		if ($header->status) {
-			$patient_id=$header->param->m_patient_id;
-			$medicine_id=$header->param->c_medicine_id;
-			$iteration_id=$header->param->m_iteration_id;
-			$dose_date=$header->param->m_dose_date;
-			$medicine_comment=$header->param->medicine_comment;
+			$patient_id = $header->param->m_patient_id;
+			$medicine_id = $header->param->c_medicine_id;
+			$iteration_id = $header->param->m_iteration_id;
+			$dose_date = $header->param->m_dose_date;
+			$medicine_comment = $header->param->medicine_comment;
 
 			$insert_data = array(
-						"company_id" => $this->session->user_session->company_id,
-						"branch_id" => $this->session->user_session->branch_id,
-						"patient_id" => $patient_id,
-						"medicine_date" => $dose_date,
-						"comment" => $medicine_comment,
-						"medicine_id" =>$medicine_id,
-						"medicine_iteration" => $iteration_id ,
-						"created_by" => $this->session->user_session->id,
-						"created_on"=>date("Y-m-d H:i:s"),
-						"status"=>1
-					);
-			$insert=$this->db->insert("com_1_medicine_comment",$insert_data);
-			if($insert==true)
-			{
+				"company_id" => $this->session->user_session->company_id,
+				"branch_id" => $this->session->user_session->branch_id,
+				"patient_id" => $patient_id,
+				"medicine_date" => $dose_date,
+				"comment" => $medicine_comment,
+				"medicine_id" => $medicine_id,
+				"medicine_iteration" => $iteration_id,
+				"created_by" => $this->session->user_session->id,
+				"created_on" => date("Y-m-d H:i:s"),
+				"status" => 1
+			);
+			$insert = $this->db->insert("com_1_medicine_comment", $insert_data);
+			if ($insert == true) {
 				$response["status"] = 200;
 				$response["body"] = "Comment Added";
-			}
-			else
-			{
+			} else {
 				$response["status"] = 201;
 				$response["body"] = "Comment Not Added";
 			}
