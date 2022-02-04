@@ -131,4 +131,41 @@ $branchpermission_array = $this->session->Branch_permission;
 
 
 
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ListPathologyServicesModal"
+	 aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<form id="PathologyFileUploadationForm" method="post">
+				<div class="modal-header">
+					<h5>Pathology Sample Collection</h5>
+				</div>
+				<div class="modal-body py-0">
+					<div class="card my-0 shadow-none">
+						<div class="card-body">
+
+							<div id="PathologyServiceList"></div>
+							<br>
+							<div class="form-row">
+								<div class="form-group col-md-12">
+									<label for="service_file">File Upload</label>
+									<input type="file" class="form-control" name="service_file[]" multiple=""
+										   data-valid="required" data-msg="Select file" id="service_Path_file">
+									<span id="radiology_diles_error" style="color: red"></span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" type="submit">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
 <?php $this->load->view('_partials/footer'); ?>
