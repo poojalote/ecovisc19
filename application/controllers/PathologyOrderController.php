@@ -236,7 +236,6 @@ class PathologyOrderController extends HexaController
 		<tr>
 		<th>Service detail</th>
 		<th>File</th>
-		<th>Action</th>
 		</tr>
 		</thead><tbody>";
 		if ($this->db->affected_rows() > 0) {
@@ -551,7 +550,7 @@ class PathologyOrderController extends HexaController
 				} else {
 					$input_data = "";
 				}
-				$this->db->where('id',$pathology_id)->set('file_uploaded',$input_data)->update('pathology_service_transaction_table');
+				$this->db->where('id', $pathology_id)->set('file_uploaded', $input_data)->update('pathology_service_transaction_table');
 
 				if ($this->db->trans_status() === FALSE) {
 					$this->db->trans_rollback();
