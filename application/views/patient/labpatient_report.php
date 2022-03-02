@@ -1,4 +1,4 @@
-	<?php
+    <?php
 
     defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -90,9 +90,9 @@
     <!-- Main Content -->
     <div class="main-content">
         <section class="section section-body_new">
-            <!--		<div class="section-header card-primary">-->
-                <!--			<h1 id="section_name">-</h1>-->
-                <!--		</div>-->
+            <!--        <div class="section-header card-primary">-->
+                <!--            <h1 id="section_name">-</h1>-->
+                <!--        </div>-->
                 <div class="section-body">
                     <div class="row">
                         <div class="col-12 col-md-12">
@@ -304,11 +304,23 @@
                                 <button type="button" id="openFileSelecter" class="btn btn-primary">
                                   Upload Report Image/pdf
                                 </button>
+                                
                                 <span id="ocfFileName"></span>
-                                <input type="file" class="form-control" name="ocrFile" id="ocrFile" accept="image/png, image/gif, image/jpeg, application/pdf" required data-msg="Select file" style="display: none;">
-                                <input type="hidden" name="serviceData" id="serviceData" value="0">
-                                <input type="hidden" name="imgData" id="imgData" value="0">
-                                <input type="hidden" name="libraryData" id="libraryData" value="0">
+                                <!-- <form id="formOcrImg" method="post" enctype="multipart/form-data"> -->
+                                    <input type="file" class="form-control" name="ocrFile" id="ocrFile" accept="image/png, image/gif, image/jpeg, application/pdf" required data-msg="Select file" style="display: none;">
+                                    <input type="hidden" name="serviceData" id="serviceData" value="0">
+                                    <div id="imgDataContainer">
+                                        <!-- <input type="hidden" name="imgData" id="imgData" value="0"> -->
+                                    </div>
+                                    <input type="hidden" name="imgData" id="imgData" value="">
+                                    <input type="hidden" name="libraryData" id="libraryData" value="0">
+                                <!-- </form> -->
+                                
+                <!-- progressbar coad -->
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-info newrole" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"> </div>
+                                </div>
+                                <div id="targetLayer" style="display:none;"></div>
                                 <!-- <button class="btn btn-primary" type="button" id="saveLabExcelDataEntry" onclick="saveChildLabExcelData();">Save</button> -->
 
                             </div>
@@ -362,7 +374,9 @@
                                 <hr class="tabPanelDiv">
                                 <div class="tab-content" id="pills-tabContent">
                                   <div class="tab-pane fade active show" id="panelA">
-                                    <canvas class="canvas" id="imgCanvas" style="width:100%;"></canvas>
+                                    <div id="canvasContainer" style="width:846px;"></div>
+                                    <!-- <canvas class="canvas" id="imgCanvas" style="width:100%;"></canvas> -->
+                                    <img src="#" id="imgUploaded" name="imgUploaded" style="display:none;width: 100%;">
                                   </div>
                                   <div class="tab-pane fade" id="panelB">
                                     <div id="tabentryhandsondata">
@@ -600,10 +614,10 @@ aria-hidden="true">
 
                                 <!-- <input type="file" class="form-control" name="service_file[]" multiple="" -->
                                 <!-- data-valid="required" data-msg="Select file" id="service_Path_file"> -->
-                                <span id="radiology_diles_error" style="color: red"></span>
+                               <!--  <span id="radiology_diles_error" style="color: red"></span>
                                  <progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
                                   <h3 id="status"></h3>
-                                  <p id="loaded_n_total"></p>
+                                  <p id="loaded_n_total"></p> -->
                             </div>
                         </div>
 
@@ -631,7 +645,7 @@ aria-hidden="true">
         };
     var base_url = "<?php echo base_url(); ?>";
     $(document).ready(function () {
-
+        getChildTestData();
         get_lableftsidebar();
         // var section_id = $("#section_id").val();
         let queryParam =document.getElementById("queryparameter_hidden").value;
@@ -679,12 +693,12 @@ aria-hidden="true">
         })
 
         $("#labEntryTabNormal").on('click',function (event) {
-			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
-			// get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
-			get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
-			// showPanel(143);
-			showPanel1('Normal',143);
-		})
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+            // get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
+            get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
+            // showPanel(143);
+            showPanel1('Normal',143);
+        })
         $("#labEntryTabHandson").on('click',function (event) {
             // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
             $("#tabentryhandsondata").html('');
@@ -718,23 +732,23 @@ aria-hidden="true">
         })
 
         $("#labDataNormal").on('click',function (event) {
-			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
 
-			document.getElementById("hiddenDivName").value= 'tabchildTestPanel0';
-			// get_forms(132, 0, queryParam, departmentId, null, 'tabchildTestPanel0');
-			showPanel(2);
-			getPatientLabReportList();
-			$("#excelhiddenelement").val('');
-			$('#LabTabLab').addClass('tab-current');
-			$('#LabTabPath').removeClass('tab-current');
+            document.getElementById("hiddenDivName").value= 'tabchildTestPanel0';
+            // get_forms(132, 0, queryParam, departmentId, null, 'tabchildTestPanel0');
+            showPanel(2);
+            getPatientLabReportList();
+            $("#excelhiddenelement").val('');
+            $('#LabTabLab').addClass('tab-current');
+            $('#LabTabPath').removeClass('tab-current');
 
-		})
+        })
         $("#labDataPathology").on('click',function (event) {
-			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
 
-			showPanel2('labDataPathology',143);
+            showPanel2('labDataPathology',143);
 
-		})
+        })
     });
     function changeTab(id){
     //     // alert(id);
@@ -1223,30 +1237,30 @@ function showPanel1(id,sectionId) {
         render: (d, t, r, m) => {
            let reportArray ={"patient_id":patient_id,"service_id":r[3]};
            let string = btoa(JSON.stringify(reportArray));
-					// if(r[6]==r[7]){
-						return `
+                    // if(r[6]==r[7]){
+                        return `
                         <a class="btn btn-primary" href="${base_url+'patientLabReport/'+string}" target="_blank"><i class="fa fa-file"></i></a>`;
 
-					// }
-					// else
-					// {
-					// 	return ``;
-					// }
-				}
-			}
+                    // }
+                    // else
+                    // {
+                    //  return ``;
+                    // }
+                }
+            }
 
           ], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
              let reportArray ={"patient_id":patient_id,"service_id":aData[3]};
              let string = btoa(JSON.stringify(reportArray));
-			// if(aData[6]==aData[7]){
-				$('td:eq(3)', nRow).html(`<a class="btn btn-primary" href="${base_url+'patientLabReport/'+string}" target="_blank"><i class="fa fa-file"></i></a>`);
-			// }
-			// else
-			// {
-			// 	$('td:eq(3)', nRow).html(``);
-			// }
+            // if(aData[6]==aData[7]){
+                $('td:eq(3)', nRow).html(`<a class="btn btn-primary" href="${base_url+'patientLabReport/'+string}" target="_blank"><i class="fa fa-file"></i></a>`);
+            // }
+            // else
+            // {
+            //  $('td:eq(3)', nRow).html(``);
+            // }
 
-		})
+        })
 
   }
 
@@ -1339,59 +1353,59 @@ function getAllPatientOrderServices() {
 
 </script>
 <script type="text/javascript">
-	function Close_billing() {
-		var p_id = localStorage.getItem("patient_id");
-		$.ajax({
-			type: "POST",
-			url: '<?= base_url("LabPatientController/ChangeBillingOpen")?>',
-			dataType: "json",
-			async: false,
-			cache: false,
-			data: {p_id},
-			success: function (result) {
+    function Close_billing() {
+        var p_id = localStorage.getItem("patient_id");
+        $.ajax({
+            type: "POST",
+            url: '<?= base_url("LabPatientController/ChangeBillingOpen")?>',
+            dataType: "json",
+            async: false,
+            cache: false,
+            data: {p_id},
+            success: function (result) {
 
-				if (result.status == 200) {
+                if (result.status == 200) {
 
-					app.successToast(result.body);
-					checkBillingStatus();
-				} else {
-					app.errorToast(result.body);
-				}
-			}
-		});
-	}
+                    app.successToast(result.body);
+                    checkBillingStatus();
+                } else {
+                    app.errorToast(result.body);
+                }
+            }
+        });
+    }
 
-	function checkBillingStatus() {
-		var p_id = localStorage.getItem("patient_id");
-		$.ajax({
-			type: "POST",
-			url: '<?= base_url("LabPatientController/check_billing_status")?>',
-			dataType: "json",
-			async: false,
-			cache: false,
-			data: {p_id},
-			success: function (result) {
+    function checkBillingStatus() {
+        var p_id = localStorage.getItem("patient_id");
+        $.ajax({
+            type: "POST",
+            url: '<?= base_url("LabPatientController/check_billing_status")?>',
+            dataType: "json",
+            async: false,
+            cache: false,
+            data: {p_id},
+            success: function (result) {
 
-				if (result.status == 200) {
-					var value = result.value;
-					if (value == 1) {
-						$("#CloseBillButton").html("Billing Already Close");
-						// $('.a_menu22').hide();
-					} else {
-						$("#CloseBillButton").html("Close Billing");
-						// $('.a_menu22').show();
-					}
-				} else {
+                if (result.status == 200) {
+                    var value = result.value;
+                    if (value == 1) {
+                        $("#CloseBillButton").html("Billing Already Close");
+                        // $('.a_menu22').hide();
+                    } else {
+                        $("#CloseBillButton").html("Close Billing");
+                        // $('.a_menu22').show();
+                    }
+                } else {
 
-				}
-			}
-		});
-	}
+                }
+            }
+        });
+    }
 
 </script>
 <script>
-	function loadEditableTable(sectionId,service_order_id) {
-		$("#saveLabExcelDataEntry").hide();
+    function loadEditableTable(sectionId,service_order_id) {
+        $("#saveLabExcelDataEntry").hide();
         // console.log("p id = == "+localStorage.getItem("patient_id"));
         let formData = new FormData();
         formData.set("section_id", sectionId);
@@ -1429,10 +1443,10 @@ function getAllPatientOrderServices() {
            var hideArra = [0,4,5,6,7,8];
            var columns = ["Master Id",'Test Name(A)', 'Value(B)', 'Unit(C)', 'Bio Ref Interval(D)',"Child Test Id","Id","OrderId","Master Name"];
            hideColumn = {
-					// specify columns hidden by default
-					columns: hideArra,
-					copyPasteEnabled: false,
-				};
+                    // specify columns hidden by default
+                    columns: hideArra,
+                    copyPasteEnabled: false,
+                };
                 // console.log(result.body);
                 createHandonTable(columns, rows, types, 'tabentryhandsondata', hideColumn);
 
@@ -1537,9 +1551,9 @@ function getAllPatientOrderServices() {
 
         $.LoadingOverlay("hide");
         console.log(error);
-				// $.LoadingOverlay("hide");
-			}
-		});
+                // $.LoadingOverlay("hide");
+            }
+        });
   }
 
   function radiologyDownloadButtons(download_data) {
@@ -1549,46 +1563,46 @@ function getAllPatientOrderServices() {
       if(samples.length>0)
       {
          for (var i =0; samples.length > 0; i++) {
-				// filedata.push(samples[i]);
-				if (i >= samples.length) {
-					break;
-				}
-				var a = document.createElement("a");
-				a.setAttribute('href', "<?= base_url();?>"+samples[i]);
-				a.setAttribute('download', '');
-				a.setAttribute('target', '_blank');
-				a.click();
+                // filedata.push(samples[i]);
+                if (i >= samples.length) {
+                    break;
+                }
+                var a = document.createElement("a");
+                a.setAttribute('href', "<?= base_url();?>"+samples[i]);
+                a.setAttribute('download', '');
+                a.setAttribute('target', '_blank');
+                a.click();
 
-			}
+            }
 
-			// console.log(filedata);
-		}
+            // console.log(filedata);
+        }
 
-	}
-	function deleteServiceOrder(service_id,table_id,category,patient_id) {
-		let confirmAction = confirm("Are you sure to you want confirm service");
-		if (confirmAction) {
-			$.ajax({
-				url: "<?= base_url();?>" + "deletePathologyServiceOrder",
-				type: "POST",
-				dataType: "json",
-				data: {service_order_id: service_id, patient_id: patient_id},
-				success: function (response) {
-					if (response.status == 200) {
-						app.successToast(response.body);
-						getCollectionTable(category, table_id);
-					} else {
-						app.errorToast(response.body);
-					}
-				},
-				error: function (error) {
+    }
+    function deleteServiceOrder(service_id,table_id,category,patient_id) {
+        let confirmAction = confirm("Are you sure to you want confirm service");
+        if (confirmAction) {
+            $.ajax({
+                url: "<?= base_url();?>" + "deletePathologyServiceOrder",
+                type: "POST",
+                dataType: "json",
+                data: {service_order_id: service_id, patient_id: patient_id},
+                success: function (response) {
+                    if (response.status == 200) {
+                        app.successToast(response.body);
+                        getCollectionTable(category, table_id);
+                    } else {
+                        app.errorToast(response.body);
+                    }
+                },
+                error: function (error) {
 
-					console.log(error);
-				}
-			});
-		}
-	}
-	function getServiceOrderList(sectionId) {
+                    console.log(error);
+                }
+            });
+        }
+    }
+    function getServiceOrderList(sectionId) {
         $("#selectServiceOrder").html("");
         // $("#selectServiceOrder1").html("");
         let patient_id=localStorage.getItem("patient_id");
@@ -1604,13 +1618,13 @@ function getAllPatientOrderServices() {
                 // $("#selectServiceOrder1").append(response.data);
                 // $("#selectServiceOrder1").select2({});
             } else {
-					// app.errorToast(response.body);
-				}
-			},
-			error: function (error) {
-				console.log(error);
-			}
-		});
+                    // app.errorToast(response.body);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     }
     function getServiceOrderChildList(service_id) {
       let sectionId=143;
@@ -1652,7 +1666,7 @@ function getAllPatientOrderServices() {
         // console.log(ctx); // CanvasRenderingContext2D
     });
 
-     function uploadImageToOCR(){
+     function uploadImageToOCR(event){
             // $("#form_ocrupload").submit(function(e){
             // e.preventDefault();
             var arrLabParentTests = '';
@@ -1660,16 +1674,31 @@ function getAllPatientOrderServices() {
             console.log('ocr file name ',$("#ocrFile")[0].files[0]);
             $("#ocfFileName").text(file);
             // let getServiceData = getChildTestData(157);
+            // var formData = $("#formOcrImg");
             // if (getServiceData) {
                 var fd = new FormData();
-                fd.append( "ocrFile", $("#ocrFile")[0].files[0]);
-                fd.append("imgData",$("#imgData").val());
-                fd.append( "libraryData", $("#libraryData").val());
-                fd.append( "service_data", $("#serviceData").val());
-
+                fd.set( "ocrFile", $("#ocrFile")[0].files[0]);
+                fd.set("imgData",$("#imgData").val());
+                fd.set( "libraryData", $("#libraryData").val());
+                fd.set( "service_data", $("#serviceData").val());
                 var service_id = $("#selectServiceOrder1").val();
-                $.ajax({
 
+                // progressbar coad
+                $.ajax({
+                    target: '#targetLayer',
+                    beforeSubmit:function(){
+                        $('.progress-bar').width('10%');
+                     
+                    },
+                    uploadProgress: function(event, position, total,percentageComplete)
+                    {
+                        $('.progress-bar').animate({
+                            width: percentageComplete + '%'
+                        }, {
+                            duration: 6000
+                        });
+                        
+                    },
                     url : 'http://localhost:8080/test',
                     type : 'POST',
                     data : fd,
@@ -1680,14 +1709,17 @@ function getAllPatientOrderServices() {
                     success: function(result) {
                         var arrLabParentTests = [];
                         getLabParentTestsFunction().then(res=>{
-                            console.log('arrLabMaster = ',arrLabParentTests);
-                            var rows = [
-                            ['', '', '', '', '', '', '', '', '', '', '',''],
-                            ];
+
+                            // console.log('arrLabMaster = ',arrLabParentTests);
+                            var rows = [];
                             if (result) {
                             // var columns=result.columns;
                             if (result.length > 0) {
-                                rows = result;
+                                for(let r = 0;r<result.length;r++){
+                                    // console.log(result[r]);
+                                    rows = [...rows,...result[r]];
+                                    // console.log(rows);
+                                }
                             }
                             // var types=result.types;
                             // columnRows=rows;
@@ -1704,29 +1736,29 @@ function getAllPatientOrderServices() {
 
                         var types = [
                         {
-                            type: 'text',validator: emptyValidator,
+                            type: 'text',
                         },
 
                         {
-                            type: 'text',validator: emptyValidator,
+                            type: 'text',
                         },
                         {
-                            type: 'text',validator: emptyValidator,
+                            type: 'text',
                         },
                         {
-                            type: 'text',validator: emptyValidator,
+                            type: 'text',
                         },
                         {
-                            type: 'text',validator: emptyValidator,
+                            type: 'text',
                         },
                         {
-                            type: 'dropdown',validator: emptyValidator,source:res,
+                            type: 'dropdown',source:res,
                         },
                         {
-                            type: 'text',validator: emptyValidator,
+                            type: 'text',
                         },
                         {
-                            type: 'text',validator: emptyValidator,
+                            type: 'text',
                         },
                         {
                             type:'text',  
@@ -1742,7 +1774,7 @@ function getAllPatientOrderServices() {
                         },
                         ];
                         var hideArra = [8,9,10,11];
-                        var columns = ['name', 'value', 'Unit', 'ref','Test','Master Test Name','Service Code','Child Id','branch_id','Master Test Id','name in library','serviceDataid'];
+                        var columns = ['name', 'value', 'Unit', 'ref','Conversion','Master Test Name','Service Code','Child Id','branch_id','Master Test Id','name in library','serviceDataid'];
 
 
                         hideColumn = {
@@ -1804,71 +1836,93 @@ function getAllPatientOrderServices() {
     // alert("test");
     // $("#btn_ocr_submit").attr("disabled","disabled");
     $("#btn_ocr_submit").prop("disabled", true);
-    getChildTestData();
-    getLibraryData();
+    
+    // getLibraryData();
     let randID = randsID;
     var file = e.target.files[0];
+    // return false;
     var fileReader = new FileReader();
     if (file.type === "application/pdf") {
+        $("#imgUploaded").hide();
         fileReader.onload = function () {
+
+            $("#canvasContainer").empty();
+            $("#imgDataContainer").empty();
+
             var pdfData = new Uint8Array(this.result);
             var loadingTask = pdfjsLib.getDocument({data: pdfData});
             loadingTask.promise.then(function (pdf) {
-                var pageNumber = 1;
-                pdf.getPage(pageNumber).then(function (page) {
-                    var canvas = $(`#imgCanvas`)[0];
-                    console.log(randID);
-                    canvas.width = 900;
-                    canvas.height = 650;
-                    var context = canvas.getContext('2d');
-                    var scale = .8;///(canvas.height / canvas.width) / 8;
-                    console.log(scale);
-                    var viewport = page.getViewport({scale: scale});
+            var pageCount = pdf.numPages;
+            var countIteration = 0;
+                for (var i = 1; i <= pageCount; i++) {
+                    countIteration = 1;
+                var pageNumber = i;
+                    $("#canvasContainer").append(`<canvas class="canvas classImageCanvas" width="846" height="1000" name="imageCanvas[]" id="imgCanvas${i}" style="width:100%;"></canvas>`);
+                    // $("#imgDataContainer").append(`<input type="hidden" class="classImgData" name="imgData" id="imgData" value="0">`);
+                     pdf.getPage(pageNumber).then(function (page) {
+
+                        // var viewport = page.getViewport(scale);
+                        let canvasId = $(".classImageCanvas").attr("id"); 
+                        let imgDataId = $(".classImgData").attr("id"); 
+                        // let canvas = $(`#${canvasId}`)[0];
+                        // let hdnImgDataId = $(`#${imgDataId}`);
+
+                        let canvas = $(`#imgCanvas${countIteration}`)[0];
+                        let hdnImgDataId = `#imgData${countIteration}`;
+
+                        // let canvas_ = $(`#imgCanvas${i}`);
+                        // console.log('canvas = ',canvas);
+                        // canvas.width = viewport.width;
+                        // canvas.height = viewport.height;
+                        // document.getElementById('canvasContainer').style.width = Math.floor(viewport.width/scale) + 'pt';
+                        // document.getElementById('canvasContainer').style.height = Math.floor(viewport.height/scale) + 'pt';
+
+                        var context = canvas.getContext('2d');
+                        var scale = 1.48;///(canvas.height / canvas.width) / 8;
+                        // console.log(scale);
+                        var viewport = page.getViewport({scale: scale});
 
 
-                    var renderContext = {
-                        canvasContext: context,
-                        viewport: viewport
-                    };
-                    var renderTask = page.render(renderContext);
-                    renderTask.promise.then(function () {
-                        var dataURL = canvas.toDataURL();
-                        console.log("pdf_Data = ",dataURL);
-                        $("#ocrDataContainer").show();
-                        $("#imgData").val(dataURL);
-                        uploadImageToOCR();
-                        // uploadOnPDFServer(file, dataURL).then((result) => {
-                        //     if (result.status === 200) {
-
-                        //         // fileUploaded.push({id: randID, file: file, url: result.body, type: 1});
-                        //         // insertOperation({s: 4, u_id: randsID, c_id: chnnelID, create_by: clientId,
-                        //         //     w: 258, h: 345, file: result.body});
-                        //         // sendSocketMsg(JSON.stringify(
-                        //         //         {op: "operation", channel: chnnelID,
-                        //         //             userID: clientId,
-                        //         //             action: "create", type: "pdf", id: randID, file:
-                        //         //                     {fileUrl: result.body, thumbUrl: result.thumb}}));
-                        //     } else {
-                        //         alert(result.body);
-                        //     }
-                        // }).catch(error => {
-                        //     console.log(error);
-                        // });
+                        var renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        let canvasD = canvas;
+                        var renderTask = doRender(renderContext,canvas,page,pageCount,hdnImgDataId);
+                        // page.render(renderContext);
+                        // var numItems = $('.classImageCanvas').length
+                        // for (var j = 0; j < numItems; j++) {
+                        //     renderTask.promise.then(function () {
+                        //         var dataURL = canvas.toDataURL();
+                        //         // console.log("pdf_Data = ",dataURL);
+                        //         $("#ocrDataContainer").show();
+                        //         $(`#${imgDataId}`).val(dataURL);
+                        //         // $("#imgData").val(dataURL);
+                        //     });
+                        // }
+                        
+                     countIteration++;
                     });
-                });
+                }
+               
             }, function (reason) {
                 console.error(reason);
             });
         };
         fileReader.readAsArrayBuffer(file);
     } else {
+        $(".classImageCanvas").hide();
+        $("#imgUploaded").show();
+        var tmppath = URL.createObjectURL(e.target.files[0]);
+        $("#imgUploaded").attr('src',tmppath);
+
         var file = document.getElementById('ocrFile').files[0];
         var reader = new FileReader();
         reader.addEventListener('load', function() {
-            var res = reader.result; 
+            var res = [reader.result]; 
             // console.log('inser block = ',res);
             $("#ocrDataContainer").show();
-            $("#imgData").val(res);
+            $("#imgData").val(JSON.stringify(res));
             uploadImageToOCR();
         });
 
@@ -1903,6 +1957,57 @@ function getAllPatientOrderServices() {
         // fileReader.readAsDataURL(e.target.files[0]);
     }
 }
+var arrDataUrl = [];
+let counter = 1;
+function doRender(renderContext,canvas,page,pageCount,imgDataId){
+    let renderOp = page.render(renderContext);
+    var numItems = $('.classImageCanvas').length
+    
+    // for (var j = 0; j < numItems; j++) {
+        renderOp.promise.then(function () {
+            var dataURL = canvas.toDataURL();
+            // console.log("pdf_Data = ",dataURL);
+            $("#ocrDataContainer").show();
+            arrDataUrl.push(dataURL);
+            // $(`${imgDataId}`).val(dataURL);
+            // $("#imgData").val(dataURL);
+            if (counter == pageCount) {
+                $("#imgData").val(JSON.stringify(arrDataUrl));
+
+                // ---------------------------------
+                uploadImageToOCR();
+                // ---------------------------------
+            }
+            counter++;
+        });
+    // }
+}
+// function handlePages(page)
+// {
+//     //This gives us the page's dimensions at full scale
+//     var viewport = page.getViewport(1);
+
+//     //We'll create a canvas for each page to draw it on
+//     var canvas = document.createElement("canvas");
+//     canvas.style.display = "block";
+//     var context = canvas.getContext('2d');
+//     canvas.height = viewport.height;
+//     canvas.width = viewport.width;
+
+//     //Draw it on the canvas
+//     page.render({canvasContext: context, viewport: viewport});
+
+//     //Add it to the web page
+//     document.body.appendChild(canvas);
+
+//     //Move to next page
+//     currPage++;
+//     if (thePDF !== null && currPage <= numPages)
+//     {
+//         thePDF.getPage(currPage).then(handlePages);
+//         console.log(1);
+//     }
+// }
 
    function pdf_image(files) {
     // var file_url  = 'https://rmt.ecovisrkca.com/downloadFile?f=dXBsb2FkL2NvbnRyYWN0LzE2MzYzNjY5NTZfZmlsZS1zYW1wbGVfMTUwa0IucGRm';

@@ -1995,7 +1995,7 @@ class LabPatientController extends HexaController
 		$session_data = $this->session->user_session;
 		$tableName = $session_data->lab_patient_table;
 
-		$service_id = $this->input->post('service_id');
+		// $service_id = $this->input->post('service_id');
 		$p_id = $this->input->post('p_id');
 
 		$branch_id = $this->db->query("select branch_id from ".$tableName." where id =".$p_id)->row()->branch_id;
