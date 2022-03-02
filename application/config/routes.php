@@ -981,3 +981,13 @@ $route["saveMainChildServices"]="LabMasterAdminController/saveMainChildServices"
 
 
 $route['updateserviceOrderBillingInfo'] = "PathologyOrderController/updateserviceOrderBillingInfo";
+
+// ocr data upload
+$route['ocrFileUpload'] = "LabPatientController/ocrFileUpload";
+$route['getLabChildTests'] = "LabPatientController/getLabChildTests";
+$route['updateDynamicLabDataChildLabTest'] = "LabPatientController/updateDynamicLabDataChildLabTest";
+$route['getLabParentTests'] = "LabPatientController/getLabParentTests";
+$route['getLibraryData'] = "LabPatientController/getLibraryData";
+
+
+// $route['ocrFileUploadView'] = "LabPatientController/ocrFileUploadView";

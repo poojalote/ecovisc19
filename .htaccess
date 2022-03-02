@@ -20,6 +20,9 @@ Options -Indexes
 	php_value upload_max_filesize 500M
 	Options -Indexes
 
-	RewriteCond %{HTTP_HOST} ^www\.docango\.com$
-    #RewriteRule ^/?$ "https://docango.com\" [R=301,L]
+	RewriteCond %{HTTP_HOST} ^www\.ecovisrkca\.com$
+    #RewriteRule ^/?$ "https://ecovisrkca.com\" [R=301,L]
 </IfModule>
+<IfModule mod_headers.c>
+ Header set Access-Control-Allow-Origin "*"
+ </IfModule>

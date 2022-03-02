@@ -1,59 +1,110 @@
-	<?php
-defined('BASEPATH') or exit('No direct script access allowed');
-$this->load->view('_partials/header');
-?>
-<style type="text/css">
-    @media (max-width: 800px) {
+    <?php
 
-        body.layout-2 .main-content {
-            padding-top: 5px !important;
-            padding-left: 5px !important;
-            padding-right: 5px !important;
+    defined('BASEPATH') or exit('No direct script access allowed');
+
+    $this->load->view('_partials/header');
+    ?>
+    <style type="text/css">
+        @media (max-width: 800px) {
+
+            body.layout-2 .main-content {
+                padding-top: 5px !important;
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+
         }
 
-    }
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
+    <style>
+        .content-wrap section
+        {
+            text-align: unset!important;
+        }
+        #saveButton_inlineformtable_button_96
+        {
+            margin: 10px!important;
+        }
+        #form_143 .div_display
+        {
+            height: 100%!important;
+        }
+        #form_143 .spanLabel
+        {
+            top:unset!important;
+        }
+    </style>
+    <style>
+            #exTab1 .tab-content {
+              color : white;
+              background-color: #428bca;
+              padding : 5px 15px;
+            }
 
-    .select2-container {
-        width: 100% !important;
-    }
-</style>
-<style>
-    .content-wrap section
-    {
-        text-align: unset!important;
-    }
-    #saveButton_inlineformtable_button_96
-    {
-        margin: 10px!important;
-    }
-    #form_143 .div_display
-    {
-        height: 100%!important;
-    }
-    #form_143 .spanLabel
-    {
-        top:unset!important;
-    }
-</style>
+            #exTab2 h3 {
+              color : white;
+              background-color: #428bca;
+              padding : 5px 15px;
+            }
 
-<!-- Main Content -->
-<div class="main-content">
-    <section class="section section-body_new">
-        <!--		<div class="section-header card-primary">-->
-        <!--			<h1 id="section_name">-</h1>-->
-        <!--		</div>-->
-        <div class="section-body">
-            <div class="row">
-                <div class="col-12 col-md-12">
-                    <div class="card">
-                        <input type="hidden" id="department_id" name="department_id"
-                               value="<?= $department_id ?>">
-                        <input type="hidden" id="section_id" name="section_id"
-                               value="<?= $section_id ?>">
-                        <input type="hidden" id="queryparameter_hidden" name="queryparameter_hidden"
-                               value="<?= $queryParam ?>">
-                        <input type="hidden" id="hiddenDivName" name="hiddenDivName" value="">
-						<input type="hidden" id="excelhiddenelement" name="excelhiddenelement" value="">
+            /* remove border radius for the tab */
+
+            #exTab1 .nav-pills > li > a {
+              border-radius: 0;
+            }
+
+            /* change border radius for the tab , apply corners on top*/
+
+            #exTab3 .nav-pills > li > a {
+              border-radius: 4px 4px 0 0 ;
+            }
+
+            #exTab3 .tab-content {
+              color : white;
+              background-color: #428bca;
+              padding : 5px 15px;
+            }
+
+            .activeTabPanelBtn{
+                border: 1px solid grey !important;
+                background-color: #fff !important;
+                color: #000 !important;
+                border-bottom: 0px !important;
+                box-shadow: 0px 0px 0px grey !important;
+                border-radius: 5px 5px 0px 0px !important;
+                outline: 0 !important;
+            }
+            .inactiveTabPanelBtn{
+                border: 0px !important;
+                background-color: transparent !important;
+                outline: 0 !important;
+            }
+            .tabPanelDiv{
+                border-top: 1px solid grey !important;
+                margin-top: -17px !important;
+            }
+    </style>
+    <!-- Main Content -->
+    <div class="main-content">
+        <section class="section section-body_new">
+            <!--        <div class="section-header card-primary">-->
+                <!--            <h1 id="section_name">-</h1>-->
+                <!--        </div>-->
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-12 col-md-12">
+                            <div class="card">
+                                <input type="hidden" id="department_id" name="department_id"
+                                value="<?= $department_id ?>">
+                                <input type="hidden" id="section_id" name="section_id"
+                                value="<?= $section_id ?>">
+                                <input type="hidden" id="queryparameter_hidden" name="queryparameter_hidden"
+                                value="<?= $queryParam ?>">
+                                <input type="hidden" id="hiddenDivName" name="hiddenDivName" value="">
+                                <input type="hidden" id="excelhiddenelement" name="excelhiddenelement" value="">
                         <!-- <div class="card-header">
                             <h4>Department Details</h4>
                             <div class="card-header-action">
@@ -113,7 +164,7 @@ $this->load->view('_partials/header');
                                   </div>
 
                               </div> -->
-                            <div class="tabs tabs-style-underline">
+                              <div class="tabs tabs-style-underline">
                                 <!--  <nav>
                                      <ul id="lab_master_top_nav">
                                          <li class="tab-current">
@@ -136,7 +187,7 @@ $this->load->view('_partials/header');
                                                  <span>Payment</span></a></li>
                                      </ul>
                                  </nav> -->
-                                <div class="content-wrap content-wrap1" id="lab_master_panel">
+                                 <div class="content-wrap content-wrap1" id="lab_master_panel">
                                     <section id="departmentPanel0" class="content-current">
                                         <div id="tabdepartmentPanel0">
                                             <form id="labserviceorder">
@@ -144,172 +195,291 @@ $this->load->view('_partials/header');
                                                     <div class="col-md-6">
                                                         <label>Select Service</label>
                                                         <select class="form-control" name="service_name" id="service_name"
-                                                                onchange="getServiceChildTest(this.value)">
+                                                        onchange="getServiceChildTest(this.value)">
 
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label>Select Package</label>
-                                                        <select class="form-control" name="package_name" id="package_name"
-                                                                onchange="getPackageChildTest(this.value)">
-
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label>Rate</label>
-                                                        <input type="number" class="form-control" name="service_rate"
-                                                               id="service_rate">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label>Service Date</label>
-                                                        <input type="date" class="form-control" name="service_date"
-                                                               id="service_date">
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label>Comment</label>
-                                                        <textarea class="form-control" name="comment" id="comment"></textarea>
-                                                    </div>
+                                                    </select>
                                                 </div>
-                                                <div class="row p-2" id="service_data">
+                                                <div class="col-md-6">
+                                                    <label>Select Package</label>
+                                                    <select class="form-control" name="package_name" id="package_name"
+                                                    onchange="getPackageChildTest(this.value)">
 
-                                                </div>
-                                                <div class="row p-2" id="service_data">
-                                                    <button type="button" class="btn btn-primary form-control col-md-3"
-                                                            onclick="saveLabServiceOrder()">Order Confirm
-                                                    </button>
-                                                </div>
-                                            </form>
-                                            <div class="row p-2">
-                                                <table class="table" id="serviceLabOrderTable" style="width: 100%!important;">
-                                                    <thead>
-                                                    <tr>
-														<th>Order Id</th>
-                                                        <th>Service Order</th>
-                                                        <th>Amount</th>
-                                                        <th>Service Order Date</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-
-                                                    </tbody>
-                                                </table>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Rate</label>
+                                                <input type="number" class="form-control" name="service_rate"
+                                                id="service_rate">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Service Date</label>
+                                                <input type="date" class="form-control" name="service_date"
+                                                id="service_date">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Comment</label>
+                                                <textarea class="form-control" name="comment" id="comment"></textarea>
                                             </div>
                                         </div>
-                                    </section>
-                                    <section id="masterTestPanel0">
-										<div class="tabs tabs-style-underline">
-											<nav>
-												<ul id="lab_entry_top_nav">
-													<li class="tab-current" id="LabTabNormal">
-														<a href="#labEntryNormalPanel" class="icon" id="labEntryTabNormal">
-															<i class="fas fa-file-medical-alt  mr-1 fa_class"></i>
-															<span>Lab Data Entry</span>
-														</a>
-													</li>
-                                                    <li class="" id="LabTabHandson">
-                                                        <a href="#labEntryHandsonPanel" class="icon" id="labEntryTabHandson">
-                                                            <i class="fas fa-notes-medical  mr-1 fa_class"></i>
-                                                            <span>Lab Excel Data Entry</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="" id="PathologyTab">
-                                                        <a href="#pathologyCollectionPanel" class="icon" id="labPathologyCollection">
-                                                            <i class="fas fa-notes-medical  mr-1 fa_class"></i>
-                                                            <span>Pathology Collection</span>
-                                                        </a>
-                                                    </li>
-												</ul>
-											</nav>
-											<div class="content-wrap content-wrap2" id="lab_master_panel">
-												<section id="labEntryNormalPanel" class="content-current">
-													<div id="tabmasterTestPanel0"></div>
-												</section>
-                                                <section id="labEntryHandsonPanel">
-													<div class="col-md-12 mb-2 text-right">
-														<button class="btn btn-primary" type="button" id="saveLabExcelDataEntry" onclick="saveExcelData();">Save</button>
-													</div>
-													<div class="col-md-3">
-														<select name="selectServiceOrder" id="selectServiceOrder" class="form-control" style="font-size: 15px!important;" onchange="getServiceOrderChildList(this.value)"></select>
-													</div>
-                                                    <div id="tabentryhandsondata"></div>
+                                        <div class="row p-2" id="service_data">
 
-                                                </section>
-                                                <section id="pathologyCollectionPanel">
-                                                    <table class="table table-bordered table-stripped" id="pathologyTable">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Patient Name</th>
-                                                                <th>Service Code</th>
-                                                                <th style="width: 165px;">Service Name</th>
+                                        </div>
+                                        <div class="row p-2" id="service_data">
+                                            <button type="button" class="btn btn-primary form-control col-md-3"
+                                            onclick="saveLabServiceOrder()">Order Confirm
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="row p-2">
+                                    <table class="table" id="serviceLabOrderTable" style="width: 100%!important;">
+                                        <thead>
+                                            <tr>
+                                              <th>Order Id</th>
+                                              <th>Service Order</th>
+                                              <th>Amount</th>
+                                              <th>Service Order Date</th>
+                                              <th>Action</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
 
-                                                                <th>Delete Service</th>
-                                                                <th>Date and Time</th>
-                                                                <th>Confirm Service Given</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        </tbody>
-                                                    </table>
-                                                </section>
-											</div>
-										</div>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                      </section>
+                      <section id="masterTestPanel0">
+                          <div class="tabs tabs-style-underline">
+                             <nav>
+                                <ul id="lab_entry_top_nav">
+                                   <li class="tab-current" id="LabTabNormal">
+                                      <a href="#labEntryNormalPanel" class="icon" id="labEntryTabNormal">
+                                         <i class="fas fa-file-medical-alt  mr-1 fa_class"></i>
+                                         <span>Lab Data Entry</span>
+                                     </a>
+                                 </li>
+                                 <li class="" id="LabTabHandson">
+                                    <a href="#labEntryHandsonPanel" class="icon" id="labEntryTabHandson">
+                                        <i class="fas fa-notes-medical  mr-1 fa_class"></i>
+                                        <span>Lab Excel Data Entry</span>
+                                    </a>
+                                </li>
+                                <li class="" id="PathologyTab">
+                                    <a href="#pathologyCollectionPanel" class="icon" id="labPathologyCollection">
+                                        <i class="fas fa-notes-medical  mr-1 fa_class"></i>
+                                        <span>Pathology Collection</span>
+                                    </a>
+                                </li>
+                                <li class="" id="PathologyTabs">
+                                    <a href="#ocrPanela" class="icon" id="labOcr">
+                                        <i class="fas fa-notes-medical  mr-1 fa_class"></i>
+                                        <span>OCR</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="content-wrap content-wrap2" id="lab_master_panel">
+                            <section id="labEntryNormalPanel" class="content-current">
+                               <div id="tabmasterTestPanel0"></div>
+                           </section>
+                           <section id="labEntryHandsonPanel">
+                               <div class="col-md-12 mb-2 text-right">
+                                  <button class="btn btn-primary" type="button" id="saveLabExcelDataEntry" onclick="saveExcelData();">Save</button>
+                              </div>
+                              <div class="col-md-3">
+                                  <select name="selectServiceOrder" id="selectServiceOrder" class="form-control" style="font-size: 15px!important;" onchange="getServiceOrderChildList(this.value)"></select>
+                              </div>
+                              <div id="tabentryhandsondata"></div>
 
-                                    </section>
-                                    <section id="childTestPanel0">
-										<div class="tabs tabs-style-underline">
-											<nav>
-												<ul id="lab_report_top_nav">
-													<li class="tab-current" id="LabTabLab">
-														<a href="#labReportNormalPanel" class="icon" id="labDataNormal">
-															<i class="fas fa-file-medical-alt  mr-1 fa_class"></i>
-															<span>Lab Reports</span>
-														</a>
-													</li>
-													<li class="" id="LabTabPath">
-														<a href="#labReportPathologyPanel" class="icon" id="labDataPathology">
-															<i class="fas fa-notes-medical  mr-1 fa_class"></i>
-															<span>Pathology Reports</span>
-														</a>
-													</li>
-												</ul>
-											</nav>
-											<div class="content-wrap content-wrap3" id="lab_reportPath_panel">
-												<section id="labReportNormalPanel" class="content-current">
-													<div id="tabchildTestPanel0">
-														<table class="table" id="patientServiceLabReportTable" style="width: 100%!important;">
-															<thead>
-															<tr>
-																<th>Service Order</th>
-																<th>Amount</th>
-																<th>Service Order Date</th>
-																<th>Action</th>
-															</tr>
-															</thead>
-															<tbody>
+                          </section>
 
-															</tbody>
-														</table>
-													</div>
-												</section>
-												<section id="labReportPathologyPanel">
-													<div id="tabchildTestPanelPath0"></div>
-												</section>
-											</div>
-										</div>
+                          <section id="ocrPanel" class="mx-3">
 
-                                    </section>
-                                    <section id="unitMasterPanel0">
-										<div class="row mb-2"><button class="btn btn-primary odpsction" type="button"
-																	  style="margin-right:10px;margin-left: auto;float:right;"
-																	  id="CloseBillButton" onclick="Close_billing()">Close Billing
-											</button></div>
-                                        <div id="tabunitMasterPanel0"></div>
-                                    </section>
+                            <!-- Button trigger modal -->
+                            
+
+
+                            <div class="col-md-12 mb-2 text-left">
+                                <!-- <button type="button" class="btn btn-primary" onclick="openModalForOcr();"> -->
+                                <button type="button" id="openFileSelecter" class="btn btn-primary">
+                                  Upload Report Image/pdf
+                                </button>
+                                
+                                <span id="ocfFileName"></span>
+                                <!-- <form id="formOcrImg" method="post" enctype="multipart/form-data"> -->
+                                    <input type="file" class="form-control" name="ocrFile" id="ocrFile" accept="image/png, image/gif, image/jpeg, application/pdf" required data-msg="Select file" style="display: none;">
+                                    <input type="hidden" name="serviceData" id="serviceData" value="0">
+                                    <div id="imgDataContainer">
+                                        <!-- <input type="hidden" name="imgData" id="imgData" value="0"> -->
+                                    </div>
+                                    <input type="hidden" name="imgData" id="imgData" value="">
+                                    <input type="hidden" name="libraryData" id="libraryData" value="0">
+                                <!-- </form> -->
+                                
+                <!-- progressbar coad -->
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-info newrole" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"> </div>
                                 </div>
+                                <div id="targetLayer" style="display:none;"></div>
+                                <!-- <button class="btn btn-primary" type="button" id="saveLabExcelDataEntry" onclick="saveChildLabExcelData();">Save</button> -->
+
                             </div>
-                        </div>
-                        <div class="">
+                            <div class="col-md-3">
+                                <!-- <select name="selectServiceOrder1" id="selectServiceOrder1" class="form-control" style="font-size: 10px!important;" onchange="getChildTestData(this.value)"></select> -->
+                            </div>
+                            <div class="col-md-12">
+                                <!-- <div class="tabs tabs-style-underline">
+                                    <nav>
+                                        <ul id="lab_entry_top_navInner">
+                                            <li class="" id="filePreviewTab">
+                                                <a href="#filePreviewPanel" class="icon" id="ocrFilePreview">
+                                                    <i class="fas fa-notes-medical  mr-1 fa_class"></i>
+                                                    <span>File Preview</span>
+                                                </a>
+                                            </li>
+
+                                            <li class="" id="handsonTableTab">
+                                                <a href="#handsonTablePanel" class="icon" id="handsonTablePreview">
+                                                    <i class="fas fa-notes-medical  mr-1 fa_class"></i>
+                                                    <span>Handson Table Preview</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                    <div class="content-wrap content-wrap2" id="lab_master_panel">
+                                        <section id="filePreviewPanel" class="content-current">
+                                           <div id="">
+                                               file preview
+                                           </div>
+                                       </section>
+                                        <section id="handsonTablePanel" class="content-current">
+                                           <div id="">
+                                               handson
+                                           </div>
+                                       </section>
+                                   </div>
+                                </div> -->
+                                <div id="ocrDataContainer">
+                                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                  <li class="nav-item" role="presentation">
+                                    <button class="nav-link activeTabPanelBtn" id="a" onclick="changeTab(this.id);" type="button">File Preview</button>
+                                  </li>
+                                  <li class="nav-item" role="presentation">
+                                    <button class="nav-link inactiveTabPanelBtn" id="b" type="button"  onclick="changeTab(this.id);" role="tab">Handson Presentation</button>
+                                  </li>
+                                  <!-- <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="c" type="button"  onclick="changeTab(this.id);" role="tab" >Contact</button>
+                                  </li> -->
+                                </ul>
+                                <hr class="tabPanelDiv">
+                                <div class="tab-content" id="pills-tabContent">
+                                  <div class="tab-pane fade active show" id="panelA">
+                                    <div id="canvasContainer" style="width:846px;"></div>
+                                    <!-- <canvas class="canvas" id="imgCanvas" style="width:100%;"></canvas> -->
+                                    <img src="#" id="imgUploaded" name="imgUploaded" style="display:none;width: 100%;">
+                                  </div>
+                                  <div class="tab-pane fade" id="panelB">
+                                    <div id="tabentryhandsondata">
+                                        <?php //var_dump($this->session->userdata()); ?>
+                                        <div id="newDiv1"></div>
+                                    </div>
+                                  </div>
+                                  <!-- <div class="tab-pane fade" id="panelC">C</div> -->
+                                </div>
+                               
+                                </div>
+                                
+                                
+                               <!--  <form id="form_ocrupload" name="form_ocrupload" method="post" enctype="multipart/form-data">
+                                    <input type="file" class="form-control" name="ocrFile" id="ocrFile" required accept="image/png, image/gif, image/jpeg, application/pdf" />
+                                    <input type="hidden" name="serviceData" id="serviceData" value="0">
+                                    <input type="hidden" name="imgData" id="imgData" value="0">
+                                    <input type="hidden" name="libraryData" id="libraryData" value="0">
+                                    <input type="submit" id="btn_ocr_submit" class="btn btn-primary btn-sm" name="submit">
+                                </form> -->
+                                <!-- <div id="divImgCanvas" style="width:100%;height: auto;"> -->
+                                    <!-- <canvas class="canvas" id="imgCanvas" style="width:100%;"></canvas> -->
+                                <!-- </div> -->
+                            </div>
+                            
+
+                        </section>
+
+                        <section id="pathologyCollectionPanel">
+                            <table class="table table-bordered table-stripped" id="pathologyTable">
+                                <thead>
+                                    <tr>
+                                        <th>Patient Name</th>
+                                        <th>Service Code</th>
+                                        <th style="width: 165px;">Service Name</th>
+
+                                        <th>Delete Service</th>
+                                        <th>Date and Time</th>
+                                        <th>Confirm Service Given</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </section>
+                    </div>
+                </div>
+
+            </section>
+            <section id="childTestPanel0">
+              <div class="tabs tabs-style-underline">
+                 <nav>
+                    <ul id="lab_report_top_nav">
+                       <li class="tab-current" id="LabTabLab">
+                          <a href="#labReportNormalPanel" class="icon" id="labDataNormal">
+                             <i class="fas fa-file-medical-alt  mr-1 fa_class"></i>
+                             <span>Lab Reports</span>
+                         </a>
+                     </li>
+                     <li class="" id="LabTabPath">
+                      <a href="#labReportPathologyPanel" class="icon" id="labDataPathology">
+                         <i class="fas fa-notes-medical  mr-1 fa_class"></i>
+                         <span>Pathology Reports</span>
+                     </a>
+                 </li>
+             </ul>
+         </nav>
+         <div class="content-wrap content-wrap3" id="lab_reportPath_panel">
+            <section id="labReportNormalPanel" class="content-current">
+               <div id="tabchildTestPanel0">
+                  <table class="table" id="patientServiceLabReportTable" style="width: 100%!important;">
+                     <thead>
+                         <tr>
+                            <th>Service Order</th>
+                            <th>Amount</th>
+                            <th>Service Order Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section id="labReportPathologyPanel">
+           <div id="tabchildTestPanelPath0"></div>
+       </section>
+   </div>
+</div>
+
+</section>
+<section id="unitMasterPanel0">
+  <div class="row mb-2"><button class="btn btn-primary odpsction" type="button"
+     style="margin-right:10px;margin-left: auto;float:right;"
+     id="CloseBillButton" onclick="Close_billing()">Close Billing
+ </button></div>
+ <div id="tabunitMasterPanel0"></div>
+</section>
+</div>
+</div>
+</div>
+<div class="">
 
                             <!-- <div id="ShowForm">
                                 <div id="form_data"></div>
@@ -328,100 +498,154 @@ $this->load->view('_partials/header');
 </div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="lab-service-modal"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Test Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body py-0">
-                <div class="card my-0 shadow-none">
-                    <div class="card-body">
-                        <div>
-                            <table class="table" id="serviceLabOrderChild" style="width: 100%!important;">
-                                <thead>
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Test Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body py-0">
+            <div class="card my-0 shadow-none">
+                <div class="card-body">
+                    <div>
+                        <table class="table" id="serviceLabOrderChild" style="width: 100%!important;">
+                            <thead>
                                 <tr>
                                     <th>Test Name</th>
                                 </tr>
-                                </thead>
-                                <tbody>
+                            </thead>
+                            <tbody>
 
-                                </tbody>
-                            </table>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-
         </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+
     </div>
+</div>
 </div>
 
 
 <div class="modal fade" tabindex="-1" role="dialog" id="deleteSampleModel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <div class="modal-body py-0">
-                <div class="card my-0 shadow-none">
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush" id="sampleList">
+aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <div class="modal-body py-0">
+            <div class="card my-0 shadow-none">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush" id="sampleList">
 
-                        </ul>
-                    </div>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 
 <div class="modal fade" tabindex="-1" role="dialog" id="ListPathologyServicesModal"
-     aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-            <form id="PathologyFileUploadationForm2" method="post">
-                <div class="modal-header">
-                    <h5>Pathology Sample Collection</h5>
-                </div>
-                <div class="modal-body py-0">
-                    <div class="card my-0 shadow-none">
-                        <div class="card-body">
+aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <form id="PathologyFileUploadationForm2" method="post">
+            <div class="modal-header">
+                <h5>Pathology Sample Collection</h5>
+            </div>
+            <div class="modal-body py-0">
+                <div class="card my-0 shadow-none">
+                    <div class="card-body">
 
-                            <div id="PathologyServiceList"></div>
-                            <br>
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <label for="service_file">File Upload</label>
-                                    <input type="file" class="form-control" name="service_file[]" multiple=""
-                                           data-valid="required" data-msg="Select file" id="service_Path_file">
-                                    <span id="radiology_diles_error" style="color: red"></span>
-                                </div>
+                        <div id="PathologyServiceList"></div>
+                        <br>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="service_file">File Upload</label>
+                                <input type="file" class="form-control" name="service_file[]" multiple=""
+                                data-valid="required" data-msg="Select file" id="service_Path_file">
+                                <span id="radiology_diles_error" style="color: red"></span>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" type="submit">Save</button>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </form>
     </div>
+</div>
+</div>
+
+<!-- <form id="form_ocrupload" name="form_ocrupload" method="post" enctype="multipart/form-data">
+                                    <input type="file" class="form-control" name="ocrFile" id="ocrFile" required accept="image/png, image/gif, image/jpeg, application/pdf" />
+                                    <input type="hidden" name="serviceData" id="serviceData" value="0">
+                                    <input type="hidden" name="imgData" id="imgData" value="0">
+                                    <input type="hidden" name="libraryData" id="libraryData" value="0">
+                                    <input type="submit" id="btn_ocr_submit" class="btn btn-primary btn-sm" name="submit">
+                                </form> -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="uploadOcrModal"
+aria-hidden="true">
+<div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <form id="form_ocrupload" name="form_ocrupload" method="post" enctype="multipart/form-data">
+            <div class="modal-header">
+                <h5>Upload Image for OCR</h5>
+            </div>
+            <div class="modal-body py-0">
+                <div class="card my-0 shadow-none">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="service_file">File Upload</label>
+                                
+                                <!-- <input type="file" class="form-control" name="ocrFile" id="ocrFile" accept="image/png, image/gif, image/jpeg, application/pdf" required data-msg="Select file"> -->
+
+                                <!-- <input type="file" class="form-control" name="service_file[]" multiple="" -->
+                                <!-- data-valid="required" data-msg="Select file" id="service_Path_file"> -->
+                               <!--  <span id="radiology_diles_error" style="color: red"></span>
+                                 <progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
+                                  <h3 id="status"></h3>
+                                  <p id="loaded_n_total"></p> -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <input type="hidden" name="serviceData" id="serviceData" value="0">
+                <input type="hidden" name="imgData" id="imgData" value="0">
+                <input type="hidden" name="libraryData" id="libraryData" value="0"> -->
+                <input type="submit" id="btn_ocr_submit" class="btn btn-primary btn-sm" name="submit" value="Upload">
+                <!-- <button class="btn btn-primary" type="submit" id="btn_ocr_submit" class="btn btn-primary btn-sm" name="submit">Save</button> -->
+            </div>
+        </form>
+    </div>
+</div>
 </div>
 <!-- Main Content  end-->
 
 <?php $this->load->view('_partials/footer'); ?>
 <script>
+        document.getElementById('openFileSelecter').onclick = function() {
+            document.getElementById('ocrFile').click();
+
+        };
     var base_url = "<?php echo base_url(); ?>";
     $(document).ready(function () {
+        getChildTestData();
         get_lableftsidebar();
         // var section_id = $("#section_id").val();
         let queryParam =document.getElementById("queryparameter_hidden").value;
@@ -438,17 +662,17 @@ $this->load->view('_partials/header');
             document.getElementById("hiddenDivName").value= 'tabdepartmentPanel0';
             // get_forms(128, 0, queryParam, departmentId, null, 'tabdepartmentPanel0');
             showPanel(1);
-			$("#excelhiddenelement").val('');
+            $("#excelhiddenelement").val('');
         })
 
         $("#tabMasterTest0").on('click',function (event) {
             document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
             get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
             showPanel(143);
-			$('#LabTabNormal').removeClass('tab-current');
-			$('#LabTabHandson').removeClass('tab-current');
-			$('#PathologyTab').removeClass('tab-current');
-			$('#LabTabNormal').addClass('tab-current');
+            $('#LabTabNormal').removeClass('tab-current');
+            $('#LabTabHandson').removeClass('tab-current');
+            $('#PathologyTab').removeClass('tab-current');
+            $('#LabTabNormal').addClass('tab-current');
         });
 
         $("#tabChildTest0").on('click',function (event) {
@@ -456,9 +680,9 @@ $this->load->view('_partials/header');
             // get_forms(132, 0, queryParam, departmentId, null, 'tabchildTestPanel0');
             showPanel(2);
             getPatientLabReportList();
-			$("#excelhiddenelement").val('');
-			$('#LabTabLab').addClass('tab-current');
-			$('#LabTabPath').removeClass('tab-current');
+            $("#excelhiddenelement").val('');
+            $('#LabTabLab').addClass('tab-current');
+            $('#LabTabPath').removeClass('tab-current');
         })
 
         $("#tabUnitMaster0").on('click',function (event) {
@@ -468,16 +692,16 @@ $this->load->view('_partials/header');
             $("#excelhiddenelement").val('');
         })
 
-		$("#labEntryTabNormal").on('click',function (event) {
-			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
-			// get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
-			get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
-			// showPanel(143);
-			showPanel1('Normal',143);
-		})
+        $("#labEntryTabNormal").on('click',function (event) {
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+            // get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
+            get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
+            // showPanel(143);
+            showPanel1('Normal',143);
+        })
         $("#labEntryTabHandson").on('click',function (event) {
             // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
-			$("#tabentryhandsondata").html('');
+            $("#tabentryhandsondata").html('');
             showPanel1('handson',143);
 
         })
@@ -487,29 +711,84 @@ $this->load->view('_partials/header');
             showPanel1('labPathologyCollection',143);
 
         })
-		$("#labDataNormal").on('click',function (event) {
-			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+        $("#labOcr").on('click',function (event) {
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
 
-			document.getElementById("hiddenDivName").value= 'tabchildTestPanel0';
-			// get_forms(132, 0, queryParam, departmentId, null, 'tabchildTestPanel0');
-			showPanel(2);
-			getPatientLabReportList();
-			$("#excelhiddenelement").val('');
-			$('#LabTabLab').addClass('tab-current');
-			$('#LabTabPath').removeClass('tab-current');
+            showPanel1('labOcr',143);
 
-		})
-		$("#labDataPathology").on('click',function (event) {
-			// document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+        })
 
-			showPanel2('labDataPathology',143);
+         $("#ocrFilePreview").on('click',function (event) {
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
 
-		})
+            showPanel1('ocrFilePreview',143);
+
+        })
+          $("#handsonTablePreview").on('click',function (event) {
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+
+            showPanel1('handsonTablePreview',143);
+
+        })
+
+        $("#labDataNormal").on('click',function (event) {
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+
+            document.getElementById("hiddenDivName").value= 'tabchildTestPanel0';
+            // get_forms(132, 0, queryParam, departmentId, null, 'tabchildTestPanel0');
+            showPanel(2);
+            getPatientLabReportList();
+            $("#excelhiddenelement").val('');
+            $('#LabTabLab').addClass('tab-current');
+            $('#LabTabPath').removeClass('tab-current');
+
+        })
+        $("#labDataPathology").on('click',function (event) {
+            // document.getElementById("hiddenDivName").value= 'tabmasterTestPanel0';
+
+            showPanel2('labDataPathology',143);
+
+        })
     });
+    function changeTab(id){
+    //     // alert(id);
 
+        
 
-function getCollectionTable(category, tableID) {
-    
+        if (id == 'a') {
+            $("#pills-tab").children().removeClass('show active');
+            $("#pills-tab").children('button').removeClass('active');
+            $("#pills-tabContent").children('div').removeClass('show active');
+            $("#a").addClass('activeTabPanelBtn').removeClass('inactiveTabPanelBtn');
+            $("#b").removeClass('activeTabPanelBtn').addClass('inactiveTabPanelBtn');
+            $("#panelA").addClass("active").addClass('show');            
+        }
+        if (id == 'b') {
+            $("#pills-tab").children().removeClass('show active');
+            $("#pills-tab").children('button').removeClass('active');
+            $("#pills-tabContent").children('div').removeClass('show active');
+            $("#a").removeClass('activeTabPanelBtn').addClass('inactiveTabPanelBtn');
+            $("#b").addClass('activeTabPanelBtn').removeClass('inactiveTabPanelBtn');
+            $("#panelB").addClass("active").addClass('show');            
+        }
+    //     else if (id == 'nav-profile-tab') {
+    //         $("#nav-tabContent").children().removeClass('show active');
+    //         $("#nav-profile-tab").addClass('show')
+    //         $("#nav-profile-tab").addClass("active");
+    //     }
+    //     else if (id == 'nav-contact-tab') {
+    //         $("#nav-tabContent").children().removeClass('show active');
+    //         $("#nav-contact-tab").addClass('show')
+    //         $("#nav-contact-tab").addClass("active");
+    //     }
+    }
+
+    function openModalForOcr(){
+        $("#uploadOcrModal").modal("show");
+    }
+
+    function getCollectionTable(category, tableID) {
+
     // var p_id = $('#p_id').val();
     //console.log(""+tableID+"");
     let patient_id = localStorage.getItem("patient_id");
@@ -526,29 +805,29 @@ function getCollectionTable(category, tableID) {
         data:{patient_id:patient_id},
         dataType:'json',
     }, [
-            {
-                data: 0
-            },
-            {
-                data: 1
-            },
-            {
-                data: 2
-            },
+    {
+        data: 0
+    },
+    {
+        data: 1
+    },
+    {
+        data: 2
+    },
 
-            {
-                data: 3,
-				render: (d, t, r, m) => {
-					return `<button type="button" class="btn btn-link"
-						onclick="deleteServiceOrder('${d}','${tableID}','${category}','${r[4]}')" ><i class="fa fa-times"></i></button>`;
-				}
-            },
-            {
-                data: 6
-            },
-            {
-                data: 1,
-                render: (d, t, r, m) => {
+    {
+        data: 3,
+        render: (d, t, r, m) => {
+           return `<button type="button" class="btn btn-link"
+           onclick="deleteServiceOrder('${d}','${tableID}','${category}','${r[4]}')" ><i class="fa fa-times"></i></button>`;
+       }
+   },
+   {
+    data: 6
+},
+{
+    data: 1,
+    render: (d, t, r, m) => {
                     // if (parseInt(r[10]) === 1) {
                     //     let value = 1;
                     //     return `<input type="checkbox" id="sampleCollectionCheckbox_${r[10]}"
@@ -556,12 +835,12 @@ function getCollectionTable(category, tableID) {
                     // } else {
                         // let value = 0;
                         return `<input type="checkbox"  id="sampleCollectionCheckbox_${r[3]}" 
-        onclick="serviceOrderBillingInfo('${r[1]}',${r[4]},${r[5]},${r[9]},${r[3]})">`;
+                        onclick="serviceOrderBillingInfo('${r[1]}',${r[4]},${r[5]},${r[9]},${r[3]})">`;
                     // }
 
                 }
             },
-    ] )
+            ] )
 }
 
 
@@ -639,80 +918,109 @@ function SavePathologyProgress2(formData) {
     }).catch(error => console.log(error));
 }
 
-    function showPanel(id) {
-        $(".a_menu").css({
-            "text-decoration": 'none',
-            "color": 'black'
-        });
-        $('.li_menu').addClass('menu-header_section1').removeClass('menu-header_section active');
-        $('.a_menu_' + id).css({
-            "text-decoration": 'none',
-            "color": 'white'
-        });
-        $(".li_menu_" + id).addClass('menu-header_section active').removeClass('menu-header_section1');
+function showPanel(id) {
+    $(".a_menu").css({
+        "text-decoration": 'none',
+        "color": 'black'
+    });
+    $('.li_menu').addClass('menu-header_section1').removeClass('menu-header_section active');
+    $('.a_menu_' + id).css({
+        "text-decoration": 'none',
+        "color": 'white'
+    });
+    $(".li_menu_" + id).addClass('menu-header_section active').removeClass('menu-header_section1');
 
-        let panel =parseInt(id);
-        $(".content-wrap1 section").removeClass("content-current");
-        $("#lab_master_top_nav li").removeClass("tab-current")
-        if(panel ===1){
-            $("#lab_master_top_nav li:nth-child(1)").addClass("tab-current")
-            $("#departmentPanel0").addClass("content-current");
-        }
-        if(panel ===143){
-            $("#lab_master_top_nav li:nth-child(2)").addClass("tab-current")
-            $("#masterTestPanel0").addClass("content-current");
-			$("#labEntryNormalPanel").addClass("content-current")
-        }
-        if(panel ===2){
-            $("#lab_master_top_nav li:nth-child(3)").addClass("tab-current")
-            $("#childTestPanel0").addClass("content-current");
-			$("#labReportNormalPanel").addClass("content-current")
-        }
-        if(panel ===144){
-            $("#lab_master_top_nav li:nth-child(4)").addClass("tab-current")
-            $("#unitMasterPanel0").addClass("content-current");
-        }
+    let panel =parseInt(id);
+    $(".content-wrap1 section").removeClass("content-current");
+    $("#lab_master_top_nav li").removeClass("tab-current")
+    if(panel ===1){
+        $("#lab_master_top_nav li:nth-child(1)").addClass("tab-current")
+        $("#departmentPanel0").addClass("content-current");
+    }
+    if(panel ===143){
+        $("#lab_master_top_nav li:nth-child(2)").addClass("tab-current")
+        $("#masterTestPanel0").addClass("content-current");
+        $("#labEntryNormalPanel").addClass("content-current")
+    }
+    if(panel ===2){
+        $("#lab_master_top_nav li:nth-child(3)").addClass("tab-current")
+        $("#childTestPanel0").addClass("content-current");
+        $("#labReportNormalPanel").addClass("content-current")
+    }
+    if(panel ===144){
+        $("#lab_master_top_nav li:nth-child(4)").addClass("tab-current")
+        $("#unitMasterPanel0").addClass("content-current");
+    }
+
+}
+function showPanel1(id,sectionId) {
+  $(".content-wrap2 section").removeClass("content-current");
+  $("#lab_entry_top_nav li").removeClass("tab-current")
+  $("#lab_entry_top_navInner li").removeClass("tab-current")
+  
+    if(id=='Normal')
+    {
+        $("#lab_entry_top_nav li:nth-child(1)").addClass("tab-current")
+        $("#labEntryNormalPanel").addClass("content-current");
+        get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
+    }
+    if(id=='handson')
+    {
+    $("#lab_entry_top_nav li:nth-child(2)").addClass("tab-current")
+    $("#labEntryHandsonPanel").addClass("content-current");
+    getServiceOrderList(sectionId);
 
     }
-	function showPanel1(id,sectionId) {
-		$(".content-wrap2 section").removeClass("content-current");
-		$("#lab_entry_top_nav li").removeClass("tab-current")
-		if(id=='Normal')
-		{
-			$("#lab_entry_top_nav li:nth-child(1)").addClass("tab-current")
-			$("#labEntryNormalPanel").addClass("content-current");
-			get_forms(143, 0, queryParam, departmentId, null, 'tabmasterTestPanel0');
-		}
-        if(id=='handson')
-        {
-            $("#lab_entry_top_nav li:nth-child(2)").addClass("tab-current")
-            $("#labEntryHandsonPanel").addClass("content-current");
-			getServiceOrderList(sectionId);
-
-        }
-        if(id=='labPathologyCollection')
-        {
-            $("#lab_entry_top_nav li:nth-child(3)").addClass("tab-current")
-            $("#pathologyCollectionPanel").addClass("content-current");
+    if(id=='labPathologyCollection')
+    {
+    $("#lab_entry_top_nav li:nth-child(3)").addClass("tab-current")
+    $("#pathologyCollectionPanel").addClass("content-current");
             // loadEditableTable(sectionId);
             getCollectionTable('PATHOLOGY', 'pathologyTable');
-        }
-	}
-	function showPanel2(id,sectionId) {
-		$(".content-wrap3 section").removeClass("content-current");
-		$("#lab_report_top_nav li").removeClass("tab-current")
+    }
+    if(id=='labOcr')
+    {
+    $("#lab_entry_top_nav li:nth-child(4)").addClass("tab-current")
+    $("#ocrPanel").addClass("content-current");
+    getServiceOrderList(sectionId);
+    loadEditableTable();
+    // loadEditableTable(sectionId);
+    // getCollectionTable('PATHOLOGY', 'pathologyTable');
+    }
+    if(id=='ocrFilePreview')
+    {
+        $("#lab_entry_top_navInner li:nth-child(1)").addClass("tab-current")
+        $("#filePreviewPanel").addClass("content-current");
+        
+        // loadEditableTable(sectionId);
+        // getCollectionTable('PATHOLOGY', 'pathologyTable');
+    }
+    if(id=='handsonTablePreview')
+    {
+        $("#lab_entry_top_navInner li:nth-child(2)").addClass("tab-current")
+        $("#handsonTablePanel").addClass("content-current");
+        
+        // loadEditableTable(sectionId);
+        // getCollectionTable('PATHOLOGY', 'pathologyTable');
+    }
+    
 
-		if(id=='labDataPathology')
-		{
-			$("#lab_report_top_nav li:nth-child(2)").addClass("tab-current")
-			$("#labReportPathologyPanel").addClass("content-current");
-			getPathologyReports();
-		}
-	}
-    function loadPackageData(section_id, divId) {
-        if (section_id == 136) {
-            getServices();
-            getPackage();
+}
+    function showPanel2(id,sectionId) {
+      $(".content-wrap3 section").removeClass("content-current");
+      $("#lab_report_top_nav li").removeClass("tab-current")
+
+      if(id=='labDataPathology')
+      {
+         $("#lab_report_top_nav li:nth-child(2)").addClass("tab-current")
+         $("#labReportPathologyPanel").addClass("content-current");
+         getPathologyReports();
+     }
+ }
+ function loadPackageData(section_id, divId) {
+    if (section_id == 136) {
+        getServices();
+        getPackage();
             // getLabServiceOrders();
         } else {
             $("#section_id").val(section_id);
@@ -830,29 +1138,29 @@ function SavePathologyProgress2(formData) {
             url: base_url + "getLabServiceOrders",
             data: {patient_id: patient_id},
         }, [
-			{
-				data: 3
-			},
-            {
-                data: 0
-            },
-            {
-                data: 1
-            },
-            {
-                data: 2
-            },
-            {
-                data: 3,
-                render: (d, t, r, m) => {
+        {
+            data: 3
+        },
+        {
+            data: 0
+        },
+        {
+            data: 1
+        },
+        {
+            data: 2
+        },
+        {
+            data: 3,
+            render: (d, t, r, m) => {
 
-                    return `<button class="btn btn-primary btn-action mr-1" type="button" onclick="cancelOrder('${r[3]}','${r[5]}')" data-serv_id="${r[3]}"> <i class="fas fa-times"></i> </button>
-						<button class="btn btn-primary btn-action mr-1" data-toggle="modal"
-						data-target="#lab-service-modal" data-id="${r[3]}" onclick="open_edit_modal('${r[4]}','${r[5]}')" type="button"> <i class="fa fa-eye"></i> </button>`;
+                return `<button class="btn btn-primary btn-action mr-1" type="button" onclick="cancelOrder('${r[3]}','${r[5]}')" data-serv_id="${r[3]}"> <i class="fas fa-times"></i> </button>
+                <button class="btn btn-primary btn-action mr-1" data-toggle="modal"
+                data-target="#lab-service-modal" data-id="${r[3]}" onclick="open_edit_modal('${r[4]}','${r[5]}')" type="button"> <i class="fa fa-eye"></i> </button>`;
 
 
-                }
             }
+        }
 
         ], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
 
@@ -867,7 +1175,7 @@ function SavePathologyProgress2(formData) {
         let formData = new FormData();
         formData.set("service_id", order_id);
         formData.set("service_type", service_type);
-		formData.set("patient_id", localStorage.getItem("patient_id"));
+        formData.set("patient_id", localStorage.getItem("patient_id"));
         app.request(base_url + "getlabServiceCancelOrder", formData).then(response => {
             $("#service_data").html("");
             if (response.status == 200) {
@@ -885,9 +1193,9 @@ function SavePathologyProgress2(formData) {
             url: base_url + "getlabServiceChildOrder",
             data: {patient_id: patient_id, service_id: service_id, service_type: service_type},
         }, [
-            {
-                data: 0
-            }
+        {
+            data: 0
+        }
 
         ], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
 
@@ -908,59 +1216,59 @@ function SavePathologyProgress2(formData) {
             }
         });
     }
-	function getPatientLabReportList()
-	{
-		var patient_id = localStorage.getItem("patient_id");
-		app.dataTable('patientServiceLabReportTable', {
-			url: base_url + "getLabServiceOrders1",
-			data: {patient_id: patient_id},
-		}, [
-			{
-				data: 0
-			},
-			{
-				data: 1
-			},
-			{
-				data: 2
-			},
-			{
-				data: 3,
-				render: (d, t, r, m) => {
-					let reportArray ={"patient_id":patient_id,"service_id":r[3]};
-					let string = btoa(JSON.stringify(reportArray));
-					// if(r[6]==r[7]){
-						return `
+    function getPatientLabReportList()
+    {
+      var patient_id = localStorage.getItem("patient_id");
+      app.dataTable('patientServiceLabReportTable', {
+         url: base_url + "getLabServiceOrders1",
+         data: {patient_id: patient_id},
+     }, [
+     {
+        data: 0
+    },
+    {
+        data: 1
+    },
+    {
+        data: 2
+    },
+    {
+        data: 3,
+        render: (d, t, r, m) => {
+           let reportArray ={"patient_id":patient_id,"service_id":r[3]};
+           let string = btoa(JSON.stringify(reportArray));
+                    // if(r[6]==r[7]){
+                        return `
                         <a class="btn btn-primary" href="${base_url+'patientLabReport/'+string}" target="_blank"><i class="fa fa-file"></i></a>`;
 
-					// }
-					// else
-					// {
-					// 	return ``;
-					// }
-				}
-			}
+                    // }
+                    // else
+                    // {
+                    //  return ``;
+                    // }
+                }
+            }
 
-		], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
-			let reportArray ={"patient_id":patient_id,"service_id":aData[3]};
-			let string = btoa(JSON.stringify(reportArray));
-			// if(aData[6]==aData[7]){
-				$('td:eq(3)', nRow).html(`<a class="btn btn-primary" href="${base_url+'patientLabReport/'+string}" target="_blank"><i class="fa fa-file"></i></a>`);
-			// }
-			// else
-			// {
-			// 	$('td:eq(3)', nRow).html(``);
-			// }
+          ], (nRow, aData, iDisplayIndex, iDisplayIndexFull) => {
+             let reportArray ={"patient_id":patient_id,"service_id":aData[3]};
+             let string = btoa(JSON.stringify(reportArray));
+            // if(aData[6]==aData[7]){
+                $('td:eq(3)', nRow).html(`<a class="btn btn-primary" href="${base_url+'patientLabReport/'+string}" target="_blank"><i class="fa fa-file"></i></a>`);
+            // }
+            // else
+            // {
+            //  $('td:eq(3)', nRow).html(``);
+            // }
 
-		})
+        })
 
-	}
+  }
 
 
-    function loadLabEntry() {
-            getAllPatientOrderServices();
-    }
-    function getAllPatientOrderServices() {
+  function loadLabEntry() {
+    getAllPatientOrderServices();
+}
+function getAllPatientOrderServices() {
 
         var patient_id = 2//localStorage.getItem("patient_id");
         let formData = new FormData();
@@ -980,7 +1288,7 @@ function SavePathologyProgress2(formData) {
 
     let units ;
 
-        function getPatientLabSelectedReportList(service_id) {
+    function getPatientLabSelectedReportList(service_id) {
 
         var patient_id = 2//localStorage.getItem("patient_id");
         let formData = new FormData();
@@ -990,7 +1298,7 @@ function SavePathologyProgress2(formData) {
 
             if (res.status == 200) {
                 let unitsOptions=`<option>None</option>`;
-                 unitsOptions += res.units.map(i=>{
+                unitsOptions += res.units.map(i=>{
                     return `<option value="${i.id}">${i.name}</option>`;
                 });
                 units = res.units;
@@ -1003,27 +1311,27 @@ function SavePathologyProgress2(formData) {
                     "ordering": false,
                     "info":     false,
                     columns: [
-                        {
-                            data: 1
-                        },
-                        {
-                            data: 0,
-                            render: (d, t, r, m) => {
-                                return `<input type="text" class="form-control" name="value_${d}" />`;
-                            }
-                        },
-                        {
-                            data: 0,
-                            render: (d, t, r, m) => {
-                                return `<select class="form-control" style="width: 100%" name="unit_${d}" onchange="updateUnit(this.value,${m.row})">${unitsOptions}</select>`;
-                            }
-                        },
-                        {
-                            data: 0,
-                            render: (d, t, r, m) => {
-                                return `<textarea class="form-control" style="width: 100%" name="reference_${d}" id="reference_${m.row}" ></textarea>`;
-                            }
+                    {
+                        data: 1
+                    },
+                    {
+                        data: 0,
+                        render: (d, t, r, m) => {
+                            return `<input type="text" class="form-control" name="value_${d}" />`;
                         }
+                    },
+                    {
+                        data: 0,
+                        render: (d, t, r, m) => {
+                            return `<select class="form-control" style="width: 100%" name="unit_${d}" onchange="updateUnit(this.value,${m.row})">${unitsOptions}</select>`;
+                        }
+                    },
+                    {
+                        data: 0,
+                        render: (d, t, r, m) => {
+                            return `<textarea class="form-control" style="width: 100%" name="reference_${d}" id="reference_${m.row}" ></textarea>`;
+                        }
+                    }
 
                     ]
                 })
@@ -1045,166 +1353,167 @@ function SavePathologyProgress2(formData) {
 
 </script>
 <script type="text/javascript">
-	function Close_billing() {
-		var p_id = localStorage.getItem("patient_id");
-		$.ajax({
-			type: "POST",
-			url: '<?= base_url("LabPatientController/ChangeBillingOpen")?>',
-			dataType: "json",
-			async: false,
-			cache: false,
-			data: {p_id},
-			success: function (result) {
+    function Close_billing() {
+        var p_id = localStorage.getItem("patient_id");
+        $.ajax({
+            type: "POST",
+            url: '<?= base_url("LabPatientController/ChangeBillingOpen")?>',
+            dataType: "json",
+            async: false,
+            cache: false,
+            data: {p_id},
+            success: function (result) {
 
-				if (result.status == 200) {
+                if (result.status == 200) {
 
-					app.successToast(result.body);
-					checkBillingStatus();
-				} else {
-					app.errorToast(result.body);
-				}
-			}
-		});
-	}
+                    app.successToast(result.body);
+                    checkBillingStatus();
+                } else {
+                    app.errorToast(result.body);
+                }
+            }
+        });
+    }
 
-	function checkBillingStatus() {
-		var p_id = localStorage.getItem("patient_id");
-		$.ajax({
-			type: "POST",
-			url: '<?= base_url("LabPatientController/check_billing_status")?>',
-			dataType: "json",
-			async: false,
-			cache: false,
-			data: {p_id},
-			success: function (result) {
+    function checkBillingStatus() {
+        var p_id = localStorage.getItem("patient_id");
+        $.ajax({
+            type: "POST",
+            url: '<?= base_url("LabPatientController/check_billing_status")?>',
+            dataType: "json",
+            async: false,
+            cache: false,
+            data: {p_id},
+            success: function (result) {
 
-				if (result.status == 200) {
-					var value = result.value;
-					if (value == 1) {
-						$("#CloseBillButton").html("Billing Already Close");
-						// $('.a_menu22').hide();
-					} else {
-						$("#CloseBillButton").html("Close Billing");
-						// $('.a_menu22').show();
-					}
-				} else {
+                if (result.status == 200) {
+                    var value = result.value;
+                    if (value == 1) {
+                        $("#CloseBillButton").html("Billing Already Close");
+                        // $('.a_menu22').hide();
+                    } else {
+                        $("#CloseBillButton").html("Close Billing");
+                        // $('.a_menu22').show();
+                    }
+                } else {
 
-				}
-			}
-		});
-	}
+                }
+            }
+        });
+    }
 
 </script>
 <script>
-	function loadEditableTable(sectionId,service_order_id) {
-		$("#saveLabExcelDataEntry").hide();
+    function loadEditableTable(sectionId,service_order_id) {
+        $("#saveLabExcelDataEntry").hide();
         // console.log("p id = == "+localStorage.getItem("patient_id"));
-		let formData = new FormData();
-		formData.set("section_id", sectionId);
-		formData.set("dep_id", $("#department_id").val());
-		formData.set("haskey", $("#excelhiddenelement").val());
+        let formData = new FormData();
+        formData.set("section_id", sectionId);
+        formData.set("dep_id", $("#department_id").val());
+        formData.set("haskey", $("#excelhiddenelement").val());
         formData.set('queryParam',$('#queryparameter_hidden').val());
-		formData.set('order_id',service_order_id);
-		$.ajax({
-			type: "POST",
-			url: "<?= base_url("getLabDataEntryExcelData") ?>",
-			dataType: "json",
-			data:formData,
-			contentType:false,
-			processData:false,
-			success: function (result) {
-				let userType=[];
-				if(result.status==200)
-				{
-					userType=result.data;
-					$("#saveLabExcelDataEntry").show();
-				}
-                data = result.body;
-				var rows = data;
-				var types = [
-                    {type: 'text'},
-					{type: 'text'},
-					{type: 'text'},
-                    {type: 'text'},
-                    {type: 'text',readOnly:true},
-                    {type: 'text'},
-                    {type: 'text'},
-					{type: 'text'},
-					{type: 'text'},
-				];
-				var hideArra = [0,4,5,6,7,8];
-				var columns = ["Master Id",'Test Name(A)', 'Value(B)', 'Unit(C)', 'Bio Ref Interval(D)',"Child Test Id","Id","OrderId","Master Name"];
-				hideColumn = {
-					// specify columns hidden by default
-					columns: hideArra,
-					copyPasteEnabled: false,
-				};
+        formData.set('order_id',service_order_id);
+        $.ajax({
+         type: "POST",
+         url: "<?= base_url("getLabDataEntryExcelData") ?>",
+         dataType: "json",
+         data:formData,
+         contentType:false,
+         processData:false,
+         success: function (result) {
+            let userType=[];
+            if(result.status==200)
+            {
+               userType=result.data;
+               $("#saveLabExcelDataEntry").show();
+           }
+           data = result.body;
+           var rows = data;
+           var types = [
+           {type: 'text'},
+           {type: 'text'},
+           {type: 'text'},
+           {type: 'text'},
+           {type: 'text',readOnly:true},
+           {type: 'text'},
+           {type: 'text'},
+           {type: 'text'},
+           {type: 'text'},
+           ];
+           var hideArra = [0,4,5,6,7,8];
+           var columns = ["Master Id",'Test Name(A)', 'Value(B)', 'Unit(C)', 'Bio Ref Interval(D)',"Child Test Id","Id","OrderId","Master Name"];
+           hideColumn = {
+                    // specify columns hidden by default
+                    columns: hideArra,
+                    copyPasteEnabled: false,
+                };
                 // console.log(result.body);
-				createHandonTable(columns, rows, types, 'tabentryhandsondata', hideColumn);
+                createHandonTable(columns, rows, types, 'tabentryhandsondata', hideColumn);
 
-			}, error: function (error) {
-				app.errorToast('Something went wrong please try again');
-			}
-		});
-	}
+            }, error: function (error) {
+                app.errorToast('Something went wrong please try again');
+            }
+        });
+    }
 
-	let hotDiv;
+    let hotDiv;
 
-	function createHandonTable(columnsHeader, columnRows, columnTypes, divId, hideColumn = true) {
+    function createHandonTable(columnsHeader, columnRows, columnTypes, divId, hideColumn = true) {
 
-		var element = document.getElementById(divId);
-		hotDiv != null ? hotDiv.destroy() : '';
-		hotDiv = new Handsontable(element, {
-			data: columnRows,
-			colHeaders: columnsHeader,
-			formulas: true,
-			manualColumnResize: true,
-			manualRowResize: true,
-			columns: columnTypes,
-			minSpareRows:1,
-			stretchH: 'all',
-			colWidths: '100%',
-			width: '100%',
-			height: 320,
-			rowHeights: 23,
-			rowHeaders: true,
-			filters: true,
-			contextMenu: true,
-			hiddenColumns: hideColumn,
-			dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
-			licenseKey: 'non-commercial-and-evaluation'
-		});
+      var element = document.getElementById(divId);
+      hotDiv != null ? hotDiv.destroy() : '';
+      hotDiv = new Handsontable(element, {
+         data: columnRows,
+         colHeaders: columnsHeader,
+         formulas: true,
+         manualColumnResize: true,
+         manualRowResize: true,
+         columns: columnTypes,
+         minSpareRows:1,
+         stretchH: 'all',
+         colWidths: '100%',
+         width: '100%',
+         height: 320,
+         rowHeights: 23,
+         rowHeaders: true,
+         filters: true,
+         contextMenu: true,
+         hiddenColumns: hideColumn,
+         dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
+         licenseKey: 'non-commercial-and-evaluation'
+     });
 
-		hotDiv.validateCells();
-	}
+      hotDiv.validateCells();
+  }
 
-    function saveExcelData() {
-        $.LoadingOverlay("show");
+  function saveExcelData() {
+    $.LoadingOverlay("show");
         // $("#newErrorDiv").html('');
         var array=hotDiv.getData();
-		var Form_data = new FormData();
-		Form_data.set('patient_id',localStorage.getItem("patient_id"));
-		Form_data.set('value',JSON.stringify(array));
-		Form_data.set('patient_name',localStorage.getItem("patient_name"));
-		Form_data.set('patient_adhar',localStorage.getItem("patient_adharnumber"));
-		Form_data.set('service_order_id',$("#selectServiceOrder").val());
+        var Form_data = new FormData();
+        Form_data.set('patient_id',localStorage.getItem("patient_id"));
+        Form_data.set('value',JSON.stringify(array));
+        Form_data.set('patient_name',localStorage.getItem("patient_name"));
+        Form_data.set('patient_adhar',localStorage.getItem("patient_adharnumber"));
+        Form_data.set('service_order_id',$("#selectServiceOrder").val());
+        // Form_data.set('service_order_id1',$("#selectServiceOrder1").val());
         if (confirm("Are You Sure You want to upload?")) {
             $.ajax({
                 url: "<?= base_url();?>" + "updateDynamicLabData",
                 type: "POST",
                 dataType: "json",
                 data: Form_data,
-				contentType: false,
-				processData: false,
+                contentType: false,
+                processData: false,
                 success: function (result) {
                     $.LoadingOverlay("hide");
                     if (result.status == 200) {
                         app.successToast(result.body);
-						loadEditableTable(143,$("#selectServiceOrder").val());
+                        loadEditableTable(143,$("#selectServiceOrder").val());
 
                     } else {
 
-                            app.errorToast(result.body);
+                        app.errorToast(result.body);
 
                         
                     }
@@ -1222,101 +1531,798 @@ function SavePathologyProgress2(formData) {
 
     }
     function getPathologyReports() {
-		$.LoadingOverlay("show");
-		$("#tabchildTestPanelPath0").html('');
-		$.ajax({
-			url: "<?= base_url();?>" + "getLabPathologyTableData",
-			type: "POST",
-			dataType: "json",
-			data: {p_id:localStorage.getItem("patient_id")},
-			success: function (result) {
-				$.LoadingOverlay("hide");
-				if (result.status == 200) {
-					$("#tabchildTestPanelPath0").html(result.data);
-				} else {
-					toastr.error(result.body);
+      $.LoadingOverlay("show");
+      $("#tabchildTestPanelPath0").html('');
+      $.ajax({
+         url: "<?= base_url();?>" + "getLabPathologyTableData",
+         type: "POST",
+         dataType: "json",
+         data: {p_id:localStorage.getItem("patient_id")},
+         success: function (result) {
+            $.LoadingOverlay("hide");
+            if (result.status == 200) {
+               $("#tabchildTestPanelPath0").html(result.data);
+           } else {
+               toastr.error(result.body);
 
-				}
-			},
-			error: function (error) {
+           }
+       },
+       error: function (error) {
 
-				$.LoadingOverlay("hide");
-				console.log(error);
-				// $.LoadingOverlay("hide");
-			}
-		});
-	}
+        $.LoadingOverlay("hide");
+        console.log(error);
+                // $.LoadingOverlay("hide");
+            }
+        });
+  }
 
-	function radiologyDownloadButtons(download_data) {
-		let samples = download_data.split(',');
-		var filedata=[];
-		var interval=samples.length;
-		if(samples.length>0)
-		{
-			for (var i =0; samples.length > 0; i++) {
-				// filedata.push(samples[i]);
-				if (i >= samples.length) {
-					break;
-				}
-				var a = document.createElement("a");
-				a.setAttribute('href', "<?= base_url();?>"+samples[i]);
-				a.setAttribute('download', '');
-				a.setAttribute('target', '_blank');
-				a.click();
+  function radiologyDownloadButtons(download_data) {
+      let samples = download_data.split(',');
+      var filedata=[];
+      var interval=samples.length;
+      if(samples.length>0)
+      {
+         for (var i =0; samples.length > 0; i++) {
+                // filedata.push(samples[i]);
+                if (i >= samples.length) {
+                    break;
+                }
+                var a = document.createElement("a");
+                a.setAttribute('href', "<?= base_url();?>"+samples[i]);
+                a.setAttribute('download', '');
+                a.setAttribute('target', '_blank');
+                a.click();
 
-			}
+            }
 
-			// console.log(filedata);
-		}
+            // console.log(filedata);
+        }
 
-	}
-	function deleteServiceOrder(service_id,table_id,category,patient_id) {
-		let confirmAction = confirm("Are you sure to you want confirm service");
-		if (confirmAction) {
-			$.ajax({
-				url: "<?= base_url();?>" + "deletePathologyServiceOrder",
-				type: "POST",
-				dataType: "json",
-				data: {service_order_id: service_id, patient_id: patient_id},
-				success: function (response) {
-					if (response.status == 200) {
-						app.successToast(response.body);
-						getCollectionTable(category, table_id);
-					} else {
-						app.errorToast(response.body);
-					}
-				},
-				error: function (error) {
+    }
+    function deleteServiceOrder(service_id,table_id,category,patient_id) {
+        let confirmAction = confirm("Are you sure to you want confirm service");
+        if (confirmAction) {
+            $.ajax({
+                url: "<?= base_url();?>" + "deletePathologyServiceOrder",
+                type: "POST",
+                dataType: "json",
+                data: {service_order_id: service_id, patient_id: patient_id},
+                success: function (response) {
+                    if (response.status == 200) {
+                        app.successToast(response.body);
+                        getCollectionTable(category, table_id);
+                    } else {
+                        app.errorToast(response.body);
+                    }
+                },
+                error: function (error) {
 
-					console.log(error);
-				}
-			});
-		}
-	}
-	function getServiceOrderList(sectionId) {
-		$("#selectServiceOrder").html("");
-		let patient_id=localStorage.getItem("patient_id");
-		$.ajax({
-			url: "<?= base_url();?>" + "getServiceOrderList",
-			type: "POST",
-			dataType: "json",
-			data: {patient_id: patient_id},
-			success: function (response) {
-				if (response.status == 200) {
-					$("#selectServiceOrder").append(response.data);
-					$("#selectServiceOrder").select2({});
-				} else {
-					// app.errorToast(response.body);
-				}
-			},
-			error: function (error) {
-				console.log(error);
-			}
-		});
-	}
-	function getServiceOrderChildList(service_id) {
-		let sectionId=143;
-		loadEditableTable(sectionId,service_id);
+                    console.log(error);
+                }
+            });
+        }
+    }
+    function getServiceOrderList(sectionId) {
+        $("#selectServiceOrder").html("");
+        // $("#selectServiceOrder1").html("");
+        let patient_id=localStorage.getItem("patient_id");
+        $.ajax({
+         url: "<?= base_url();?>" + "getServiceOrderList",
+         type: "POST",
+         dataType: "json",
+         data: {patient_id: patient_id},
+         success: function (response) {
+            if (response.status == 200) {
+                $("#selectServiceOrder").append(response.data);
+                $("#selectServiceOrder").select2({});
+                // $("#selectServiceOrder1").append(response.data);
+                // $("#selectServiceOrder1").select2({});
+            } else {
+                    // app.errorToast(response.body);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    function getServiceOrderChildList(service_id) {
+      let sectionId=143;
+      loadEditableTable(sectionId,service_id);
 
-	}
+  }
+</script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/library.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/patient_library.js"></script>
+<script type="text/javascript" src="https://www.googleapis.com/auth/cloud-vision"></script>
+<!-- <script src="http://localhost:8080/index.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.min.js"></script>
+  https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
+<script type="text/javascript">
+
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    // pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.worker.min.js';
+    // console.log(pdfjsLib);
+    var randsID = '_Zer';
+    var fileUploaded = [];
+    var socket = null;
+    var clientId = null;
+    var chnnelID = null;
+    var conn = null;
+    $(function () {
+        // chnnelID = $('#surefaceID').val();
+        // clientId = $('#userID').val();
+        // webSocket();
+        // loadCanvasBox(chnnelID);
+        // $('#container').on('mousewheel', scroll);
+
+        $("#ocrFile").on("change", fileReader);
+        // const canvas = $('#imgCanvas');
+        // console.log(canvas); // [canvas.canvas]
+
+        // const ctx = canvas[0].getContext('2d');
+
+        // console.log(ctx); // CanvasRenderingContext2D
+    });
+
+     function uploadImageToOCR(event){
+            // $("#form_ocrupload").submit(function(e){
+            // e.preventDefault();
+            var arrLabParentTests = '';
+            var file = $("#ocrFile")[0].files[0].name;
+            console.log('ocr file name ',$("#ocrFile")[0].files[0]);
+            $("#ocfFileName").text(file);
+            // let getServiceData = getChildTestData(157);
+            // var formData = $("#formOcrImg");
+            // if (getServiceData) {
+                var fd = new FormData();
+                fd.set( "ocrFile", $("#ocrFile")[0].files[0]);
+                fd.set("imgData",$("#imgData").val());
+                fd.set( "libraryData", $("#libraryData").val());
+                fd.set( "service_data", $("#serviceData").val());
+                var service_id = $("#selectServiceOrder1").val();
+
+                // progressbar coad
+                $.ajax({
+                    target: '#targetLayer',
+                    beforeSubmit:function(){
+                        $('.progress-bar').width('10%');
+                     
+                    },
+                    uploadProgress: function(event, position, total,percentageComplete)
+                    {
+                        $('.progress-bar').animate({
+                            width: percentageComplete + '%'
+                        }, {
+                            duration: 6000
+                        });
+                        
+                    },
+                    url : 'http://localhost:8080/test',
+                    type : 'POST',
+                    data : fd,
+                    processData:false,
+                    contentType:false,
+                    crossDomain: true,
+
+                    success: function(result) {
+                        var arrLabParentTests = [];
+                        getLabParentTestsFunction().then(res=>{
+
+                            // console.log('arrLabMaster = ',arrLabParentTests);
+                            var rows = [];
+                            if (result) {
+                            // var columns=result.columns;
+                            if (result.length > 0) {
+                                for(let r = 0;r<result.length;r++){
+                                    // console.log(result[r]);
+                                    rows = [...rows,...result[r]];
+                                    // console.log(rows);
+                                }
+                            }
+                            // var types=result.types;
+                            // columnRows=rows;
+                            // columnsHeader=columns;
+
+                        } else {
+
+                            rows = [
+                            ['', '', '', '', '', '', '', '', '', '', '',''],
+                            ];
+                        }
+
+
+
+                        var types = [
+                        {
+                            type: 'text',
+                        },
+
+                        {
+                            type: 'text',
+                        },
+                        {
+                            type: 'text',
+                        },
+                        {
+                            type: 'text',
+                        },
+                        {
+                            type: 'text',
+                        },
+                        {
+                            type: 'dropdown',source:res,
+                        },
+                        {
+                            type: 'text',
+                        },
+                        {
+                            type: 'text',
+                        },
+                        {
+                            type:'text',  
+                        },
+                        {
+                            type: 'text',
+                        },
+                        {
+                            type: 'text'
+                        },
+                        {
+                            type: 'text'
+                        },
+                        ];
+                        var hideArra = [8,9,10,11];
+                        var columns = ['name', 'value', 'Unit', 'ref','Conversion','Master Test Name','Service Code','Child Id','branch_id','Master Test Id','name in library','serviceDataid'];
+
+
+                        hideColumn = {
+                            // specify columns hidden by default
+                            columns: hideArra,
+                            copyPasteEnabled: false,
+                        };
+                        createHandonTable1(columns, rows, types, 'newDiv1', hideColumn,1);
+
+                    });
+                }
+                    });
+            // }else{
+
+            // }
+            // var formData = new FormData($("#form_ocrupload")[0]);
+            
+        // });
+        }
+    $(document).ready(function() {
+        $("#ocrDataContainer").hide();
+        // var  getLabParentTestsFunction();
+       
+    });
+
+   // function getExt(){
+   //  // alert("test");
+   //      // $("#ocrFile").
+   //      var files = event.target.files
+   //      var filename = files[0].name
+   //      var extension = files[0].type
+   //      // alert(extension);
+   //      // console.log(files);
+   //      if (extension == 'application/pdf') {
+   //          pdf_image(files);
+   //          // console.log(files);
+   //      }
+   //  }
+   // document.querySelector('#ocrFile').addEventListener('change', function() {
+
+   //      var reader = new FileReader();
+   //      var files = event.target.files
+   //      reader.onload = function() {
+
+   //          var arrayBuffer = this.result,
+   //          array = new Uint8Array(arrayBuffer),
+   //          binaryString = String.fromCharCode.apply(null, array);
+
+   //          // console.log(binaryString);
+   //          if (files[0].type == 'application/pdf') {
+   //              pdf_image(binaryString);
+   //          }
+   //      }
+   //      reader.readAsArrayBuffer(this.files[0]);
+
+   //  }, false);
+   
+   function fileReader(e) {
+    // alert("test");
+    // $("#btn_ocr_submit").attr("disabled","disabled");
+    $("#btn_ocr_submit").prop("disabled", true);
+    
+    // getLibraryData();
+    let randID = randsID;
+    var file = e.target.files[0];
+    // return false;
+    var fileReader = new FileReader();
+    if (file.type === "application/pdf") {
+        $("#imgUploaded").hide();
+        fileReader.onload = function () {
+
+            $("#canvasContainer").empty();
+            $("#imgDataContainer").empty();
+
+            var pdfData = new Uint8Array(this.result);
+            var loadingTask = pdfjsLib.getDocument({data: pdfData});
+            loadingTask.promise.then(function (pdf) {
+            var pageCount = pdf.numPages;
+            var countIteration = 0;
+                for (var i = 1; i <= pageCount; i++) {
+                    countIteration = 1;
+                var pageNumber = i;
+                    $("#canvasContainer").append(`<canvas class="canvas classImageCanvas" width="846" height="1000" name="imageCanvas[]" id="imgCanvas${i}" style="width:100%;"></canvas>`);
+                    // $("#imgDataContainer").append(`<input type="hidden" class="classImgData" name="imgData" id="imgData" value="0">`);
+                     pdf.getPage(pageNumber).then(function (page) {
+
+                        // var viewport = page.getViewport(scale);
+                        let canvasId = $(".classImageCanvas").attr("id"); 
+                        let imgDataId = $(".classImgData").attr("id"); 
+                        // let canvas = $(`#${canvasId}`)[0];
+                        // let hdnImgDataId = $(`#${imgDataId}`);
+
+                        let canvas = $(`#imgCanvas${countIteration}`)[0];
+                        let hdnImgDataId = `#imgData${countIteration}`;
+
+                        // let canvas_ = $(`#imgCanvas${i}`);
+                        // console.log('canvas = ',canvas);
+                        // canvas.width = viewport.width;
+                        // canvas.height = viewport.height;
+                        // document.getElementById('canvasContainer').style.width = Math.floor(viewport.width/scale) + 'pt';
+                        // document.getElementById('canvasContainer').style.height = Math.floor(viewport.height/scale) + 'pt';
+
+                        var context = canvas.getContext('2d');
+                        var scale = 1.48;///(canvas.height / canvas.width) / 8;
+                        // console.log(scale);
+                        var viewport = page.getViewport({scale: scale});
+
+
+                        var renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        let canvasD = canvas;
+                        var renderTask = doRender(renderContext,canvas,page,pageCount,hdnImgDataId);
+                        // page.render(renderContext);
+                        // var numItems = $('.classImageCanvas').length
+                        // for (var j = 0; j < numItems; j++) {
+                        //     renderTask.promise.then(function () {
+                        //         var dataURL = canvas.toDataURL();
+                        //         // console.log("pdf_Data = ",dataURL);
+                        //         $("#ocrDataContainer").show();
+                        //         $(`#${imgDataId}`).val(dataURL);
+                        //         // $("#imgData").val(dataURL);
+                        //     });
+                        // }
+                        
+                     countIteration++;
+                    });
+                }
+               
+            }, function (reason) {
+                console.error(reason);
+            });
+        };
+        fileReader.readAsArrayBuffer(file);
+    } else {
+        $(".classImageCanvas").hide();
+        $("#imgUploaded").show();
+        var tmppath = URL.createObjectURL(e.target.files[0]);
+        $("#imgUploaded").attr('src',tmppath);
+
+        var file = document.getElementById('ocrFile').files[0];
+        var reader = new FileReader();
+        reader.addEventListener('load', function() {
+            var res = [reader.result]; 
+            // console.log('inser block = ',res);
+            $("#ocrDataContainer").show();
+            $("#imgData").val(JSON.stringify(res));
+            uploadImageToOCR();
+        });
+
+        reader.readAsDataURL(file);
+
+        // console.log('outer block = ',dataUrl);
+        // if(result instanceof Error) {
+        //     console.log('Error: ', result.message);
+        //     return;
+        // }
+        // var canvas = document.getElementById(randID + '_canvas');
+        // var ctx = canvas.getContext('2d');
+        // fileReader.onload = function (ex) {
+        //     var img = new Image();
+        //     img.onload = function () {
+        //         drawImageScaled(img, ctx);
+        //         uploadOnFileServer(file).then((result) => {
+        //             if (result.status === 200) {
+        //                 fileUploaded.push({id: randID, file: file, url: result.body, type: 2});
+        //                 insertOperation({s: 5, u_id: randsID, c_id: chnnelID, create_by: clientId,
+        //                     w: img.width, h: img.height, file: result.body});
+        //             } else {
+        //                 alert(result.body);
+        //             }
+        //         }).catch(error => {
+        //             console.log(error);
+        //         });
+        //     };
+        //     img.src = ex.target.result;
+        // };
+
+        // fileReader.readAsDataURL(e.target.files[0]);
+    }
+}
+var arrDataUrl = [];
+let counter = 1;
+function doRender(renderContext,canvas,page,pageCount,imgDataId){
+    let renderOp = page.render(renderContext);
+    var numItems = $('.classImageCanvas').length
+    
+    // for (var j = 0; j < numItems; j++) {
+        renderOp.promise.then(function () {
+            var dataURL = canvas.toDataURL();
+            // console.log("pdf_Data = ",dataURL);
+            $("#ocrDataContainer").show();
+            arrDataUrl.push(dataURL);
+            // $(`${imgDataId}`).val(dataURL);
+            // $("#imgData").val(dataURL);
+            if (counter == pageCount) {
+                $("#imgData").val(JSON.stringify(arrDataUrl));
+
+                // ---------------------------------
+                uploadImageToOCR();
+                // ---------------------------------
+            }
+            counter++;
+        });
+    // }
+}
+// function handlePages(page)
+// {
+//     //This gives us the page's dimensions at full scale
+//     var viewport = page.getViewport(1);
+
+//     //We'll create a canvas for each page to draw it on
+//     var canvas = document.createElement("canvas");
+//     canvas.style.display = "block";
+//     var context = canvas.getContext('2d');
+//     canvas.height = viewport.height;
+//     canvas.width = viewport.width;
+
+//     //Draw it on the canvas
+//     page.render({canvasContext: context, viewport: viewport});
+
+//     //Add it to the web page
+//     document.body.appendChild(canvas);
+
+//     //Move to next page
+//     currPage++;
+//     if (thePDF !== null && currPage <= numPages)
+//     {
+//         thePDF.getPage(currPage).then(handlePages);
+//         console.log(1);
+//     }
+// }
+
+   function pdf_image(files) {
+    // var file_url  = 'https://rmt.ecovisrkca.com/downloadFile?f=dXBsb2FkL2NvbnRyYWN0LzE2MzYzNjY5NTZfZmlsZS1zYW1wbGVfMTUwa0IucGRm';
+    var pdfjsLib;
+    // var file_url = 'https://rmt.ecovisrkca.com/downloadFile?f=' + filename + '&t=1';
+    var file_url = files;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.js';
+    var pdfDoc = null,
+        pageNum = 1,
+        pageRendering = true,
+        scale = 1.0,
+        canvas = document.getElementById('the-canvas'),
+        ctx = canvas.getContext('2d');
+
+    return pdfjsLib.getDocument(file_url).promise.then(function (pdfDoc_) {
+        pdfDoc = pdfDoc_;
+        pageRendering = true;
+        return pdfDoc.getPage(1).then(function (page) {
+            var viewport = page.getViewport({
+                scale: scale
+            });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            var renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+            var renderTask = page.render(renderContext);
+            return renderTask.promise.then(function () {
+                pngUrl = canvas.toDataURL();
+                return pngUrl;
+                console.log(pngUrl);
+            });
+        });
+    }).catch(error => console.log(error));
+}
+
+
+   function getLabParentTestsFunction(){
+    return new Promise(function(resolve,reject){
+        var p_id = localStorage.getItem("patient_id");
+        $.ajax({
+            url : '<?php echo base_url(); ?>getLabParentTests',
+            dataType : 'json',
+            type : 'POST',
+            data : {p_id:p_id},
+            success: function(resp) {
+             resolve(resp);
+         }
+     });
+    });
+}
+
+// function getLibraryData(){
+//     return new Promise(function(resolve,reject){
+//         $.ajax({
+//             url : '<?php echo base_url(); ?>getLibraryData',
+//             dataType : 'json',
+//             type : 'POST',
+//             success: function(resp) {
+//              resolve(resp);
+//              $("#libraryData").val(resp);
+//          }
+//      });
+//     });
+// }
+
+function getLibraryData(){
+        // ajax request here
+        $.ajax({
+            url : '<?php echo base_url(); ?>getLibraryData',
+            dataType : 'json',
+            type : 'POST',
+            success: function(resp) {
+                if (resp.status ==200) {
+                    let serviceData = JSON.stringify(resp.data);
+                    console.log('library Data = ',JSON.parse(resp.data));
+                    $("#libraryData").val(serviceData);
+                        // return true;
+                    }else{
+                        // return false;
+                        // ocrDataFunction(resp.data,resp.imagepath);
+                        console.log(resp.status);
+                    }
+                }
+            });
+        // console.log(service_id+' - '+imagepath);
+    }
+
+emptyValidator = function(value, callback) {
+  if (!value && value!==0) {
+        // console.log('false');
+        callback(false);
+    } else {
+        // console.log('true');
+        callback(true);
+    }
+};
+     // function getServiceData()
+     function getChildTestData(service_id){
+
+        $("#serviceData").val("0");
+        // ajax request here
+        var p_id = localStorage.getItem("patient_id");
+        // alert(p_id);
+        $.ajax({
+            url : '<?php echo base_url(); ?>getLabChildTests',
+            dataType : 'json',
+            type : 'POST',
+            data : {service_id:service_id,p_id:p_id},
+            success: function(resp) {
+                if (resp.status ==200) {
+                    let serviceData = JSON.stringify(resp.data);
+                    console.log("service data",resp.data);
+                    $("#serviceData").val(serviceData);
+                    $("#btn_ocr_submit").prop("disabled", false);
+                        // return true;
+                    }else{
+                        // return false;
+                        // ocrDataFunction(resp.data,resp.imagepath);
+                        console.log(resp.status);
+                    }
+                }
+            });
+        // console.log(service_id+' - '+imagepath);
+    }
+
+
+    function saveChildLabExcelData() {
+        $.LoadingOverlay("show");
+        // $("#newErrorDiv").html('');
+        var array=hotDiv.getData();
+        var Form_data = new FormData();
+        Form_data.set('patient_id',localStorage.getItem("patient_id"));
+        Form_data.set('value',JSON.stringify(array));
+        Form_data.set('patient_name',localStorage.getItem("patient_name"));
+        Form_data.set('patient_adhar',localStorage.getItem("patient_adharnumber"));
+        // Form_data.set('service_order_id1',$("#selectServiceOrder1").val());
+        if (confirm("Are You Sure You want to upload?")) {
+            $.ajax({
+                url: "<?= base_url();?>" + "updateDynamicLabDataChildLabTest",
+                type: "POST",
+                dataType: "json",
+                data: Form_data,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    $.LoadingOverlay("hide");
+                    if (result.status == 200) {
+                        app.successToast(result.body);
+                        // window.location.reload();
+                        // loadEditableTable(143,$("#selectServiceOrder1").val());
+
+                    } else {
+
+                        app.errorToast(result.body);
+
+                        
+                    }
+
+
+                },
+                error: function (error) {
+
+                    $.LoadingOverlay("hide");
+                    console.log(error);
+                    // $.LoadingOverlay("hide");
+                }
+            });
+        }
+
+    }
+    
+</script>
+<script>
+
+    // function loadEditableTable(id, branch_id) {
+    //     $.ajax({
+    //         url: '<?php echo base_url(); ?>assets/json/multiDres.json',
+    //         type: "POST",
+    //         dataType: "json",
+    //         data: {id: id, branch_id: branch_id},
+    //         success: function (result) {
+    //             console.log(result);
+    //             var rows = [
+    //                 ['', '', '', '', '',],
+    //             ];
+    //             if (result) {
+    //                 // var columns=result.columns;
+    //                 if (result.length > 0) {
+    //                     rows = result;
+    //                 }
+    //                 // var types=result.types;
+    //                 // columnRows=rows;
+    //                 // columnsHeader=columns;
+
+    //             } else {
+
+    //                 rows = [
+    //                     ['', '', '', '', ''],
+    //                 ];
+    //             }
+    //             var types = [
+    //                 {type: 'text',},
+
+    //                 {type: 'text'},
+    //                 {
+    //                     type: 'text'
+    //                 },
+    //                 {
+    //                     type: 'text'
+    //                 },,
+    //                 {
+    //                     type: 'text'
+    //                 },
+    //             ];
+    //             var hideArra = [];
+    //             var columns = ['name in library','name', 'value', 'Unit', 'ref'];
+
+
+    //             hideColumn = {
+    //                 // specify columns hidden by default
+    //                 columns: hideArra,
+    //                 copyPasteEnabled: false,
+    //             };
+    //             createHandonTable(columns, rows, types, 'newDiv', hideColumn);
+
+    //         },
+    //         error: function (error) {
+    //             console.log(error);
+    //             // $.LoadingOverlay("hide");
+    //         }
+    //     });
+
+    // }
+
+
+    // let hotDiv;
+
+    function createHandonTable(columnsHeader, columnRows, columnTypes, divId, hideColumn = true) {
+        console.log(columnsHeader);
+        var element = document.getElementById(divId);
+        hotDiv != null ? hotDiv.destroy() : '';
+        hotDiv = new Handsontable(element, {
+            data: columnRows,
+            colHeaders: columnsHeader,
+            formulas: true,
+            manualColumnResize: true,
+            manualRowResize: true,
+
+            // ],
+            columns: columnTypes,
+            stretchH: 'all',
+            colWidths: '100%',
+            width: '100%',
+            height: 520,
+            rowHeights: 23,
+            rowHeaders: true,
+            filters: true,
+            contextMenu: true,
+
+            hiddenColumns: hideColumn,
+            dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
+            licenseKey: 'non-commercial-and-evaluation'
+        });
+        hotDiv.validateCells();
+    }
+
+     function createHandonTable1(columnsHeader, columnRows, columnTypes, divId, hideColumn = true,dropType) {
+        console.log(columnsHeader);
+        var element = document.getElementById(divId);
+        hotDiv != null ? hotDiv.destroy() : '';
+        hotDiv = new Handsontable(element, {
+            data: columnRows,
+            colHeaders: columnsHeader,
+            formulas: true,
+            manualColumnResize: true,
+            manualRowResize: true,
+
+            // ],
+            afterChange: function(changes, src){
+                if(changes){
+                    var row = changes[0][0];
+                    var value = changes[0][3];
+                    var prop = changes[0][1];
+                    if(prop==5)
+                    {
+                        let arrServiceCode = value.split('#');
+                        this.setDataAtCell(row,6,arrServiceCode[0]);
+                        this.render();
+                    }
+                }
+            },
+            columns: columnTypes,
+            stretchH: 'all',
+            colWidths: '100%',
+            width: '100%',
+            height: 520,
+            rowHeights: 23,
+            rowHeaders: true,
+            filters: true,
+            contextMenu: true,
+
+            hiddenColumns: hideColumn,
+            dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
+            licenseKey: 'non-commercial-and-evaluation'
+        });
+        hotDiv.validateCells();
+    }
+
+// --------------- data save in database
+
+    // var data = hotDiv.getData();
+    // let formData = new FormData();
+    // formData.set('arrData', JSON.stringify(data));
+
+
 </script>
