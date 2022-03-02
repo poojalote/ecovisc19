@@ -84,9 +84,13 @@ $(document).ready(function () {
 	if(url.includes("patient_info")){
 		let Did = localStorage.getItem('device_id');
 		let logged_users = localStorage.getItem('logged_users');
+		let PDid = localStorage.getItem('patient_device_id');
+		let patient_url = localStorage.getItem('patient_url');
 		localStorage.clear();
 		localStorage.setItem('device_id',Did);
 		localStorage.setItem('logged_users',logged_users);
+		localStorage.setItem('patient_device_id',PDid);
+		localStorage.setItem('patient_url',patient_url);
 	}
 });
 

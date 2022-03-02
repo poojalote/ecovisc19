@@ -295,6 +295,22 @@ class PatientController extends HexaController
 									$this->db->where(array("id" => $insert_id));
 									$this->db->update($table_name, array("ipd_number" => $ref_id));
 								}
+								$checkSmsStatus = $this->Patient_Model->_select('branch_master',array('id'=>$branch_id,'isSMS'=>1),'*',true);
+								if($checkSmsStatus->totalCount >0)
+								{
+									$this->load->model("SmsModel");
+									$branchData = $checkSmsStatus->data;
+									//$msgLink="";
+									$msgLink="See Your Details On: ".$branchData->patient_url;
+									if($branch_id == 2){
+										$template_id='1107164508653369661';
+									}else if($branch_id == 9){
+										$template_id='1107164508643723744';
+									}else{
+										$template_id='1107162869085979911';
+									}
+									$this->SmsModel->sendSMS($contact,array("name"=>$patient_name,"center"=>$branchData->name." Center",'bed'=>"",'room'=>"","linkP"=>$msgLink),$template=$template_id);
+								}
                                 $response["status"] = 200;
                                 $response["branch_id"] = $branch_id;
                                 $response["data"] = "uploaded successfully 3";
@@ -332,6 +348,22 @@ class PatientController extends HexaController
 								if($ref_id != ""){
 									$this->db->where(array("id" => $insert_id));
 									$this->db->update($table_name, array("ipd_number" => $ref_id));
+								}
+								$checkSmsStatus = $this->Patient_Model->_select('branch_master',array('id'=>$branch_id,'isSMS'=>1),'*',true);
+								if($checkSmsStatus->totalCount >0)
+								{
+									$this->load->model("SmsModel");
+									$branchData = $checkSmsStatus->data;
+									//$msgLink="";
+									$msgLink="See Your Details On: ".$branchData->patient_url;
+									if($branch_id == 2){
+										$template_id='1107164508653369661';
+									}else if($branch_id == 9){
+										$template_id='1107164508643723744';
+									}else{
+										$template_id='1107162869085979911';
+									}
+									$this->SmsModel->sendSMS($contact,array("name"=>$patient_name,"center"=>$branchData->name." Center",'bed'=>"",'room'=>"","linkP"=>$msgLink),$template=$template_id);
 								}
                                 $response["status"] = 200;
                                 $response["data"] = "uploaded successfully ";
@@ -378,7 +410,16 @@ class PatientController extends HexaController
                             {
                                 $this->load->model("SmsModel");
                                 $branchData = $checkSmsStatus->data;
-                                $this->SmsModel->sendSMS($contact,array("name"=>$patient_name,"center"=>$branchData->name." Center",'bed'=>"",'room'=>""),$template="1107162869085979911");
+                                //$msgLink="";
+                                $msgLink="See Your Details On: ".$branchData->patient_url;
+                                if($branch_id == 2){
+                                	$template_id='1107164508653369661';
+								}else if($branch_id == 9){
+									$template_id='1107164508643723744';
+								}else{
+									$template_id='1107162869085979911';
+								}
+                                 $this->SmsModel->sendSMS($contact,array("name"=>$patient_name,"center"=>$branchData->name." Center",'bed'=>"",'room'=>"","linkP"=>$msgLink),$template=$template_id);
                             }
                         }
                         $response["status"] = 200;

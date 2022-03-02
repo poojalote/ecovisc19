@@ -143,8 +143,8 @@ class Welcome extends CI_Controller
 							$row->adhar_no,
 							$row->patient_name,
 							$row->contact,
-							$row->blood_group,
-							$row->birth_date
+							$row->birth_date,
+							$row->admission_date
 						);
 					}
 					$response = array(

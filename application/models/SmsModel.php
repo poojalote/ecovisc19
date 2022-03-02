@@ -19,10 +19,13 @@ class SmsModel extends CI_Model
             'sender' => $sender,
             'type' => '3'
         );
+		$session_data = $this->session->user_session;
+		$branch_id=$session_data->branch_id;
+        $getMssageBranch=$this->getMssageBranch($branch_id,$templateData['name'],$templateData['center'],$templateData['bed'],$templateData['room']);
         switch ($templateID){
             case 1:
                 $postData["template_id"]=$template;
-                $postData['message'] = "".$templateData['name']." has been admitted in the ".$templateData['center']." and has been allotted ".$templateData['bed']." in ".$templateData['room']." -Gold Berries";
+                $postData['message'] = $getMssageBranch;
                 break;
             case 2:
                 $postData["template_id"]=$template;
@@ -39,7 +42,22 @@ class SmsModel extends CI_Model
         $response = $client->request('GET', 'http://api.bulksmsgateway.in/sendmessage.php', array(
             'query' =>$postData
         ));
+     //   var_dump($response);
+
+
         return $response->getBody();
 
     }
+    function getMssageBranch($branch_id,$name,$center,$bed,$room){
+    	if($branch_id == 2){
+			$message="".$name." has been admitted in the ".$center." and has been allotted ".$bed." in ".$room.".Click on https://bit.ly/3oUh7FE to track your details. -Gold Berries";
+		}else if($branch_id == 9){
+			$message="".$name." has been admitted in the ".$center." and has been allotted ".$bed." in ".$room.".Click on https://bit.ly/3oRFNim to track your details. -Gold Berries";
+		}else{
+			$message="".$name." has been admitted in the ".$center." and has been allotted ".$bed." in ".$room.". -Gold Berries";
+		}
+
+    	return $message;
+
+	}
 }
