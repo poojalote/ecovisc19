@@ -293,6 +293,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				$("#filterKeyValue_" + type).empty();
 				$("#filterKeyValue_" + type).append(response.option);
 				$("#filterKeyValue_" + type).select2();
+				$("#filterKey_" + count).empty();
+				$("#filterKey_" + count).append(response.option);
+				$("#filterKey_" + count).select2();
 				getSelectedFilterSelection(data, count);
 			}
 
@@ -322,7 +325,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	function filterTypeSection(counter, value) {
 		if (parseInt(value) === 3) {
 			$("#dropDownQueryTableSection_" + counter).removeClass("d-none");
+			$("#dropDownKeySection_" + counter).removeClass("d-none");
 			$("#dropDownKeyValueSection_" + counter).removeClass("d-none");
+			$("#dropDownCustomKeyValueSection_" + counter).removeClass("d-none");
 			$("#dropDownConditionSection_" + counter).removeClass("d-none");
 			if (tableOption != null) {
 				$("#filterQueryTable_" + counter).empty();
@@ -332,7 +337,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 		} else {
 			$("#dropDownQueryTableSection_" + counter).addClass("d-none");
+			$("#dropDownKeySection_" + counter).addClass("d-none");
 			$("#dropDownKeyValueSection_" + counter).addClass("d-none");
+			$("#dropDownCustomKeyValueSection_" + counter).addClass("d-none");
 			$("#dropDownConditionSection_" + counter).addClass("d-none");
 		}
 
